@@ -60,7 +60,7 @@ while 1
         end
     end
     %surf(pmn);
-    stairs(pi_s);
+    stairs([1:2*N], pi_s);
     pause(0.1);
 end
 
