@@ -1,0 +1,507 @@
+#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{fouriernc}
+\usepackage{siunitx}
+\usepackage{microtype}
+\end_preamble
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize 10
+\spacing onehalf
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Week 1 Summary
+\end_layout
+
+\begin_layout Author
+Gen Zhang
+\end_layout
+
+\begin_layout Section
+Classical 0-dimensional model
+\end_layout
+
+\begin_layout Standard
+Summarised here for notation, easy comparison and a desire to parallel the
+ analysis in later situations.
+\end_layout
+
+\begin_layout Standard
+The model is that of one single type of cell (CP?):
+\begin_inset Formula \[
+A\overset{\lambda}{\longmapsto}\begin{cases}
+AA & r\\
+A & 1-2r\\
+\emptyset & r\end{cases}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This gives the master equation governing the stochastic evolution:
+\begin_inset Formula \[
+\frac{dP_{m}}{dt}=\lambda\left[\overbrace{r\left(m-1\right)P_{m-1}}^{AA}+\overbrace{r\left(m+1\right)P_{m+1}}^{\emptyset}+\overbrace{\left(1-2r\right)mP_{m}}^{A}-mP_{m}\right].\]
+
+\end_inset
+
+ We can solve this using a generating function 
+\begin_inset Formula $F\left(z\right)=\sum_{m}z^{m}P_{m}$
+\end_inset
+
+ so we get:
+\begin_inset Formula \begin{align*}
+\partial_{t}F & =\lambda\left[rz^{2}\partial_{z}+r\partial_{z}+\left(1-2r\right)z\partial_{z}-z\partial_{z}\right]F\\
+ & =\lambda r\left(z-1\right)^{2}\partial_{z}F\end{align*}
+
+\end_inset
+
+ giving, for the initial conditions 
+\begin_inset Formula $P_{m}=\delta_{m,1}\implies F\left(z\right)=z$
+\end_inset
+
+: 
+\begin_inset Formula \[
+F\left(z,t\right)=\frac{r\lambda t\left(x-1\right)-x}{r\lambda t\left(x-1\right)-1}.\]
+
+\end_inset
+
+ In this case, the coefficients of 
+\begin_inset Formula $F$
+\end_inset
+
+ may be extracted easily by Mathematica:
+\begin_inset Formula \[
+P_{m}=\begin{cases}
+\frac{r\lambda t}{1+r\lambda t} & m=0\\
+\frac{\left(r\lambda t\right)^{m-1}}{\left(1+r\lambda t\right)^{m+1}} & m>0\end{cases}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can define the non-extinction distribution
+\begin_inset Formula \[
+P_{m}^{\textrm{pres}}=\frac{P_{m}}{1-P_{0}}\]
+
+\end_inset
+
+ which has a nice limit for large 
+\begin_inset Formula $m$
+\end_inset
+
+:
+\begin_inset Formula \[
+\lim_{m\rightarrow\infty}mP_{m}^{\textrm{pres}}\left(mt\right)=\frac{1}{r\lambda t}e^{-\frac{1}{r\lambda t}}.\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename classic-gr1.pdf
+	width 48text%
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename classic-gr2.pdf
+	width 48text%
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Formula $m=2^{n}$
+\end_inset
+
+.
+ Right shows the first few 
+\begin_inset Formula $P_{m}$
+\end_inset
+
+ on a log-log scale.
+ The parameters were 
+\begin_inset Formula $r=0.08,\lambda=1.0.$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Generational counting with decay
+\end_layout
+
+\begin_layout Standard
+We now want to keep track of the number of cells at each generation.
+ Effectively the model is changed to:
+\begin_inset Formula \[
+A_{g-1}\overset{\lambda}{\longmapsto}\begin{cases}
+A_{g}A_{g} & r\\
+A_{g} & 1-2r\\
+\emptyset & r\end{cases}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus the state is enlarged to be a vector 
+\begin_inset Formula $\vec{m}=\left(m_{0},m_{1},\ldots,m_{G}\right)$
+\end_inset
+
+ where 
+\begin_inset Formula $G$
+\end_inset
+
+ is the maximum number of generations we will keep track of.
+ The master equation is now a bit more complex: 
+\begin_inset Formula \[
+\frac{dP_{\vec{m}}}{dt}=\lambda\sum_{g}\left[r\left(m_{g-1}+1\right)P_{\ldots m_{g-1}+1,m_{g}-2\ldots}+r\left(m_{g-1}+1\right)P_{\ldots m_{g-1}+1,m_{g}\ldots}+\left(1-2r\right)\left(m_{g-1}+1\right)P_{\ldots m_{g-1}+1,m_{g}-1\ldots}-m_{g}P_{\vec{m}}\right]\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The corresponding generating function now has 
+\begin_inset Formula $G+2$
+\end_inset
+
+ independent variables, and satisfies a PDE: 
+\begin_inset Formula \[
+\partial_{t}F=\lambda\sum_{g}\left[rz_{g}^{2}\partial_{g-1}+r\partial_{g-1}+\left(1-2r\right)z_{g}\partial_{g-1}-z_{g}\partial_{g}\right]F\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This can be solved using the method of characteristics (probably also doable
+ by other, less 
+\begin_inset Quotes eld
+\end_inset
+
+big-hammer
+\begin_inset Quotes erd
+\end_inset
+
+ means).
+ This gives first:
+\begin_inset Formula \begin{align*}
+\frac{dF}{ds} & =0\\
+\frac{dt}{ds} & =1\implies s=t\end{align*}
+
+\end_inset
+
+ then a tower of simple equations for 
+\begin_inset Formula $z_{g}$
+\end_inset
+
+:
+\begin_inset Formula \begin{align*}
+\frac{dz_{g}}{dt} & =\begin{cases}
+\lambda z_{g} & g=G\\
+\lambda\left[z_{g}-z_{g+1}-r\left(z_{g+1}-1\right)^{2}\right] & g<G\end{cases}\\
+\implies z_{g} & =\begin{cases}
+z_{g}^{(0)}e^{\lambda\left(t-t_{0}\right)} & g=G\\
+z_{g}^{(0)}e^{\lambda\left(t-t_{0}\right)}+\int_{t}^{t_{0}}d\tau\lambda e^{\lambda\left(t-\tau\right)}\left[r\left(z_{g+1}-1\right)^{2}+z_{g+1}\right] & g<G\end{cases}\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With the initial condition 
+\begin_inset Formula $F\left(\vec{z},t=0\right)=z_{0}$
+\end_inset
+
+ we find that 
+\begin_inset Formula $F\left(\vec{z},t\right)=z_{0}^{(0)}\left(t=0\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Overall clonal size distribution, throwing away again the generation information
+, may be obtained by substituting all 
+\begin_inset Formula $z_{g}^{(0)}\rightarrow z$
+\end_inset
+
+.
+ The resulting generating function 
+\begin_inset Formula $F'\left(z,t\right)$
+\end_inset
+
+ is exact, but quite large even for small 
+\begin_inset Formula $G$
+\end_inset
+
+ --- 
+\begin_inset Formula $G=2$
+\end_inset
+
+ has 53 terms according to mathematica, and 
+\begin_inset Formula $G=3$
+\end_inset
+
+ has 510 terms.
+ Extracting the coefficients has been difficult (time intensive), and given
+ the number of terms, may be too complex to be of practical use.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename decaying-gr1.pdf
+	width 48text%
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename decaying-gr2.pdf
+	width 48text%
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Formula $G=3$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Current lines of attack
+\end_layout
+
+\begin_layout Subsection
+Numeric
+\end_layout
+
+\begin_layout Standard
+It is desirable to be able to look at larger values of 
+\begin_inset Formula $G$
+\end_inset
+
+.
+ Noting that the terms in 
+\begin_inset Formula $F'$
+\end_inset
+
+ are of the form 
+\begin_inset Formula $z^{m}\left(\lambda t\right)^{b}e^{-c\lambda t}K$
+\end_inset
+
+ where 
+\begin_inset Formula $K$
+\end_inset
+
+ is a constant independent of 
+\begin_inset Formula $z$
+\end_inset
+
+ and 
+\begin_inset Formula $t$
+\end_inset
+
+, we can try to numerically calculate the coefficients of 
+\begin_inset Formula $z^{m}$
+\end_inset
+
+ at specified 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ Unfortunately, the large number of terms, alternating in sign and varing
+ over a large range in size, leads to numerical stability problems (manifests
+ as negative probablities).
+ This is probably tamable.
+\end_layout
+
+\begin_layout Standard
+However, performance is still appalling since without the benefit of symbolic
+ algebra the number of intermediate terms explodes quite dramatically.
+\end_layout
+
+\begin_layout Standard
+It is unclear whether the end result would be hugely helpful.
+\end_layout
+
+\begin_layout Subsection
+Analytic
+\end_layout
+
+\begin_layout Standard
+It is clear that there is no simple limit for scaling behaviour; large 
+\begin_inset Formula $m$
+\end_inset
+
+ or 
+\begin_inset Formula $t$
+\end_inset
+
+ leads to trivial distributions.
+ The classic case had a single characteristic time-scale 
+\begin_inset Formula $\tau_{0}=\left(r\lambda\right)^{-1}.$
+\end_inset
+
+ Now, there are additional ones, dependent on 
+\begin_inset Formula $G$
+\end_inset
+
+; the simplest is likely 
+\begin_inset Formula $G/\lambda$
+\end_inset
+
+ which controls the most prominent decay.
+\end_layout
+
+\begin_layout Standard
+Nevertheless, the graphs above for 
+\begin_inset Formula $P_{m}$
+\end_inset
+
+ as a function of time shows considerable structure.
+ It maybe that there exists good (piece-wise) approximations to 
+\begin_inset Formula $P_{m}$
+\end_inset
+
+; good in the sense that it converges very quickly even for moderate 
+\begin_inset Formula $G$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Then again, maybe there is more structure to the terms in 
+\begin_inset Formula $F'$
+\end_inset
+
+?
+\end_layout
+
+\end_body
+\end_document
