@@ -1,0 +1,51 @@
+\documentclass[10pt,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose}
+\pagestyle{plain}
+\usepackage{babel}
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+\usepackage{setspace}
+%\onehalfspacing
+\usepackage[unicode=true, pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\usepackage{fouriernc}
+\usepackage{siunitx}
+\usepackage{microtype}
+
+\begin{document}
+
+\title{Week 1.5 summary}
+\author{Gen Zhang}
+
+\maketitle
+
+We start by noting that for the classical case, the probabilities for a clone of size $m$ has an exact, and simple form (for $m>0$): $$ P_m = \frac{(t/\tau)^{m-1}}{(1+t/\tau)^{m+1}},$$ where $\tau = 1/r\lambda$. When plotted on a log-log plot, this manifests itself as being composed of two distinct phases, characterised by linear behaviour: $$\ln P_m = (m-1) \ln \frac{t}{\tau} - (m+1) \ln \left(1+\frac{t}{\tau} \right).$$ For small $t$, $\ln (1+t/\tau) \rightarrow t/\tau$ thus $P_m \rightarrow (t/\tau)^{m+1}$. For large $t$ $\ln (1+t/\tau) \rightarrow \ln (t/\tau)$ thus $P_m \rightarrow (t/\tau)^{-2}$. Question: explain the exponents physically.
+
+For the EDU case (previously referred to generically as "decaying"), this picture changes. We might hope that for small $t$, $\lambda t < G$, the behaviour remains classical. For $G=3$, we can use Mathematica to extract the exact limiting behaviour as $t\rightarrow 0$. We find that $$ P_m \longrightarrow \alpha_m (t/\tau)^{m-1},$$ where $\tau$ is as before, and $\alpha_m$ is a constant independent of $r$, $\lambda$ and $t$. Rather curiously, we find that $\alpha_m = 1$ for $m \le 4$, but takes a series of odd values for $5 \le m \le 8$:
+
+\begin{center}
+	\begin{tabular}{ll}
+		$m$ & $\alpha_m$ \\
+		\hline
+		5 & $\frac{2}{3}$ \\
+		6 & $\frac{1}{3}$ \\
+		7 & $\frac{1}{9}$ \\
+		8 & $\frac{1}{63}$ \\
+	\end{tabular}
+	\label{tab:alpha_m}
+\end{center}
+
+For large $t$, the difference is greater. Mathematica seems incapable of extracting the exact limit, but a bit of numerical investigation allows some fairly robust guesses. So far, the form has been pinned down to: $$P_m \longrightarrow K (\lambda t)^{\beta_m} e^{-\lambda t}.$$ The exponent $\beta_m = G - \left\lceil\log_2 m \right\rceil$ and the constant $K$ has a strong $r$
+dependence, but is definitely free from $\lambda$ and $t$.
+
+Thus to do: determine more accurate $K$; explain $\alpha_m$ and $\beta_m$ and explain the exponential decay at large $t$. This might then lead to some understanding of the problem.
+
+
+\end{document}
