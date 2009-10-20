@@ -1,0 +1,56 @@
+\documentclass[10pt,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose}
+\pagestyle{plain}
+\usepackage{babel}
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage[unicode=true, pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\usepackage{fouriernc}
+\usepackage{siunitx}
+\usepackage{microtype}
+
+\begin{document}
+
+\title{$ABC$ cell evolution}
+\author{Gen Zhang}
+
+\maketitle
+
+Here we have a numerical model (in Matlab) of the following branching process:
+$$ A \overset{\lambda}{\longmapsto}\begin{cases}
+AA & r \\
+AB & 1 - 2 r \\
+BB & r
+\end{cases} \qquad B \overset{\gamma}{\longmapsto} C $$
+This turns out to be a little simpler as a system to solve than the $AB$ model, because no cells ever die. Thus, the evolution of each state $P_{m,n,l}$ only depends on a finite number of other states (rather generally, four or fewer). The corresponding master equation is:
+$$ 
+\frac{dP_{m,n,l}}{dt} = - \left(\lambda m + \gamma n\right) P_{m,n,l} + \lambda \left[ r \left(m-1\right) P_{m-1,n,l} + \left(1-2r\right) m P_{m,n-1,l} + r \left(m+1\right) P_{m+1,n-2,l}\right] + \gamma \left(n+1\right) P_{m,n+1,l-1}
+$$
+The general solution is then a set of nested integrals:\begin{align*}
+P_{m,n,l} =& e^{-(\lambda m + \gamma n) t}\big\{ P^{(0)}_{m,n,l} + \\
+&\int_0^t e^{(\lambda m + \gamma n)\tau}\left\{\lambda \left[ r \left(m-1\right) P_{m-1,n,l} + \left(1-2r\right) m P_{m,n-1,l} + r \left(m+1\right) P_{m+1,n-2,l}\right] + \gamma \left(n+1\right) P_{m,n+1,l-1}\right\}~d\tau  \big\}
+\end{align*}
+
+In principle these may be fed into Mathematica and exact solutions obtained. However, the size and complexity of the expressions soon grow, such that even the probability for 5-cell clones cannot be computed. As such, we create a numerical solution, which is capable of handling such large (!) clones.
+
+The specific use will be to evaluate a Bayesian inference, aiming to infer likely values and errors in $r$, $\rho$ and possibly $\lambda$. As such, we wish to reduce the amount of recomputation necessary in changing these parameters. The overall method will be to use a sparse matrix exponential. The master equation may be reorganised into a vector form: $$ \frac{d\mathbf{P}}{dt} = T \mathbf{P}$$ where $T$ is a (sparse) transition matrix. The solution would then be a simple matrix exponential $$\mathbf P = e^{T t} \mathbf P^{(0)}.$$ There exist fast functions which can perform this exponentiation-multiplication, whilst utilising the sparsity in $T$. The transition matrix $T$ may be broken down into components as $$T = \lambda \left(T_\lambda + r T_r \right) + \gamma T_\gamma $$ where the various transition sub-matrices are independent of the parameters, and thus much of the cost of setting up the problem may be amortized.
+
+It is necessary to bijectively map the tuple $(m,n,l)$ to a single integer $i$ suitable as the index into $\mathbf P$. Specifically, for our purposes, it is necessary that all triples which sum to $k$ is mapped to a number smaller than those with sum $k+1$. One possible choice is \begin{align*}
+\pi^3(m,n,l) &= T^4_{m+n+l} + T^3_{m+n} + m \\
+T^3_n &= \frac{n(n+1)}{2} \\
+T^4_n &= \frac{n(n+1)(n+2)}{6}
+\end{align*}
+where $T^3$ and $T^4$ are the triangle and tetrahedral numbers, respectively.
+
+
+\end{document}
