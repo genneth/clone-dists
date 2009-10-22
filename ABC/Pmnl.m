@@ -1,13 +1,13 @@
-function Ptot = Ptot(P)
+function Pmnl = Pmnl(P)
 
 M = length(P);
 k = untetra(M) - 1;
-Ptot = zeros(k+1,1);
+Pmnl = zeros(k+1,k+1,k+1);
 
 for i = 1:M
     trip = i2t(i);
     m = trip(1); n = trip(2); l = trip(3);
-    Ptot(m+n+l+1) = Ptot(m+n+l+1) + P(i);
+    Pmnl(m+1,n+1,l+1) = P(i);
 end
 
 end
