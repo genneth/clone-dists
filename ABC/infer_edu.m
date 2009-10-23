@@ -23,5 +23,7 @@ end
 rhos = [1:n+1] / n * 0.8 + 0.1;
 rs = [1:n+1] / n * 0.5;
 contour(rhos, rs, pdx);
+xlabel('$\rho$', 'Interpreter', 'latex');
+ylabel('$r$', 'Interpreter', 'latex');
 
 end

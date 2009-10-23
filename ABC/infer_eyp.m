@@ -34,5 +34,8 @@ lambdas = [0:z] / z * (1/3 - 1/6) + (1/6);
 pmax = max(max(max(pdx)));
 %isosurface(rhos, rs, lambdas, pdx ./ pmax, 0.5);
 contour(rhos, rs, pdx ./ pmax);
+xlabel('$\rho$', 'Interpreter', 'latex');
+ylabel('$r$', 'Interpreter', 'latex');
+%zlabel('$\lambda$', 'Interpreter', 'latex');
 
 end

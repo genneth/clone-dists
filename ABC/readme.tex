@@ -52,5 +52,14 @@ T^4_n &= \frac{n(n+1)(n+2)}{6}
 \end{align*}
 where $T^3$ and $T^4$ are the triangle and tetrahedral numbers, respectively.
 
+We currently have some sanity checks:
+\begin{enumerate}
+\item {\tt population\_plot.m} gives a graph of distributions as a function of time. This may be compared to {\tt edu\_inverse.nb} which can also produce a similar plot.
+
+\item {\tt infer\_edu.m} also performs the inference for the 2 week EdU data, the same as {\tt edu\_inverse.m}. These should produce similar looking contour plots.
+
+\item {\tt clayton\_plot.m} (re)produces a graph from Clayton et al. Nature 2007, Figure 2b.
+\end{enumerate}
+
 
 \end{document}

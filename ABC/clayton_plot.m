@@ -44,5 +44,7 @@ for i = [1:nn]
     spop(:,i) = sum(pops(:,(2^(i-1)+2):(2^i+1)),2);
 end
 semilogx(ts, spop);
+xlabel('$t$ / weeks', 'Interpreter', 'latex');
+ylabel('proportion', 'Interpreter', 'latex');
 
 end
