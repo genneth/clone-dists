@@ -1,4 +1,4 @@
-function infer_eyp
+function infer_ear_eyp
 
 t1 = 3.0;
 data1 = [2 0 11; 1 1 4; 0 2 6; 3 0 1; 2 1 3; 0 3 1; 4 0 1; 4 1 1; 6 1 1]';
@@ -14,54 +14,32 @@ k = 7;
 P0 = initial_eyp(k);
 
 % x by y by z grid for the parameter space
-<<<<<<< HEAD:ABC/infer_eyp.m
-x = 20;
-y = 20;
-z = 30;
-=======
 x = 30;
 y = 30;
 z = 0;
->>>>>>> dd7b4df1b34613dbec5f5dace1c7ccfaf00ae5a1:ABC/infer_eyp.m
 pdx = zeros(y+1, x+1, z+1);
 
 for i = 1:x+1
     for j = 1:y+1
         for h = 1:z+1
-<<<<<<< HEAD:ABC/infer_eyp.m
-            rho    = (i-1)/x * 0.2 + 0.5;           % 0.5 - 0.7
-            r      = (j-1)/y * 0.2 + 0.15;          % 0.15 - 0.35
-            lambda = (h-1)/z * (1/3 - 1/6) + (1/6); % 3 to 6 week cycle
-            %lambda = 0.25;
-            pdx(j,i,h) = PDX(condPbs(Pbs(population(Tl, Tr, Tg, lambda, r, lambda * rho / (1-rho), t3, P0))), data3);
-%            pdx(j,i,h) = pdx(j,i,h) * PDX(condPbs(Pbs(population(Tl, Tr, Tg, lambda, r, lambda * rho / (1-rho), t2, P0))), data2);
-=======
             rho    = (i-1)/x * 0.8 + 0.1;           % 0.1 - 0.9
             r      = (j-1)/y * 0.5;                 % 0.0 - 0.5
             %lambda = (h-1)/z * (1/3 - 1/6) + (1/6); % 3 to 6 week cycle
             lambda = 0.25;
             pdx(j,i,h) = PDX(condPbs(Pbs(population(Tl, Tr, Tg, lambda, r, lambda * rho / (1-rho), t1, P0))), data1);
             pdx(j,i,h) = pdx(j,i,h) * PDX(condPbs(Pbs(population(Tl, Tr, Tg, lambda, r, lambda * rho / (1-rho), t3, P0))), data3);
->>>>>>> dd7b4df1b34613dbec5f5dace1c7ccfaf00ae5a1:ABC/infer_eyp.m
         end
     end
 end
 
-<<<<<<< HEAD:ABC/infer_eyp.m
-rhos = [0:x] / x * 0.2 + 0.5;
-rs = [0:y] / y * 0.2 + 0.15;
-lambdas = [0:z] / z * (1/3 - 1/6) + (1/6);
-=======
 rhos = [0:x] / x * 0.8 + 0.1;
 rs = [0:y] / y * 0.5;
 %lambdas = [0:z] / z * (1/3 - 1/6) + (1/6);
->>>>>>> dd7b4df1b34613dbec5f5dace1c7ccfaf00ae5a1:ABC/infer_eyp.m
 pmax = max(max(max(pdx)));
 %isosurface(rhos, rs, lambdas, pdx ./ pmax, 0.5);
-contourslice(rhos, rs, lambdas, pdx ./ pmax, [0.6], [0.25], [0.25]);
-%contour(rhos, rs, pdx ./ pmax);
+contour(rhos, rs, pdx ./ pmax);
 xlabel('$\rho$', 'Interpreter', 'latex');
 ylabel('$r$', 'Interpreter', 'latex');
-zlabel('$\lambda$', 'Interpreter', 'latex');
+%zlabel('$\lambda$', 'Interpreter', 'latex');
 
 end
