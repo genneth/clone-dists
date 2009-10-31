@@ -49,8 +49,8 @@ timer_start = 0;
                     rho = rhos(i);
                     r = rs(j);
                     lambda = lambdas(h);
-                    pxd(j,i,h) = px(j,i,h) * scale * ...
-                        PDX(condPbs(Pbs(...
+                    pxd(j,i,h) =  ...
+                        PDX(px(j,i,h) * scale, condPbs(Pbs(...
                             population(Tl, Tr, Tg, ...
                                 lambda, r, lambda * rho / (1-rho), t, P0)...
                         )), data');
@@ -64,7 +64,6 @@ timer_start = 0;
                 end
             end
         end
-        pxd = pxd ./ integrate(pxd);
     end
 
 pxd = prior;
@@ -72,19 +71,22 @@ timer_start = tic;
 for i = [1:n]
     pxd = PXD(pxd, ts(i), datas{i});
 end
+pxd = pxd ./ integrate(pxd);
 waitbar(1.0, wh, 'plotting and saving...');
 
 % plot the resulting distribution
+gf = newplot;
 if numel(lambdas) == 1
     save(filename, 'rhos', 'rs', 'pxd');
-    [C, gf] = contour(rhos, rs, pxd);
+    contour3(gf, rhos, rs, pxd, 20);
+    surface(rhos, rs, pxd, 'EdgeColor', [.8 .8 .8], 'FaceColor', 'none');
 else
     save(filename, 'rhos', 'rs', 'lambdas', 'pxd');
-    gf = contourslice(rhos, rs, lambdas, pxd, [],[],lambdas);
-    zlabel('$\lambda$', 'Interpreter', 'latex');
+    contourslice(gf, rhos, rs, lambdas, pxd, [],[],lambdas);
+    zlabel(gf, '$\lambda$', 'Interpreter', 'latex');
 end
-xlabel('$\rho$', 'Interpreter', 'latex');
-ylabel('$r$', 'Interpreter', 'latex');
+xlabel(gf, '$\rho$', 'Interpreter', 'latex');
+ylabel(gf, '$r$', 'Interpreter', 'latex');
 saveas(gf, filename, 'fig');
 
 % extract means and variances
