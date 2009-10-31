@@ -1,6 +1,6 @@
-function p = PDX(Pb, data)
+function p = PDX(p0, Pb, data)
 
-p = 1;
+p = p0;
 for d = data
     m = d(1);
     n = d(2);
