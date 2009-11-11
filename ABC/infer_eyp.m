@@ -75,7 +75,7 @@ pxd = pxd ./ integrate(pxd);
 waitbar(1.0, wh, 'plotting and saving...');
 
 % plot the resulting distribution
-gf = newplot;
+gf = newplot(figure);
 if numel(lambdas) == 1
     save(filename, 'rhos', 'rs', 'pxd');
     contour3(gf, rhos, rs, pxd, 20);
