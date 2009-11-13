@@ -17,11 +17,28 @@ data2f = [0 2 41; 0 3 12; 1 1 58; 1 2 22; 1 3 4; 2 0 59; 2 1 29; 2 2 9; 2 3 6; 2
 data2g = [0 2 35; 0 3 5; 1 1 65; 1 2 12; 1 3 4; 1 4 1; 2 0 63; 2 1 39; 2 2 14; 2 3 2; 3 0 17; 3 1 14; 3 2 8; 3 3 4; 3 5 1; 4 0 6; 4 1 6; 4 2 2; 5 0 3; 5 2 2; 5 4 1; 6 0 1; 6 1 1; 7 0 1; 7 3 1];
 data2h = [0 2 51; 0 3 4; 0 5 1; 1 1 71; 1 2 17; 1 4 2; 1 5 1; 2 0 65; 2 1 28; 2 2 12; 2 3 3; 3 0 20; 3 1 8; 3 2 7; 3 3 2; 3 5 1; 4 0 7; 4 1 2; 4 2 5; 4 3 2; 5 0 1; 5 1 3; 5 2 1; 5 3 1; 6 0 2; 6 1 1; 6 2 1; 6 4 1];
 
-rhos = linspace(0.5, 0.7, 30);
-rs = linspace(0.15, 0.35, 30);
+% increasing numbers of samples
+t = 6.0;
+datas = {
+    [0 2 6; 0 3 1; 1 1 4; 1 2 4; 1 3 1; 2 0 11; 2 1 3; 2 2 2; 3 0 4; 3 2 2; 4 0 2]
+    [0 2 3; 1 1 14; 1 3 1; 2 0 15; 2 1 4; 2 2 2; 2 4 1; 3 0 3; 3 1 4; 3 2 1; 3 3 1; 4 0 1; 5 0 1]
+    [0 2 9; 0 3 1; 0 4 1; 1 1 10; 1 2 3; 1 4 1; 2 0 8; 2 1 8; 2 3 2; 3 0 2; 3 1 1; 3 2 1; 4 1 3; 5 0 1; 8 1 1]
+    [0 2 9; 1 1 16; 1 2 7; 1 3 2; 2 0 14; 2 1 6; 2 2 2; 2 6 1; 3 0 3; 3 1 3; 3 2 1; 6 3 1; 7 3 1]
+    [0 2 7; 0 3 1; 1 1 12; 1 2 2; 1 3 1; 2 0 14; 2 1 10; 2 2 2; 2 3 1; 2 4 1; 3 0 2; 3 1 5; 4 1 3; 5 1 1]
+    [0 2 8; 0 4 1; 1 1 17; 1 2 1; 2 0 13; 2 1 14; 2 2 5; 2 3 1; 3 0 4; 3 1 2; 3 2 2; 4 0 3; 4 1 1; 4 2 2; 5 0 1; 5 1 1; 6 2 2; 7 2 1; 10 1 1]
+    [0 2 13; 0 3 4; 1 1 30; 1 2 6; 1 3 2; 2 0 16; 2 1 8; 2 2 7; 2 3 1; 3 0 10; 3 1 7; 4 1 1; 4 2 1; 4 3 1; 4 4 1; 5 0 5; 5 1 2; 5 2 2; 6 0 1; 6 2 1]
+    [0 2 20; 0 3 3; 1 1 38; 1 2 9; 1 3 3; 1 4 1; 2 0 27; 2 1 17; 2 2 8; 2 4 1; 3 0 12; 3 1 7; 3 2 2; 3 4 1; 4 0 3; 4 1 4; 4 2 1; 5 1 3; 7 1 1]
+    [0 2 33; 0 3 3; 1 1 53; 1 2 10; 1 3 3; 1 4 1; 1 5 1; 2 0 36; 2 1 21; 2 2 8; 2 3 2; 2 5 1; 3 0 12; 3 1 9; 3 2 7; 3 3 4; 3 4 1; 4 0 12; 4 1 5; 4 2 1; 4 3 1; 4 4 1; 5 0 1; 5 1 2; 5 2 1; 5 5 1; 6 1 1; 7 0 1; 7 1 1; 8 1 1]
+    [0 2 36; 0 3 5; 0 4 2; 1 1 74; 1 2 24; 1 3 8; 1 5 1; 2 0 46; 2 1 39; 2 2 8; 2 3 5; 2 4 3; 2 5 1; 3 0 25; 3 1 11; 3 2 2; 3 3 2; 4 0 3; 4 1 4; 4 2 3; 5 0 4; 5 1 2; 6 1 3; 6 4 1; 7 2 1; 9 3 1]
+    [0 2 50; 0 3 9; 0 4 2; 1 1 83; 1 2 24; 1 3 6; 1 4 3; 2 0 65; 2 1 32; 2 2 17; 2 3 4; 2 5 1; 3 0 32; 3 1 12; 3 2 9; 3 3 3; 4 0 12; 4 1 7; 4 2 4; 4 3 2; 5 0 2; 5 1 2; 5 2 1; 6 3 1; 7 0 2; 7 4 1]
+};
+xs = [50 60 70 80 90 100 150 200 300 400 500];
+
+rhos = linspace(0.1, 0.8, 30);
+rs = linspace(0.0, 0.5, 30);
 lambda = 0.25;
-t = t2;
-datas = {data2a data2b data2c data2d data2e data2f data2g data2h};
+%t = t2;
+%datas = {data2a data2b data2c data2d data2e data2f data2g data2h};
 
 wh = waitbar(0, 'setting up...');
 
@@ -77,6 +94,11 @@ timer_start = 0;
 pxd = prior;
 timer_start = tic;
 pxd = PXD(pxd, t, datas{i});
+% normalise
+for i = [1:numel(datas)]
+    Z = integrate(pxd(:,:,i));
+    pxd(:,:,i) = pxd(:,:,i) ./ Z;
+end
 waitbar(1.0, wh, 'plotting and saving...');
 
 % plot the resulting distribution
@@ -84,12 +106,25 @@ gh = newplot(figure);
 hold(gh, 'on');
 for i = [1:numel(datas)]
     contour(gh, rhos, rs, pxd(:,:,i), 1);
+    % calculate the means and stds
+    rho1 = integrate(repmat(rhos, [numel(rs), 1]) .* pxd(:,:,i));
+    rho2 = integrate(repmat(rhos, [numel(rs), 1]).^2 .* pxd(:,:,i));
+    stats(i,1) = rho1;
+    stats(i,2) = sqrt(rho2 - rho1^2);
+    fprintf(1, 'rho mean: %g; std: %g\n', rho1, sqrt(rho2 - rho1^2));
+
+    r1 = integrate(repmat(rs', [1, numel(rhos)]) .* pxd(:,:,i));
+    r2 = integrate(repmat(rs', [1, numel(rhos)]).^2 .* pxd(:,:,i));
+    stats(i,3) = r1;
+    stats(i,4) = sqrt(r2 - r1^2);
+    fprintf(1, 'r mean: %g; std: %g\n', r1, sqrt(r2 - r1^2));
 end
 hold(gh, 'off');
 xlabel(gh, '$\rho$', 'Interpreter', 'latex');
 ylabel(gh, '$r$', 'Interpreter', 'latex');
 
-saveas(gh, 'fake_eyp_bs_400', 'pdf');
+gh = newplot(figure);
+loglog(xs, stats(:,2));
 
 close(wh);
 
