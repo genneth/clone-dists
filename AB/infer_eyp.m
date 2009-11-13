@@ -16,7 +16,12 @@ for i = [1:n]
     ms(i) = max(datas{i}(:,1));
 end
 
-sz = [max(ms) max(ms)] * 2;
+% make an estimate of the maximum number of cells we need to track. Clearly
+% we need at least as many as the data says. But we also need m_max >
+% lambda t. 
+m_max = max(max(ms), max(ts) * max(lambdas));
+sz = [m_max m_max];
+
 fprintf(1, 'tracking a maximal clone size of %d by %d\n', sz(1), sz(2));
 [Tl Tr Tg] = generate_transition_matrix(sz);
 P0 = initial_eyp(sz);
