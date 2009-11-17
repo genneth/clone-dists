@@ -3,6 +3,12 @@ function xi = xi(lambda, r, gamma, t, z)
 % we seek xi((1-z) exp(-g tau)) where:
 g = gamma/lambda;
 tau = t*lambda;
+
+if tau == 0
+    xi = z;
+    return;
+end
+
     % g xi' = xi - r/u * (xi+u-1)^2
     % and d(xi)/dt = xi' * (-g u)
     function dxi = dxi(t0, y0)

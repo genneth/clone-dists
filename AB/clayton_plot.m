@@ -5,18 +5,15 @@ function clayton_plot
 % *survining* clones with more than 1 cell are counted.
 
 nn = 5;
-%sz = [2^nn+1 2^nn+1];
-sz = [50 50];
-P0 = initial_eyp(sz);
+N = 2^nn + 1;
 lambda = 1.1;
 r = 0.08;
 rho = 0.22;
 gamma = lambda * rho / (1-rho);
 
-[Tl Tr Tg] = generate_transition_matrix(sz);
 ts = 10 .^ ([0:40] ./ 20);
 
-pops = arrayfun(@(t)(bin(nn, condPb(Pb(population(Tl, Tr, Tg, lambda, r, gamma, t, P0))))), ts, 'UniformOutput', false);
+pops = arrayfun(@(t)(bin(nn, condPb(exact_pops(lambda, r, gamma, t, N)))), ts, 'UniformOutput', false);
 pops = cell2mat(pops);
 gf = newplot;
 semilogx(gf, ts, pops);

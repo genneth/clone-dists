@@ -19,12 +19,14 @@ end
 % make an estimate of the maximum number of cells we need to track. Clearly
 % we need at least as many as the data says. But we also need m_max >
 % lambda t. 
-m_max = max(max(ms), max(ts) * max(lambdas));
-sz = [m_max m_max];
+%m_max = max(max(ms), max(ts) * max(lambdas));
+m_max = max(ms);
+%sz = [m_max m_max];
 
-fprintf(1, 'tracking a maximal clone size of %d by %d\n', sz(1), sz(2));
-[Tl Tr Tg] = generate_transition_matrix(sz);
-P0 = initial_eyp(sz);
+%fprintf(1, 'tracking a maximal clone size of %d by %d\n', sz(1), sz(2));
+fprintf(1, 'tracking a maximal clone size of %d\n', m_max);
+%[Tl Tr Tg] = generate_transition_matrix(sz);
+%P0 = initial_eyp(sz);
 
     % integrate p as a distribution over rho-r-lambda space
     function y = integrate(p)
@@ -54,11 +56,15 @@ timer_start = 0;
                     rho = rhos(i);
                     r = rs(j);
                     lambda = lambdas(h);
-                    pxd(j,i,h) =  ...
-                        PDX(px(j,i,h) * scale, condPb(Pb(...
-                            population(Tl, Tr, Tg, ...
-                                lambda, r, lambda * rho / (1-rho), t, P0)...
-                        )), data');
+                    %pxd(j,i,h) =  ...
+                    %    PDX(px(j,i,h) * scale, condPb(Pb(...
+                    %        population(Tl, Tr, Tg, ...
+                    %            lambda, r, lambda * rho / (1-rho), t, P0)...
+                    %    )), data');
+                    pxd(j,i,h) = ...
+                        PDX(px(j,i,h) * scale, condPb(...
+                            exact_pops(lambda, r, lambda * rho / (1-rho), t, m_max+1)...
+                        ), data');
                     % output some progress
                     curr_evals = curr_evals+1;
                     timer_curr = toc(timer_start)/60;
