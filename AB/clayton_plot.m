@@ -16,17 +16,12 @@ gamma = lambda * rho / (1-rho);
 [Tl Tr Tg] = generate_transition_matrix(sz);
 ts = 10 .^ ([0:40] ./ 20);
 
-    function Pbin = bin(Pb)
-        Pbin = zeros(nn,1);
-        for i = [1:nn]
-            Pbin(i) = sum(Pb((2^(i-1)+2):(2^i+1)));
-        end
-    end
-
-pops = arrayfun(@(t)(bin(condPb(Pb(population(Tl, Tr, Tg, lambda, r, gamma, t, P0))))), ts, 'UniformOutput', false);
+pops = arrayfun(@(t)(bin(nn, condPb(Pb(population(Tl, Tr, Tg, lambda, r, gamma, t, P0))))), ts, 'UniformOutput', false);
 pops = cell2mat(pops);
-semilogx(ts, pops);
-xlabel('$t$ / weeks', 'Interpreter', 'latex');
-ylabel('proportion', 'Interpreter', 'latex');
+gf = newplot;
+semilogx(gf, ts, pops);
+xlabel(gf, '$t$ / weeks', 'Interpreter', 'latex');
+ylabel(gf, 'proportion', 'Interpreter', 'latex');
+saveas(gf, 'clayton_plot', 'pdf');
 
 end
