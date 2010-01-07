@@ -43,9 +43,9 @@ timer_start = 0;
     function pxd = PXD(px, t, data)
         pxd = zeros(size(px));
         scale = 2^1022 / max(max(max(px))); % 1022 instead of 1023 because we're not greedy
-        for i = 1:numel(rhos)
+        for h = 1:numel(lambdas)
             for j = 1:numel(rs)
-                for h = 1:numel(lambdas)
+                parfor h = 1:numel(rhos)
                     rho = rhos(i);
                     r = rs(j);
                     lambda = lambdas(h);
@@ -56,12 +56,12 @@ timer_start = 0;
                         )), data');
                     % output some progress
                     curr_evals = curr_evals+1;
-                    timer_curr = toc(timer_start)/60;
-                    waitbar(curr_evals/total_evals, wh, ...
-                        sprintf('inferring... %d/%d, %0.2fmin elapsed, %0.2fmin to go', ...
-                        curr_evals, total_evals, timer_curr, ...
-                        timer_curr/(curr_evals/total_evals) - timer_curr));
                 end
+                timer_curr = toc(timer_start)/60;
+                waitbar(curr_evals/total_evals, wh, ...
+                    sprintf('inferring... %d/%d, %0.2fmin elapsed, %0.2fmin to go', ...
+                    curr_evals, total_evals, timer_curr, ...
+                    timer_curr/(curr_evals/total_evals) - timer_curr));
             end
         end
     end
