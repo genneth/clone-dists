@@ -3,12 +3,7 @@ function pops = exact_pops(lambda, r, gamma, t, N0)
 % The key is in choosing the right number of evaluations N. We do this by
 % recursively subdividing the unit circle, and watching the convergence.
 
-if N0 < 32
-    N = 32;
-else
-    N = 2^ceil(log2(N0));
-end
-
+N = N0; % start from the required number
 curr_samples = zeros(1, N);
 curr_pops = zeros(1, N);
 next_samples = [1, arrayfun(@(z)(xi(lambda,r,gamma,t,z)), exp(i*2*pi/N.*[1:(N-1)]))];
