@@ -6,9 +6,9 @@ data1 = [2 0 16; 1 1 18; 0 2 20; 3 0 4; 2 1 19; 1 2 10; 0 3 7; 4 0 3; 3 1 8; 2 2
 t2 = 10/7; % 10 days
 data2 = [2 0 6; 1 1 26; 3 0 1; 2 1 15; 1 2 12; 4 0 1; 3 1 3; 2 2 9; 1 3 2; 4 1 1; 3 2 1; 2 3 3; 1 4 1; 6 0 1; 5 3 1; 6 8 1];
 
-rhos = linspace(0.2, 0.6, 30);
-rs = linspace(0.1, 0.3, 30);
-lambdas = linspace(0.5, 1.0, 30); % around 1/week
+rhos = linspace(0.3, 0.6, 30);
+rs = linspace(0.1, 0.3, 31);
+lambdas = linspace(0.9, 1.3, 32); % around 1/week
 
 infer_eyp(rhos, rs, lambdas, [t1 t2], {data1 data2}, 'oes_eyp_bs');
 
