@@ -74,21 +74,6 @@ end
 pxd = pxd ./ integrate(pxd);
 waitbar(1.0, wh, 'plotting and saving...');
 
-% plot the resulting distribution
-gf = newplot(figure);
-if numel(lambdas) == 1
-    save(filename, 'rhos', 'rs', 'pxd');
-    contour3(gf, rhos, rs, pxd, 20);
-    surface(rhos, rs, pxd, 'EdgeColor', [.8 .8 .8], 'FaceColor', 'none');
-else
-    save(filename, 'rhos', 'rs', 'lambdas', 'pxd');
-    contourslice(gf, rhos, rs, lambdas, pxd, [],[],lambdas);
-    zlabel(gf, '$\lambda$', 'Interpreter', 'latex');
-end
-xlabel(gf, '$\rho$', 'Interpreter', 'latex');
-ylabel(gf, '$r$', 'Interpreter', 'latex');
-saveas(gf, filename, 'fig');
-
 % extract means and variances
 fprintf(1, 'estimates:\n');
 
@@ -106,6 +91,21 @@ if numel(lambdas) > 1
     l2 = integrate(repmat(ls, numel(rs), numel(rhos)).^2 .* pxd);
     fprintf(1, 'lambda mean: %g; std: %g\n', l1, sqrt(l2 - l1^2));
 end
+
+% plot the resulting distribution
+gf = newplot(figure);
+if numel(lambdas) == 1
+    save(filename, 'rhos', 'rs', 'pxd');
+    contour3(gf, rhos, rs, pxd, 20);
+    surface(rhos, rs, pxd, 'EdgeColor', [.8 .8 .8], 'FaceColor', 'none');
+else
+    save(filename, 'rhos', 'rs', 'lambdas', 'pxd');
+    contourslice(gf, rhos, rs, lambdas, pxd, rho1,r1,l1);
+    zlabel(gf, '$\lambda$', 'Interpreter', 'latex');
+end
+xlabel(gf, '$\rho$', 'Interpreter', 'latex');
+ylabel(gf, '$r$', 'Interpreter', 'latex');
+saveas(gf, filename, 'fig');
 
 close(wh);
 
