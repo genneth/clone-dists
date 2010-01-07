@@ -19,14 +19,9 @@ end
 % make an estimate of the maximum number of cells we need to track. Clearly
 % we need at least as many as the data says. But we also need m_max >
 % lambda t. 
-%m_max = max(max(ms), max(ts) * max(lambdas));
 m_max = max(ms);
-%sz = [m_max m_max];
 
-%fprintf(1, 'tracking a maximal clone size of %d by %d\n', sz(1), sz(2));
 fprintf(1, 'tracking a maximal clone size of %d\n', m_max);
-%[Tl Tr Tg] = generate_transition_matrix(sz);
-%P0 = initial_eyp(sz);
 
     % integrate p as a distribution over rho-r-lambda space
     function y = integrate(p)
@@ -50,29 +45,24 @@ timer_start = 0;
     function pxd = PXD(px, t, data)
         pxd = zeros(size(px));
         scale = 2^1022 / max(max(max(px))); % 1022 instead of 1023 because we're not greedy
-        for i = 1:numel(rhos)
+        for h = 1:numel(lambdas)
             for j = 1:numel(rs)
-                for h = 1:numel(lambdas)
+                parfor i = 1:numel(rhos)
                     rho = rhos(i);
                     r = rs(j);
                     lambda = lambdas(h);
-                    %pxd(j,i,h) =  ...
-                    %    PDX(px(j,i,h) * scale, condPb(Pb(...
-                    %        population(Tl, Tr, Tg, ...
-                    %            lambda, r, lambda * rho / (1-rho), t, P0)...
-                    %    )), data');
                     pxd(j,i,h) = ...
                         PDX(px(j,i,h) * scale, condPb(...
                             exact_pops(lambda, r, lambda * rho / (1-rho), t, m_max+1)...
                         ), data');
                     % output some progress
                     curr_evals = curr_evals+1;
-                    timer_curr = toc(timer_start)/60;
-                    waitbar(curr_evals/total_evals, wh, ...
-                        sprintf('inferring... %d/%d, %0.2fmin elapsed, %0.2fmin to go', ...
-                        curr_evals, total_evals, timer_curr, ...
-                        timer_curr/(curr_evals/total_evals) - timer_curr));
                 end
+                timer_curr = toc(timer_start)/60;
+                waitbar(curr_evals/total_evals, wh, ...
+                    sprintf('inferring... %d/%d, %0.2fmin elapsed, %0.2fmin to go', ...
+                    curr_evals, total_evals, timer_curr, ...
+                    timer_curr/(curr_evals/total_evals) - timer_curr));
             end
         end
     end

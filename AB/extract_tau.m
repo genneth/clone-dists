@@ -17,7 +17,7 @@ p_tau = squeeze(trapz(lambdas, trapz(rs, p)));
 z = trapz(taus, p_tau);
 p_tau = p_tau ./ z;
 
-newplot(figure);
+%newplot(figure);
 plot(taus, p_tau);
 xlabel('$\tau$/week', 'Interpreter', 'latex');
 

@@ -1,9 +1,7 @@
 function moments_plot(sz, lambda, r, gamma)
 
-P0 = initial_eyp(sz);
-[Tl Tr Tg] = generate_transition_matrix(sz);
 ts = 10 .^ ([-40:40] ./ 20);
-pops = arrayfun(@(t)(Pb(population(Tl, Tr, Tg, lambda, r, gamma, t, P0))), ts, 'UniformOutput', false);
+pops = arrayfun(@(t)(exact_pops(lambda, r, gamma, t, sz)), ts, 'UniformOutput', false);
 for i = [1:numel(pops)]
     p = pops{i};
     ms(i,1) = sum(p);
