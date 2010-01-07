@@ -10,6 +10,6 @@ rhos = linspace(0.2, 0.6, 30);
 rs = linspace(0.1, 0.3, 30);
 lambdas = linspace(0.5, 1.0, 30); % around 1/week
 
-infer_eyp(rhos, rs, lambdas, [t1 t2], {data1 data2}, 'infer_oes_eyp_bs');
+infer_eyp(rhos, rs, lambdas, [t1 t2], {data1 data2}, 'oes_eyp_bs');
 
 end
