@@ -41,11 +41,11 @@ data2 = Pbs2lst(data2bs);
 data2(end+1,:) = [16  7 1];
 data2(end+1,:) = [17 10 1];
 
-rhos = linspace(0.45, 0.65, 30);
+rhos = linspace(0.3, 0.65, 30);
 rs = linspace(0.1, 0.3, 31);
-lambdas = linspace(0.65, 0.95, 32); % around 0.77/week
+lambdas = linspace(0.6, 1.1, 32); % around 0.77/week
 
-%infer_eyp(rhos, rs, lambdas, [t1], {data1}, 'oes_eyp_bs_day_22_atra_control');
+infer_eyp(rhos, rs, lambdas, [t1], {data1}, 'oes_eyp_bs_day_22_atra_control');
 infer_eyp(rhos, rs, lambdas, [t2], {data2}, 'oes_eyp_bs_day_30_atra_control');
 
 end
