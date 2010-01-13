@@ -64,12 +64,36 @@ data3(end+1,:) = [17  7 1];
 data3(end+1,:) = [19 10 1];
 data3(end+1,:) = [19 20 1];
 
-rhos = linspace(0.3, 0.6, 10);
-rs = linspace(0.0, 0.3, 11);
-lambdas = linspace(1, 1.6, 12);
+t4 = 6;
+data4bs = [
+     0  0 12  2  4  2  0  1  0  0  0  0  0  0  0;
+     0 15 10  7  9  1  0  0  0  0  0  0  0  0  0;
+     4 26 12  9  4  1  1  0  1  0  0  0  0  0  0;
+     4  4 17 10  7  2  2  1  0  0  0  0  1  0  0;
+     1  5  5  8  6  5  3  0  1  0  0  0  1  0  0;
+     0  1  3  4  2  6  5  1  1  0  1  0  0  0  0;
+     0  0  2  1  2  3  2  3  0  1  0  1  0  0  0;
+     0  0  1  3  3  1  0  0  2  0  1  0  0  0  0;
+     0  0  0  1  0  0  2  0  1  0  0  1  0  0  0;
+     0  0  0  0  0  0  5  1  0  1  0  0  1  0  0;
+     0  0  0  0  2  0  0  1  0  3  0  0  1  1  0;
+     0  0  0  0  0  0  3  1  1  0  0  0  0  0  0;
+     0  0  0  0  0  0  0  0  0  0  0  0  0  0  0;
+     0  0  0  0  1  0  0  0  0  0  0  0  0  0  0;
+     0  0  0  0  0  0  0  0  0  0  0  0  1  0  1;
+     0  0  0  0  0  0  1  0  1  0  0  0  0  0  0
+    ];
+data4bs(0+1,:) = 0;
+data4 = Pbs2lst(data4bs);
+data4(end+1,:) = [20 20 1];
+data4(end+1,:) = [21 13 1];
+data4(end+1,:) = [25 21 1];
+data4(end+1,:) = [46 40 1];
+data4(end+1,:) = [51 26 1];
 
-infer_eyp3(rhos, rs, lambdas, [t1], {data1}, 'oes_eyp_bs_day_4_atra');
-infer_eyp3(rhos, rs, lambdas, [t2], {data2}, 'oes_eyp_bs_day_11_atra');
-infer_eyp3(rhos, rs, lambdas, [t3], {data3}, 'oes_eyp_bs_week_3_atra');
+infer_eyp3(linspace(0.5,0.8,30),   linspace(0,0.3,31),    linspace(2,3.2,32),    [t1], {data1}, 'oes_eyp_bs_day_4_atra');
+infer_eyp3(linspace(0.3,0.5,30),   linspace(0.05,0.2,31), linspace(2,3,32),      [t2], {data2}, 'oes_eyp_bs_day_11_atra');
+infer_eyp3(linspace(0.35,0.55,30), linspace(0.1,0.3,31),  linspace(1.1,1.7,32),  [t3], {data3}, 'oes_eyp_bs_week_3_atra');
+infer_eyp3(linspace(0.1,0.4,30),   linspace(0.1,0.25,31), linspace(0.5,1.1,32)), [t4], {data4}, 'oes_eyp_bs_week_6_atra');
 
 end
