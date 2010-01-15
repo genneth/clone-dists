@@ -94,6 +94,6 @@ data4(end+1,:) = [51 26 1];
 infer_eyp3(linspace(0.6,0.8,30),   linspace(0,0.25,31),   linspace(2,3,32),      [t1], {data1}, 'oes_eyp_bs_day_4_atra');
 infer_eyp3(linspace(0.3,0.5,30),   linspace(0.05,0.2,31), linspace(2.2,2.7,32),  [t2], {data2}, 'oes_eyp_bs_day_11_atra');
 infer_eyp3(linspace(0.35,0.6,30),  linspace(0.1,0.3,31),  linspace(1.2,1.6,32),  [t3], {data3}, 'oes_eyp_bs_week_3_atra');
-infer_eyp3(linspace(0.25,0.4,30),  linspace(0.1,0.25,31), linspace(0.75,1.0,32), [t4], {data4}, 'oes_eyp_bs_week_6_atra');
+infer_eyp3(linspace(0.2,0.4,30),   linspace(0.1,0.25,31), linspace(0.8,1.1,32),  [t4], {data4}, 'oes_eyp_bs_week_6_atra');
 
 end
