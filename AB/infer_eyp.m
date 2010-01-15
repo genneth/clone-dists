@@ -90,24 +90,6 @@ xlabel(gf, '$\rho$', 'Interpreter', 'latex');
 ylabel(gf, '$r$', 'Interpreter', 'latex');
 saveas(gf, filename, 'fig');
 
-% extract means and variances
-fprintf(1, 'estimates:\n');
-
-rho1 = integrate(repmat(rhos, [numel(rs), 1, numel(lambdas)]) .* pxd);
-rho2 = integrate(repmat(rhos, [numel(rs), 1, numel(lambdas)]).^2 .* pxd);
-fprintf(1, 'rho mean: %g; std: %g\n', rho1, sqrt(rho2 - rho1^2));
-
-r1 = integrate(repmat(rs', [1, numel(rhos), numel(lambdas)]) .* pxd);
-r2 = integrate(repmat(rs', [1, numel(rhos), numel(lambdas)]).^2 .* pxd);
-fprintf(1, 'r mean: %g; std: %g\n', r1, sqrt(r2 - r1^2));
-
-if numel(lambdas) > 1
-    ls = reshape(lambdas, [1 1 numel(lambdas)]);
-    l1 = integrate(repmat(ls, numel(rs), numel(rhos)) .* pxd);
-    l2 = integrate(repmat(ls, numel(rs), numel(rhos)).^2 .* pxd);
-    fprintf(1, 'lambda mean: %g; std: %g\n', l1, sqrt(l2 - l1^2));
-end
-
 close(wh);
 
 end
