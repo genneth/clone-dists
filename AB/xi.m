@@ -1,4 +1,4 @@
-function xi = xi(lambda, r, gamma, t, z)
+function [xis, ts] = xi(lambda, r, gamma, t, z)
 
 % we seek xi((1-z) exp(-g tau)) where:
 g = gamma/lambda;
@@ -19,10 +19,15 @@ end
     end
 
 options = odeset('RelTol',1e-7,'AbsTol',1e-14);
-[ts, xis] = ode45(@dxi, [0 tau], [real(z); imag(z)], options);
+if nargout <= 1
+    [ts, xis] = ode45(@dxi, [0 tau/2 tau], [real(z); imag(z)], options);
+    xis = xis(end,:);
+else
+    [ts, xis] = ode45(@dxi, [0 tau], [real(z); imag(z)], options);
+end
 
-%plot(ts, xis(:,1), ts, xis(:,2));
-
-xi = complex(xis(end,1), xis(end,2));
+ts = ts ./ lambda;
+xis = complex(xis(:,1), xis(:,2));
+xi = xis(end);
 
 end
