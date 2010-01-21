@@ -35,7 +35,7 @@ tau = rho / (r * lambda);
 
 [p0, ts2] = xi(lambda, r, rho, max(ts), 0);
 loglog(newplot(figure), ts, av, '*', ts2, (1 + 1/rho * (1-exp(-gamma*ts2))) ./ (1 - p0), '-');
-set(gca, 'XLim', [1 100]);
+set(gca, 'XLim', [0.1 100]);
 
 gh = newplot(figure);
 for i = 1:numel(ts);
