@@ -36,6 +36,9 @@ tau = rho / (r * lambda);
 [p0, ts2] = xi(lambda, r, rho, max(ts), 0);
 loglog(newplot(figure), ts, av, '*', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
 set(gca, 'XLim', [0.1 100]);
+xlabel('$t$ / weeks', 'Interpreter', 'latex');
+ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
+saveas(gcf, 'average-count', 'fig');
 
 gh = newplot(figure);
 for i = 1:numel(ts);
@@ -53,5 +56,6 @@ semilogy(gh, [0:15] / ts(1), 1 - cumsum(ps) / sum(ps), '-.');
 hold off;
 
 set(gh, 'XLim', [0 5], 'YLim', [1e-3 1]);
-
-end
+xlabel(gh, '$n/t$ / $\textrm{weeks}^{-1}$', 'Interpreter', 'latex');
+%ylabel(gh, '$1 - \textrm{cum. prob.}$', 'Interpreter', 'latex');
+saveas(gh, 'oes-compare', 'fig');
