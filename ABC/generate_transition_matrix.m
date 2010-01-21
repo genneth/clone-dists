@@ -16,6 +16,7 @@ for i=[1:M]
     % AA
     t2 = t1 - [1 0 0];
     if(valid_triple(t2))
+        Tlambda(i, t2i(t2)) = -0.5 * 0.01 * t2(1);
         Tr(i, t2i(t2)) = t2(1);
     end
     
@@ -29,6 +30,7 @@ for i=[1:M]
     % BB
     t2 = t1 - [-1 2 0];
     if(valid_triple(t2))
+        Tlambda(i, t2i(t2)) = 0.5 * 0.01 * t2(1);
         Tr(i, t2i(t2)) = t2(1);
     end
     

@@ -14,7 +14,8 @@ end
     function dxi = dxi(t0, y0)
         xi0 = complex(y0(1), y0(2));
         u = (1-z) * exp(-g*t0);
-        xi1 = - u * xi0 + r * (xi0 + u-1)^2;
+        %xi1 = - u * xi0 + r * (xi0 + u-1)^2;
+        xi1 = - u * xi0 + r * (xi0 + u-1)^2 + 0.01 / 2 * ((1-u)^2 - xi0^2);
         dxi = [real(xi1); imag(xi1)];
     end
 
