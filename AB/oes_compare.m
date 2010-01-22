@@ -47,15 +47,25 @@ for i = 1:numel(ts);
 end
 semilogy(gh, data{end}(:,1) / ts(end), exp(-data{end}(:,1) / ts(end) * tau), '--');
 
-ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(end), 151));
-semilogy(gh, [0:150] / ts(end), 1 - cumsum(ps) / sum(ps), '-.');
-
 ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(1), 16));
 semilogy(gh, [0:15] / ts(1), 1 - cumsum(ps) / sum(ps), '-.');
 
+ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(5), 151));
+semilogy(gh, [0:150] / ts(5), 1 - cumsum(ps) / sum(ps), '-.');
+
+ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(end), 151));
+semilogy(gh, [0:150] / ts(end), 1 - cumsum(ps) / sum(ps), '-.');
+
 hold off;
 
-set(gh, 'XLim', [0 5], 'YLim', [1e-3 1]);
+set(gh, 'XLim', [0 10], 'YLim', [1e-3 1]);
 xlabel(gh, '$n/t$ / $\textrm{weeks}^{-1}$', 'Interpreter', 'latex');
 %ylabel(gh, '$1 - \textrm{cum. prob.}$', 'Interpreter', 'latex');
+
+legend('3 days', '10 days', '3 weeks', '6 weeks', ...
+    '12 weeks', '26 weeks', '52 weeks', ...
+    'limit (theory, ABC tau)', ...
+    '3 days (theory)', '12 weeks (theory)', '52 weeks (theory)', ...
+    'Location', 'SouthEast');
+
 saveas(gh, 'oes-compare', 'fig');
