@@ -58,4 +58,7 @@ hold off;
 set(gh, 'XLim', [0 5], 'YLim', [1e-3 1]);
 xlabel(gh, '$n/t$ / $\textrm{weeks}^{-1}$', 'Interpreter', 'latex');
 %ylabel(gh, '$1 - \textrm{cum. prob.}$', 'Interpreter', 'latex');
+
+legend('
+
 saveas(gh, 'oes-compare', 'fig');
