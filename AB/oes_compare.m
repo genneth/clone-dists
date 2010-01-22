@@ -47,10 +47,10 @@ for i = 1:numel(ts);
 end
 semilogy(gh, data{end}(:,1) / ts(end), exp(-data{end}(:,1) / ts(end) * tau), '--');
 
-ps = condPb(exact_pops(lambda, r, lambda * rho / (1-rho), ts(end), 151));
+ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(end), 151));
 semilogy(gh, [0:150] / ts(end), 1 - cumsum(ps) / sum(ps), '-.');
 
-ps = condPb(exact_pops(lambda, r, lambda * rho / (1-rho), ts(1), 16));
+ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(1), 16));
 semilogy(gh, [0:15] / ts(1), 1 - cumsum(ps) / sum(ps), '-.');
 
 hold off;
