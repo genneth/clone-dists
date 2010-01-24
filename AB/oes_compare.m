@@ -53,8 +53,8 @@ semilogy(gh, [0:15] / ts(1), 1 - cumsum(ps) / sum(ps), '-.');
 ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(5), 151));
 semilogy(gh, [0:150] / ts(5), 1 - cumsum(ps) / sum(ps), '-.');
 
-ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(end), 151));
-semilogy(gh, [0:150] / ts(end), 1 - cumsum(ps) / sum(ps), '-.');
+ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(end), 251));
+semilogy(gh, [0:250] / ts(end), 1 - cumsum(ps) / sum(ps), '-.');
 
 hold off;
 
