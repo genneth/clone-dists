@@ -33,39 +33,36 @@ rho = 0.5;
 gamma = lambda * rho / (1-rho);
 tau = rho / (r * lambda);
 
-[p0, ts2] = xi(lambda, r, rho, max(ts), 0);
-loglog(newplot(figure), ts, av, '*', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
+[p0, ts2] = xi(lambda, r, rho, 100, 0);
+loglog(newplot(figure), ts, av, '+', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
 set(gca, 'XLim', [0.1 100]);
 xlabel('$t$ / weeks', 'Interpreter', 'latex');
 ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
 saveas(gcf, 'average-count', 'fig');
 
 gh = newplot(figure);
+colour = 'rgbcmyk';
+hold all;
 for i = 1:numel(ts);
-    semilogy(gh, data{i}(:,1) / ts(i), 1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2)));
-    hold all;
+    plot(gh, data{i}(:,1) / ts(i), 1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2)), strcat(':', colour(i)));
+    ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1));
+    plot(gh, [0:floor(10*ts(i))] / ts(i), 1 - cumsum(ps) / sum(ps), strcat('-', colour(i)));
 end
-semilogy(gh, data{end}(:,1) / ts(end), exp(-data{end}(:,1) / ts(end) * tau), '--');
-
-ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(1), 16));
-semilogy(gh, [0:15] / ts(1), 1 - cumsum(ps) / sum(ps), '-.');
-
-ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(5), 151));
-semilogy(gh, [0:150] / ts(5), 1 - cumsum(ps) / sum(ps), '-.');
-
-ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(end), 251));
-semilogy(gh, [0:250] / ts(end), 1 - cumsum(ps) / sum(ps), '-.');
+plot(gh, data{end}(:,1) / ts(end), exp(-data{end}(:,1) / ts(end) * tau), '-r', 'LineWidth', 2);
 
 hold off;
 
-set(gh, 'XLim', [0 10], 'YLim', [1e-3 1]);
+set(gh, 'XLim', [0 10], 'YLim', [1e-3 1], 'YScale', 'log');
 xlabel(gh, '$n/t$ / $\textrm{weeks}^{-1}$', 'Interpreter', 'latex');
-%ylabel(gh, '$1 - \textrm{cum. prob.}$', 'Interpreter', 'latex');
 
-legend('3 days', '10 days', '3 weeks', '6 weeks', ...
-    '12 weeks', '26 weeks', '52 weeks', ...
-    'limit (theory, ABC tau)', ...
-    '3 days (theory)', '12 weeks (theory)', '52 weeks (theory)', ...
-    'Location', 'SouthEast');
+legend('', '3 days', ...
+    '', '10 days', ...
+    '', '3 weeks', ...
+    '', '6 weeks', ...
+    '', '12 weeks', ...
+    '', '26 weeks', ...
+    '', '52 weeks', ...
+    'limit', ...
+    'Location', 'NorthEast');
 
 saveas(gh, 'oes-compare', 'fig');
