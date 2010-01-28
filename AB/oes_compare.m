@@ -23,6 +23,7 @@ data7 = [1 12; 2 18; 3 15; 4 14; 5 6; 6 11; 7 8; 8 6; 9 9; 10 9; 11 3; 12 4; 13 
 
 ts = [t1 t2 t3 t4 t5 t6 t7];
 data = {data1 data2 data3 data4 data5 data6 data7};
+av = zeros(size(ts));
 for i = 1:numel(ts)
     av(i) = dot(data{i}(:,1), data{i}(:,2) / sum(data{i}(:,2)));
 end
@@ -40,13 +41,17 @@ xlabel('$t$ / weeks', 'Interpreter', 'latex');
 ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
 saveas(gcf, 'average-count', 'fig');
 
+    function scp = smooth(cp)
+        scp = (cp + [1; cp(1:end-1)]) / 2;
+    end
+
 gh = newplot(figure);
 colour = 'rgbcmyk';
 hold all;
 for i = 1:numel(ts);
-    plot(gh, data{i}(:,1) / ts(i), 1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2)), strcat(':', colour(i)));
+    plot(gh, data{i}(:,1) / ts(i), smooth(1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2))), strcat('+:', colour(i)));
     ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1));
-    plot(gh, [0:floor(10*ts(i))] / ts(i), 1 - cumsum(ps) / sum(ps), strcat('-', colour(i)));
+    plot(gh, (0:floor(10*ts(i))) / ts(i), 1 - cumsum(ps) / sum(ps), strcat('-', colour(i)));
 end
 plot(gh, data{end}(:,1) / ts(end), exp(-data{end}(:,1) / ts(end) * tau), '-r', 'LineWidth', 2);
 
@@ -66,3 +71,5 @@ legend('', '3 days', ...
     'Location', 'NorthEast');
 
 saveas(gh, 'oes-compare', 'fig');
+
+end
