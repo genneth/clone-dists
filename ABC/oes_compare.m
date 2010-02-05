@@ -42,23 +42,9 @@ data = data1;
 databs = data1bs;
 lambda = 0.78;
 r = 0.25;
-rho = 0.545;
+rho = 0.5;
 
-k = max(data(:,1) + data(:,2));
-[Tl Tr Tg] = generate_transition_matrix(k);
-P0 = initial_eyp(k);
-
-pbs = condPbs(Pbs(population(Tl, Tr, Tg, lambda, r, lambda * rho / (1-rho), t, P0)));
-
-
-gf = newplot(figure);
-hold all;
-colour = 'rgbcymk';
-for i=1:7;
-    plot(gf, 0:numel(databs(i,:))-1, databs(i,:) / sum(data(:,3)), strcat('+',colour(i)),...
-             0:numel(databs(i,:))-1, pbs(i,1:numel(databs(i,:))), strcat('-',colour(i)));
-end
-hold off;
-%set(gf, 'XLim', [0 10], 'YLim', [0 0.3]);
+compare(newplot(figure), data1bs, data1, 0.5, 0.25, 0.78, t1);
+compare(gca, data2bs, data2, 0.5, 0.25, 0.78, t2);
 
 end
