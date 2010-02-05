@@ -24,6 +24,7 @@ data3 = [(0:numel(data3b)-1)' data3b];
 data3(end+1,:) = [15 1];
 data3(end+1,:) = [17 1];
 data3(end+1,:) = [19 2];
+data3 = data3(3:end,:); % remove 0 and 1
 
 t4 = 6;
 data4bs = [
@@ -52,8 +53,9 @@ data4(end+1,:) = [21 1];
 data4(end+1,:) = [25 1];
 data4(end+1,:) = [46 1];
 data4(end+1,:) = [51 1];
+data4 = data4(3:end,:); % remove the 0 and 1
 
-infer_eyp(linspace(0.1,0.9,30),   linspace(0.1,0.4,31), linspace(0.7,1.5,32),  [t3], {data3}, 'oes_eyp_bs_week_3_atra');
-infer_eyp(linspace(0.1,0.9,30),   linspace(0.1,0.4,31), linspace(0.7,1.5,32),  [t4], {data4}, 'oes_eyp_bs_week_6_atra');
+infer_eyp(linspace(0.1,0.9,30), linspace(0.1,0.4,31), linspace(0.5,1.5,32),  [t3], {data3}, 'oes_eyp_b_week_3_atra');
+infer_eyp(linspace(0.1,0.9,30), linspace(0.1,0.4,31), linspace(0.5,1.5,32),  [t4], {data4}, 'oes_eyp_b_week_6_atra');
 
 end
