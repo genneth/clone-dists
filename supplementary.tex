@@ -1,0 +1,74 @@
+\documentclass[10pt,UKenglish]{article}
+\usepackage[T1]{fontenc}
+\usepackage{fouriernc}
+\usepackage[latin9]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose}
+\pagestyle{plain}
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{siunitx}
+\usepackage{microtype}
+\usepackage{nicefrac}
+\usepackage{subfigure}
+\usepackage[unicode=true, pdfusetitle, bookmarks=true,bookmarksnumbered=false,bookmarksopen=false, breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]{hyperref}
+
+\begin{document}
+
+\title{Supplementary theory}
+\author{Gen Zhang}
+ 
+\maketitle
+
+\section{Bayesian analysis of clone fate data}
+
+The stochastic fate model <basal evolution diagram> was used in Clayton <>; there, $\lambda$ was estimated from observation of cycling rate, $\rho$ was estimated from Ki67 expression and $r$ was fitted to the data. However, concerns have been raised as to the effectiveness of Ki67 as a proliferation marker. Here we show an independent method to estimate $\lambda$, $\rho$ and $r$ using Bayesian analysis applied to fate data \emph{which tracks suprabasal cells}.
+
+\subsection{Clone fate with suprabasal cells}
+
+As such, we work with the modified model <>. It is Markovian and so can be described by a coupled set of first order differential equations. Furthermore, as the number of cells is monotonically increasing with time, the equations have a nice triangular dependence which allows the system to be truncated at a given total number of cells without introducing any error. As such, the probability of getting any given clone can be straightforwardly calculated as a matrix exponential. In particular, the clone distribution $P_{mn}$ ($m$ basal cells, $n$ suprabasal cells) is available for arbitrary parameters $\theta = (\rho, r, \lambda)$ at any time.
+
+Thus given observation $O$, it becomes possible to infer via Bayes' theorem the \emph{posterior probability} of some given parameter: $$p(\theta|O) = \frac{p(O|\theta)}{p(O)} p(\theta).$$ The factor of $p(O)$ acts as a normalisation constant to make the left-hand side a proper probability distribution, so is irrelevant to the analysis. 
+
+The observations $O$, for us, is a set of cohorts $O_t = \{(m,n)\}$ with $m$ basal cells and $n$ suprabasal cells seen at a time $t$ after induction. We assume that the induction probability is sufficiently low that the initial conditions are essentially just single cell clones. We can filter out induction of suprabasal cells by conditioning $P_{mn}$ on $m \ge 1$, i.e. \emph{floating clones}. Even so, we have an unknown chance of inducing a terminally differentiated cell in the basal layer; in light of not trusting Ki67 expression, we also do not want to make assumptions about induction rates, and filter out such data by conditioning on clones of size 2 or above, i.e. $m+n \ge 2$. The latter criterion also excludes from consideration extinct clones, which are by definition unobservable. As such, we define the \emph{observable clone distribution} $$P^\textrm{obs.}_{mn} = \frac{P_{mn}}{1 - P_{00} - P_{10} - \sum_l P_{0l}}.$$ Now given that the observation $O_t$ is filtered as above, we can compute the \emph{likelihood}: $$p(O_t|\theta) = \prod_{(m,n) \in O_t} P^\textrm{obs.}_{mn}(t).$$
+
+The only ingredient remaining is the \emph{prior distribution} $p(\theta)$. To be completely rigorous, we should pick it to be a maximum entropy distribution over the parameter space $\theta$. In this case that corresponds to a uniform distribution in $\rho$ and $r$, and (an improper distribution) log-uniform in $\lambda$. However, we will be working with observation sets of several hundred, which makes the likelihood sharply peaked in a small region, and it does not really matter what prior is chosen. For this work, uniform distributions over some bounded region was chosen.
+
+<transluscent blobs> shows a typical example of the inference. The posterior distribution is essentially a three-dimensional Gaussian, not axes aligned. <defer discussion of what the probabilities mean until later>
+
+\subsection{Meaning of posterior probabilities}
+
+<inference of MC-generated data; shows spread in inferred ball locations>
+
+\subsection{Consistency and improvement with basal statistics}
+
+<bayesian inference on basal statistics>
+
+<ball --- sheet agreement>
+
+<combining inferences>
+
+\section{Replenished subcritical dynamics}
+
+<argument as to why we can concentrate on S-CP; ignore fluctuations in $\rho$>
+
+\subsection{Subcritical CP dynamics}
+
+<exact solution to the subcritical CP problem>
+
+\subsection{Stem supported clones}
+
+<convolution to get the generating function for stem supported clones>
+
+\subsection{Mean clone size evolution}
+
+<show that the mean clone size would eventually plateau, but only after a long time; bounds stem turn-over rates>
+
+\subsection{Basal distribution evolution}
+
+<show that the stem compartment makes no difference to the clone size distributions, modulo minor shifts in parameters>
+
+\end{document}
