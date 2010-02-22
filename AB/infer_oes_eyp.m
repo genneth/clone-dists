@@ -23,17 +23,16 @@ t7 = 52;
 data7a = [2 18; 3 15; 4 14; 5 6; 6 11; 7 8; 8 6; 9 9; 10 9; 11 3; 12 4];
 data7b = [13 4; 14 2; 15 4; 16 4; 17 2; 18 4; 19 2; 20 2; 21 3; 22 4; 23 1; 24 5; 26 2; 27 4; 28 3; 19 1; 30 3; 31 3; 32 3; 33 2; 34 4; 35 2; 36 1; 37 1; 38 1; 40 1; 41 1; 42 1; 43 1; 44 1; 45 1; 47 2; 48 1; 49 1; 54 1; 55 3; 58 1; 60 2; 62 1; 63 1; 70 2; 75 1; 80 1; 85 1; 96 1; 110 1; 130 1; 140 1; 175 1];
 
-rhos = linspace(0.1, 0.8, 31);
-rs = linspace(0.0, 0.5, 30);
-%lambdas = linspace(0.5, 1.5, 10);
+rhos = linspace(0.3, 0.65, 30);
+rs = linspace(0.1, 0.35, 31);
+lambdas = linspace(0.6, 1.0, 32); % around 0.77/week
 
-%infer_eyp(rhos, rs, 1.0624, [t1], {data1}, 'oes-eyp-b-fixed-lambda-day-3');
-%infer_eyp(rhos, rs, 1.0624, [t2], {data2}, 'oes-eyp-b-fixed-lambda-day-10');
-%infer_eyp(rhos, rs, 1.0624, [t3], {data3}, 'oes-eyp-b-fixed-lambda-week-3');
-%infer_eyp(rhos, rs, 1.0624, [t4], {data4}, 'oes-eyp-b-fixed-lambda-week-6');
-%infer_eyp(rhos, rs, 1.0624, [t5], {data5}, 'oes-eyp-b-fixed-lambda-week-12');
-infer_eyp(rhos, rs, 1.0624, [t6 t6], {data6a data6b}, 'oes-eyp-b-fixed-lambda-week-26');
-%infer_eyp(rhos, rs, 1.0624, [t5 t1 t4 t2 t3], {data5 data1 data4 data2 data3}, 'oes-eyp-b-fixed-lambda-upto-12-weeks');
-%infer_eyp(rhos, rs, lambdas, [t7 t7 t1 t6 t6 t2 t5 t3 t4], {data7a data7b data1 data6b data6b data2 data5 data3 data4}, 'oes-eyp-b');
+infer_eyp(rhos, rs, lambdas, [t1], {data1}, 'oes-eyp-b-day-3-zoom');
+infer_eyp(rhos, rs, lambdas, [t2], {data2}, 'oes-eyp-b-day-10-zoom');
+infer_eyp(rhos, rs, lambdas, [t3], {data3}, 'oes-eyp-b-week-3-zoom');
+infer_eyp(rhos, rs, lambdas, [t4], {data4}, 'oes-eyp-b-week-6-zoom');
+infer_eyp(rhos, rs, lambdas, [t5], {data5}, 'oes-eyp-b-week-12-zoom');
+infer_eyp(rhos, rs, lambdas, [t6 t6], {data6a data6b}, 'oes-eyp-b-week-26-zoom');
+infer_eyp(rhos, rs, lambdas, [t7 t7], {data7a data6b}, 'oes-eyp-b-week-52-zoom');
 
 end
