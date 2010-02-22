@@ -37,14 +37,15 @@ data2 = Pbs2lst(data2bs);
 data2(end+1,:) = [16  7 1];
 data2(end+1,:) = [17 10 1];
 
-t = t1;
-data = data1;
-databs = data1bs;
-lambda = 0.78;
-r = 0.25;
-rho = 0.5;
+% optimal estimates
+% rho:	0.49465 +- 0.0298334
+% r:	0.220243 +- 0.0239353
+% lambda:	0.797034 +- 0.0328321
+rho = 0.49465;
+r = 0.220243;
+lambda = 0.797034;
 
-compare(newplot(figure), data1bs, data1, 0.5, 0.25, 0.78, t1);
-compare(gca, data2bs, data2, 0.5, 0.25, 0.78, t2);
+compare(newplot(figure), data1bs, data1, rho, r, lambda, t1);
+compare(newplot(figure), data2bs, data2, rho, r, lambda, t2);
 
 end
