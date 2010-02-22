@@ -28,9 +28,9 @@ for i = 1:numel(ts)
     av(i) = dot(data{i}(:,1), data{i}(:,2) / sum(data{i}(:,2)));
 end
 
-lambda = 0.79;
-r = 0.25;
-rho = 0.5;
+lambda = 0.7676;
+r = 0.1926;
+rho = 0.5164;
 gamma = lambda * rho / (1-rho);
 tau = rho / (r * lambda);
 
@@ -41,15 +41,16 @@ xlabel('$t$ / weeks', 'Interpreter', 'latex');
 ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
 saveas(gcf, 'average-count', 'fig');
 
-    function scp = smooth(cp)
-        scp = (cp + [1; cp(1:end-1)]) / 2;
-    end
+%     function scp = smooth(cp)
+%         scp = (cp + [1; cp(1:end-1)]) / 2;
+%     end
 
 gh = newplot(figure);
 colour = 'rgbcmyk';
 hold all;
 for i = 1:numel(ts);
-    plot(gh, data{i}(:,1) / ts(i), smooth(1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2))), strcat('+:', colour(i)));
+%     plot(gh, data{i}(:,1) / ts(i), smooth(1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2))), strcat('+:', colour(i)));
+    stairs(gh, data{i}(:,1) / ts(i), 1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2)), strcat('-', colour(i)));
     ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1));
     plot(gh, (0:floor(10*ts(i))) / ts(i), 1 - cumsum(ps) / sum(ps), strcat('-', colour(i)));
 end
