@@ -1,7 +1,7 @@
 function cutoff = find_cutoff(pxd, p)
 
-ps = reshape(pxd, 1, numel(pxd));
-cps = cumsum(sort(ps, 1, 'descend'));
+ps = sort(reshape(pxd, numel(pxd), 1),1,'descend');
+cps = cumsum(ps);
 n = find(cps > p*cps(end), 1);
 % the right cutoff is now between n-1 and n'th elements
 
