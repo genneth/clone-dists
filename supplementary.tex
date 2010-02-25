@@ -37,24 +37,24 @@ A+B & 1-2r \\
 B+B & r\end{cases}, & B &\overset{\gamma}{\longmapsto} \emptyset.
 \label{eq:basal-model}
 \end{align}
-<Harvard> has given a comprehensive study of this model. In the limit of large time, i.e. $t\rightarrow \infty$, there is a linear growth of observable clones $$\left\langle n^\textrm{obs} \right\rangle = \frac{t}{\tau},$$ where the characteristic time scale $\tau = \rho/r\lambda$, with $\rho = \gamma/(\lambda+\gamma)$ being the equilibrium proportion of CP cells in the basal layer. In addition, the observable clone size distribution tends to a scaling limit: $$P^\textrm{obs}_n(t) = \frac{1}{\left\langle n^\textrm{obs} \right\rangle}\exp\left(-\frac{n}{\left\langle n^\textrm{obs} \right\rangle}\right).$$ <Harvard> shows that this scaling limit is approached quickly, and becomes very good as soon as $t/\tau$ reaches a few.
+<Harvard> has given a comprehensive study of this model. In the limit of large time, i.e. $t\rightarrow \infty$, there is a linear growth of surviving clones $$\left\langle n^\textrm{surv.} \right\rangle = \frac{t}{\tau},$$ where the characteristic time scale $\tau = \rho/r\lambda$, with $\rho = \gamma/(\lambda+\gamma)$ being the equilibrium proportion of CP cells in the basal layer. In addition, the surviving clone size distribution tends to a scaling limit: $$P^\textrm{surv.}_n(t) = \frac{1}{\left\langle n^\textrm{surv.} \right\rangle}\exp\left(-\frac{n}{\left\langle n^\textrm{surv.} \right\rangle}\right).$$ <Harvard> shows that this scaling limit is approached quickly, and becomes very good as soon as $t/\tau$ reaches a few.
 
-The reason for this is that in the large time limit, $\left\langle n^\textrm{obs} \right\rangle$ becomes large, thus most clones are macroscopic and fluctuations are negligible. In particular, the limiting proportion $\rho$ is attained. Thus, the differentiated basal cells (B) are completely slave to the CP cells' dynamics, and we reduce to the even simpler model <klein>: 
+The reason for this is that in the large time limit, $\left\langle n^\textrm{surv.} \right\rangle$ becomes large, thus most clones are macroscopic and fluctuations are negligible. In particular, the limiting proportion $\rho$ is attained. Thus, the differentiated basal cells (B) are completely slave to the CP cells' dynamics, and we reduce to the even simpler model <klein>: 
 \begin{align}
 A &\overset{\lambda}{\longmapsto} \begin{cases}
 A+A & r \\
 A & 1-2r \\
 \emptyset & r\end{cases}\label{eq:simple-balanced-model}.
 \end{align}
-This is a classic \emph{critical branching process} <atherya>, which is exactly solvable. The average size is $\left\langle n^\textrm{obs} \right\rangle = 1+t/\tau$, with $\tau = r\lambda$. The clone size distribution is geometric at all times: $P^\textrm{obs}_n(t) \sim x^n$, thus $x = 1 - \left\langle n^\textrm{obs} \right\rangle^{-1}$.
+This is a classic \emph{critical branching process} <atherya>, which is exactly solvable. The average size is $\left\langle n^\textrm{surv.} \right\rangle = 1+t/\tau$, with $\tau = r\lambda$. The clone size distribution is geometric at all times: $P^\textrm{surv.}_n(t) \sim x^n$, thus $x = 1 - \left\langle n^\textrm{surv.} \right\rangle^{-1}$.
 
-Although theoretically very attractive, this long-time scaling behaviour is actually unhelpful in so far as inferring the parameters $(\rho, r, \lambda)$ from experimental data. Since after just a few cell divisions the clone distribution becomes a featureless exponential, it is only possible to measure the characteristic timescale $\tau$ (though this may be determined very accurately, see section <>). In particular, the cycling rate $\lambda$ may be directly measured from observation of cycling rate and the proportion of proliferating progenitor cells $\rho$ may be measured from Ki67 expression. Finally, $r$ may be obtained by inverting the equation $\tau = \rho/r\lambda$. These all introduce additional errors, both systematic and random; worse, these errors are difficult to estimate. Particularly acute is the problem of labelling efficiency of Ki67.
+Although theoretically very attractive, this long-time scaling behaviour is actually unhelpful in so far as inferring the parameters $(\rho, r, \lambda)$ from experimental data. Since after just a few cell divisions the clone distribution becomes a featureless exponential, it is only possible to measure the characteristic timescale $\tau$ (though this may be determined very accurately, see section \ref{sec:ball-plane}). In particular, the cycling rate $\lambda$ may be directly measured from observation of cycling rate and the proportion of proliferating progenitor cells $\rho$ may be measured from Ki67 expression. Finally, $r$ may be obtained by inverting the equation $\tau = \rho/r\lambda$. These all introduce additional errors, both systematic and random; worse, these errors are difficult to estimate. Particularly acute is the problem of labelling efficiency of Ki67.
 
-To do better, it is necessary concentrate on the short-time behaviour and the approach to scaling. In section <> below, we show that if clone size distributions \emph{with suprabasal counts} are available, then it is possible to directly infer the triplet $(\rho, r, \lambda)$ from the experimental data. The datasets obtained this way are very rich, with complex structure. To fully incorporate the available information, we use a first-principles Bayesian analysis.
+To do better, it is necessary concentrate on the short-time behaviour and the approach to scaling. In section \ref{sec:suprabasal-inference} below, we show that if clone size distributions \emph{with suprabasal counts} are available, then it is possible to directly infer the triplet $(\rho, r, \lambda)$ from the experimental data. The datasets obtained this way are very rich, with complex structure. To fully incorporate the available information, we use a first-principles Bayesian analysis.
 
-Finally in section <>, we show that the scaling behaviour is robust even in the presence of a stem cell population.
+Finally in section \ref{sec:stem}, we show that the scaling behaviour is robust even in the presence of a stem cell population.
 
-\section{Bayesian analysis of clone fate data}
+\section{\label{sec:suprabasal-inference}Bayesian analysis of clone fate data}
 
 
 \subsection{Inferring parameters from observations}
@@ -67,7 +67,7 @@ The only ingredient remaining is the \emph{prior distribution} $p(\theta)$. To b
 
 Multiple time points can be combined by simply multiplying the likelihood functions together, since by the very nature of cohort studies there are no correlations between different observations at different times.
 
-<translucent blobs> shows a typical example of the inference. The posterior distribution is well-localised distribution, resembling a rugby ball. <defer discussion of what the probabilities mean until later>
+<translucent blobs> shows a typical example of the inference. The posterior distribution is well-localised distribution, resembling a rugby ball. Below, we will incorporate information from the scaling limit.
 
 \subsection{\label{sec:p-mn-calculation}Clone size distributions with suprabasal cells}
 
@@ -88,11 +88,13 @@ Our model also has a special property: the number of cells in a clone can never 
 
 \subsection{\label{sec:ball-plane}Consistency and improvement with basal statistics}
 
-The need to count suprabasal cells limits the scope of the experiment, as eventually shedding becomes a serious effect, and its statistical effects are likely to be environmentally dominated. Counting basal statistics only, it becomes possible to extend the experiment to longer time scales, and provides both a consistency check of the methodology and also improves the inference accuracy. Whilst it would be straightforward to extract $\tau = \rho/r\lambda$ as shown in <>, it is also worthwhile to run a full-scale Bayesian analysis, and combine this with the inference from short-time suprabasal data.
+The need to count suprabasal cells limits the scope of the experiment, as eventually shedding becomes a serious effect, and its statistical effects are likely to be environmentally dominated. Counting basal statistics only, it becomes possible to extend the experiment to longer time scales and accurately measure the scaling behaviour. This would then provide both a consistency check of the methodology and also extra information with which to improve the inference. Whilst it would be straightforward to extract $\tau = \rho/r\lambda$ as shown in <>, it is also worthwhile to run a full-scale Bayesian analysis, and combine this with the inference from short-time suprabasal data.
 
-Fundamentally, there is very little change in the procedure described above. The main differenceis that the branching model <> does not enjoy the triangular structure which allowed the probabilities to be computed simply via a matrix exponential, and the full infinite system must be treated. The basal distributions $P_m$ are best computed via generating function methods, e.g. <tedious paper; maybe there should be a section here to explain how to do it?>. It is also possible to do a simple truncation, but the errors are difficult to bound. Either way, it is possible to calculate the likelihood function $p(O|\theta)$.
+Fundamentally, there is very little change in the procedure already described above. The main differenceis that the branching model <> does not enjoy the triangular structure which allowed the probabilities to be computed simply via a matrix exponential, and the full infinite system must be treated. The basal distributions $P_m$ are best computed via generating function methods, e.g. <tedious paper; maybe there should be a section here to explain how to do it?>. It is also possible to do a simple truncation, but the errors are difficult to bound. Either way, it is possible to calculate the likelihood function $p(O|\theta)$.
 
-Consistency between basal and basal-plus-suprabasal statistics manifest as non-trivial overlaps of significant parts of the respective posterior distributions (see figure <>). These estimates may then be combined by the usual multiplication of likelihoods (figure <>, main text).
+The posterior distribution is tightly concentrated along the hyperbolic sheet defined by some particular value of $\tau$ (figure <>, main text). There is little variation along the sheet as a whole, but very extreme values are found to be improbable; it seems that the basal statistics does contain some non-scaling information, mostly within the smaller time points. This is a good example of the sensitivity of Bayesian analysis.
+
+Consistency between basal and basal-plus-suprabasal statistics manifest as non-trivial overlaps of significant parts of the respective posterior distributions. These estimates may then be combined by the usual multiplication of likelihoods (figure <>, main text).
 
 \subsection{Meaning of posterior probabilities}
 
@@ -100,11 +102,9 @@ It is important to be clear about what the 95\% confidence region in figure <> m
 
 <inference of MC-generated data; shows spread in inferred ball locations>
 
-Although the posterior distribution is nicely peaked, it would be a mistake to think that the true parameters are more likely to be at the most probable value, as opposed to some definite distance away from the peak. This can be clearly seen in figure <> above, where the true parameters are actually never very close to the centres of the confidence regions. This can be understood very simply as a consequence of multi-dimensional distributions. For example, if we had a three-dimensional Gaussian $$p(\mathbf{r}) \propto \exp\left(-|\mathbf r|^2\right),$$ the expectation $\left\langle \mathbf |\mathbf r| \right\rangle > 0$ and is in fact of the order of the standard deviation. In section \ref{sec:ball-plane}, when we look for consistency against long time course basal statistics, we should not be surprised that the hyperbolic sheet does not exactly intersect the centre of the ``rugby ball''.
+Although the posterior distribution is nicely peaked, it would be a mistake to think that the true parameters are more likely to be at the most probable value, as opposed to some definite distance away from the peak. This can be clearly seen in figure <> above, where the true parameters are actually never very close to the centres of the confidence regions. This can be understood very simply as a consequence of multi-dimensional distributions. For example, if we had a three-dimensional Gaussian $$p(\mathbf{r}) \propto \exp\left(-|\mathbf r|^2\right),$$ the expectation $\left\langle \mathbf |\mathbf r| \right\rangle > 0$ and is in fact of the order of the standard deviation. In section \ref{sec:ball-plane}, when we look for consistency against long time course basal statistics, we should not be surprised that the hyperbolic sheet does not exactly intersect the centre of the ball.
 
-<need to be more focused>
-
-\section{Impact of stem cell population}
+\section{\label{sec:stem}Impact of stem cell population}
 
 The existence of a long-lived, slow-cycling stem population has the potential to change the clone size distribution. Indeed one of the most significant traits is the relative enrichment of single cell clones --- interpreted as a single stem cell which was induced but then never divided <main text>. Here, we show that deviations from the balanced CP model (\ref{eq:basal-model}) are small, and essentially constrained to a very slight increase in small clones, but well within currently achievable statistical errors.
 
@@ -163,7 +163,7 @@ g(z,t) &= \sum_n g_n(z,t) \\
  &= \exp\left(\frac{2 \Delta \Lambda t}{1-\delta}\right) \left\{ \frac{\left(e^{\Delta \lambda t}-1 \right)(z-1)}{2\delta} + \frac{1}{2}\left[(1-z) + e^{\Delta \lambda t}(1+z) \right]\right\}^{-2\delta\Lambda/\lambda}.
 \end{align*}
 
-The distribution $P_m$ may be obtained by computing the coefficients of the Taylor expansion $$g(z,t) = \sum_m P_m(t) z^m.$$ In this case, exact expressions are not easily available, but are still numerically efficient to extract. Note that since the function $g(z,t)$ has a branch point in the complex plane, the radius of convergence of the Taylor expansion has a finite radius of convergence $R$. In addition, $$g(z=1,t) = \sum_m P_m(t) = 1,$$ the radius of converge $R \ge 1$. The ratio test for convergence gives $$\lim_{m\rightarrow \infty} \left| \frac{P_{m+1}}{P_m} \right| = \frac{1}{R},$$ thus for large $m$, the distribution becomes geometric.
+The distribution $P_m$ may be obtained by computing the coefficients of the Taylor expansion $$g(z,t) = \sum_m P_m(t) z^m.$$ In this case, exact expressions are not easily available, but are still numerically efficient to extract. Note that since the function $g(z,t)$ has a branch point in the $z$ complex plane, the radius of convergence of the Taylor expansion has a finite radius of convergence $R$. In addition, $$g(z=1,t) = \sum_m P_m(t) = 1,$$ the radius of converge $R \ge 1$. The ratio test for convergence gives $$\lim_{m\rightarrow \infty} \left| \frac{P_{m+1}}{P_m} \right| = \frac{1}{R},$$ thus for large $m$, the distribution becomes geometric.
 
 \subsection{Mean clone size}
 
@@ -185,5 +185,11 @@ Given the generating function <ref>, we can numerically extract the clone size d
 Heuristically, we can understand why there is almost no change. As mentioned in section \ref{sec:subcritical-immigration}, the distribution for stem-supported clones has a exponential tail. This remains true for the equilibrium distribution. Upon scaling, this tail dominates the observable clones; deviations from this exponential distribution is only visible in small clones. Furthermore, this exponential tail is weaker than the tail from the near critical CP sector, and so is drowned out.
 
 <figure show that the stem compartment makes no difference to the clone size distributions; maybe a figure to show the final equilibrium distributions?>
+
+\section{Main text}
+
+<paragraphs in the main text go here>
+
+\subsection{Single cell clones}
 
 \end{document}
