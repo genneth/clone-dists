@@ -131,17 +131,16 @@ Due to the low induction frequency and low proportion of cycling stem cells, we 
 
 Model \ref{eq:subcritical-cp-model} is a \emph{subcritical branching process} <cite>. The expected clone size decreases monotonically $\langle n \rangle = n_0 e^{-\Delta \lambda t}.$ Define $\delta = \Delta/2r$ and 
 \begin{align*}
-\alpha &= \frac{2\delta}{\left(1 - e^{-\Delta \lambda t}\right)\left(1-\delta\right)}, \\
-\beta &= \frac{\alpha}{1-\alpha}.
+\beta &= \frac{\left(1-e^{-\Delta \lambda t}\right)(1-\delta)+2\delta}{2\delta}.
 \end{align*}
 The clone size distribution is:
 \begin{equation*}
 P_m(t) = \begin{cases}
-1 - \beta e^{-\Delta \lambda t} & m=0 \\
-\frac{\beta^2}{(2\beta +1)(\beta +1)}\left(1-\beta\right)^m & m\ge1
+1 - \frac{e^{-\Delta \lambda t}}{\beta} & m=0 \\
+\frac{e^{-\Delta \lambda t}}{\beta} \frac{1}{\beta-1} \left(1-\frac{1}{\beta}\right)^m & m\ge1
 \end{cases}
 \end{equation*}
-Note that the distribution is geometric for $m \ge 1$. This information can be packaged up into a single \emph{generating function} $f(z,t) = \sum_m P_m(t) z^m$:
+Note that the distribution is geometric for $m \ge 1$, and the surviving average clone size $\left\langle n^\textrm{surv.} \right\rangle = \beta$. This information can be packaged up into a single \emph{generating function} $f(z,t) = \sum_m P_m(t) z^m$:
 \begin{equation*}
 f(z,t) = \frac{e^{\Delta \lambda t}\left[(1-z) + (1+z)\delta\right] + (z-1)(1+\delta)}{e^{\Delta \lambda t}\left[(1-z) + (1+z)\delta\right] + (z-1)(1-\delta)}.
 \end{equation*}
