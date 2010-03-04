@@ -86,7 +86,13 @@ The only ingredient remaining is the \emph{prior distribution} $p(\theta)$. To b
 
 Multiple time points can be combined by simply multiplying the likelihood functions together, since by the very nature of cohort studies there are no correlations between different observations at different times.
 
-<translucent blobs> shows a typical example of the inference. The posterior distribution is well-localised distribution. Below, we will incorporate information from the scaling limit.
+Figure \ref{fig:blob} shows a typical example of the inference. The posterior distribution is well-localised distribution. Below, we will incorporate information from the scaling limit.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[height=4in]{ABC/oes_eyp_bs_combined_atra_control_cond_prior.png}
+	\caption{\label{fig:blob}The posterior distribution upon inference using 22 day and 30 day data with suprabasal counts. Here we plot the $68\%$ and $95\%$ confidence regions, and their projections.}
+\end{figure}
 
 \subsection{\label{sec:p-mn-calculation}Clone size distributions with suprabasal cells}
 
@@ -107,21 +113,21 @@ Our model also has a special property: the number of cells in a clone can never 
 
 \subsection{\label{sec:ball-plane}Consistency and improvement with basal statistics}
 
-The need to count suprabasal cells limits the scope of the experiment, as eventually shedding becomes a serious effect, and its statistical effects are likely to be environmentally dominated. Counting basal statistics only, it becomes possible to extend the experiment to longer time scales and accurately measure the scaling behaviour. This would then provide both a consistency check of the methodology and also extra information with which to improve the inference. Whilst it would be straightforward to extract $\tau = \rho/r\lambda$ as shown in <>, it is also worthwhile to run a full-scale Bayesian analysis, and combine this with the inference from short-time suprabasal data.
+The need to count suprabasal cells limits the scope of the experiment, as eventually shedding becomes a serious effect, and its statistical effects are likely to be environmentally dominated. Counting basal statistics only, it becomes possible to extend the experiment to longer time scales and accurately measure the scaling behaviour. This would then provide both a consistency check of the methodology and also extra information with which to improve the inference. Whilst it would be straightforward to extract $\tau = \rho/r\lambda$ as shown in <klein>, it is also worthwhile to run a full-scale Bayesian analysis, and combine this with the inference from short-time suprabasal data.
 
-Fundamentally, there is very little change in the procedure already described above. The main difference is that the branching model <> does not enjoy the triangular structure which allowed the probabilities to be computed simply via a matrix exponential, and the full infinite system must be treated. The basal distributions $P_m$ are best computed via generating function methods, e.g. <tedious paper; maybe there should be a section here to explain how to do it?>. It is also possible to do a simple truncation, but the errors are difficult to bound. Either way, it is possible to calculate the likelihood function $p(O|\theta)$.
+Fundamentally, there is very little change in the procedure already described above. The main difference is that the branching model \ref{eq:basal-model} does not enjoy the triangular structure which allowed the probabilities to be computed simply via a matrix exponential, and the full infinite system must be treated. The basal distributions $P_m$ are best computed via generating function methods, e.g. <tedious paper; maybe there should be a section here to explain how to do it?>. It is also possible to do a simple truncation, but the errors are difficult to bound. Either way, it is possible to calculate the likelihood function $p(O|\theta)$.
 
-As mentioned in the introduction (section \ref{sec:introduction}), the basal statistics quickly converge to the scaling limit. In this limit, all choices of parameters which give the same time scale $\tau=\rho/r\lambda$ would give the same predictions, and thus would be indistinguishable. The posterior distribution (figure <>, main text) is tightly concentrated along the hyperbolic sheet defined by some particular value of $\tau$. There is a small amount of variation within the sheet; it seems that the basal statistics does contain some non-scaling information, mostly within the early time points. This is a good example of the sensitivity of Bayesian analysis.
+As mentioned in the introduction (section \ref{sec:introduction}), the basal statistics quickly converge to the scaling limit. In this limit, all choices of parameters which give the same time scale $\tau=\rho/r\lambda$ would give the same predictions, and thus would be indistinguishable. The posterior distribution (figure \ref{fig:inferences}, main text) is tightly concentrated along the hyperbolic sheet defined by some particular value of $\tau$. There is a small amount of variation within the sheet; it seems that the basal statistics does contain some non-scaling information, mostly within the early time points. This is a good example of the sensitivity of Bayesian analysis.
 
-Consistency between basal and basal-plus-suprabasal statistics manifest as non-trivial overlaps of significant parts of the respective posterior distributions. These estimates may then be combined by the usual multiplication of likelihoods (figure <>, main text).
+Consistency between basal and basal-plus-suprabasal statistics manifest as non-trivial overlaps of significant parts of the respective posterior distributions. These estimates may then be combined by the usual multiplication of likelihoods (figure \ref{fig:inferences}, main text).
 
 \subsection{Meaning of posterior probabilities}
 
-It is important to be clear about what the 95\% confidence region in figure <> means. The exact statement is that \emph{given the correctness of the underlying model, there is only a 1 in 20 chance that the data collected is perverse to the extent that the true parameters of the model lie outside of the region}.
+It is important to be clear about what the 95\% confidence region in figure \ref{fig:blob} means. The exact statement is that \emph{given the correctness of the underlying model, there is only a 1 in 20 chance that the data collected is perverse to the extent that the true parameters of the model lie outside of the region}.
 
 <inference of MC-generated data; shows spread in inferred ball locations>
 
-Although the posterior distribution is nicely peaked, it would be a mistake to think that the true parameters are more likely to be at the most probable value, as opposed to some definite distance away from the peak. This can be clearly seen in figure <> above, where the true parameters are actually never very close to the centres of the confidence regions. This can be understood very simply as a consequence of multi-dimensional distributions. For example, if we had a three-dimensional Gaussian $$p(\mathbf{r}) \propto \exp\left(-|\mathbf r|^2\right),$$ the expectation $\left\langle \mathbf |\mathbf r| \right\rangle > 0$ and is in fact of the order of the standard deviation. In section \ref{sec:ball-plane}, when we look for consistency against long time course basal statistics, we should not be surprised that the hyperbolic sheet does not exactly intersect the centre of the ball.
+Although the posterior distribution is nicely peaked, it would be a mistake to think that the true parameters are more likely to be at the most probable value, as opposed to some definite distance away from the peak. This can be clearly seen in figure \ref{fig:blob} above, where the true parameters are actually never very close to the centres of the confidence regions. This can be understood very simply as a consequence of multi-dimensional distributions. For example, if we had a three-dimensional Gaussian $$p(\mathbf{r}) \propto \exp\left(-|\mathbf r|^2\right),$$ the expectation $\left\langle \mathbf |\mathbf r| \right\rangle > 0$ and is in fact of the order of the standard deviation. In section \ref{sec:ball-plane}, when we look for consistency against long time course basal statistics, we should not be surprised that the hyperbolic sheet does not exactly intersect the centre of the ball.
 
 \section{\label{sec:stem}Impact of stem cell population}
 
@@ -209,6 +215,12 @@ Heuristically, we can understand why there is almost no change. As mentioned in 
 \section{Main text}
 
 <paragraphs in the main text go here>
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[height=4in]{oes-combined-prior.png}
+	\caption{\label{fig:inferences}The inference from short time suprabasal data is in orange, showing $68\%$ and $95\%$ confidence regions. The inference from long time basal data is show in blue. The combined data produces the region ($95\%$) shown in green, with projections shown on the axes planes.}
+\end{figure}
 
 \subsection{Single cell clones}
 
