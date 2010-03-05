@@ -97,9 +97,10 @@ Figure \ref{fig:blob} shows a typical example of the inference. The posterior di
 \subsection{\label{sec:p-mn-calculation}Clone size distributions with suprabasal cells}
 
 The central prediction of the theory is a distribution $P_{mn}(t)$, the probability of a clone having $m$ basal cells and $n$ suprabasal cells at time $t$ after induction. Since we are tracking suprabasal cells, we will expand the stochastic model \ref{eq:basal-model} to include:
-\begin{equation*}
+\begin{equation}
 B \overset{\gamma}{\longmapsto} C
-\end{equation*}
+\label{eq:ABC-model}
+\end{equation}
 where suprabasal cells are represented as $C$.
 
 Whilst we cannot experimentally distinguish between proliferating CP cells ($A$) and terminally differentiated cells in the basal layer ($B$), it is necessary to do so mathematically as they produce entirely different progeny trees. Thus we will work with the finer grained distribution $P_{m_A m_B n}$ which is related $$P_{mn} = \sum_{m_A + m_B = m} P_{m_A m_B n}.$$ 
@@ -150,9 +151,9 @@ A & 1 - 2r \\
 \end{cases}\label{eq:subcritical-cp-model}
 \end{equation} which allows analytical treatment.
 
-We now have three extra parameters to determine: the \emph{active stem cell proportion} $\rho_S$, the mean stem cell division rate $\Lambda$ and the imbalance (and so CP loss rate) $\Delta$. We shall see that these may be determined from the statistical data available, although with uncertainties due to fluctuations in induction efficiency.
+Due to the low induction frequency and low proportion of cycling stem cells, we expect each clone contain at most one stem cell. Thus we have two cases to consider: clones with no stem cells at all, which will all eventually go extinct, and clones with one stem cell which will equilibrate at some finite clone size. Below, we take these cases separately, in sections <> and <>.
 
-Due to the low induction frequency and low proportion of cycling stem cells, we expect each clone contain at most one stem cell. Thus we have two cases to consider: clones with no stem cells at all, which will all eventually go extinct, and clones with one stem cell which will equilibrate at some finite clone size. Below, we take these cases separately.
+We now have three extra parameters to determine: the \emph{active stem cell proportion} $\rho_S$, the mean stem cell division rate $\Lambda$ and the imbalance (and so CP loss rate) $\Delta$. In section <> we see that, up to uncertainties in labelling efficiency, it is possible to obtain all three from the statistics of single cell clones, when combined with the quantitative inference from pure CP dynamics. 
 
 \subsection{Subcritical CP dynamics}
 
@@ -212,6 +213,25 @@ Heuristically, we can understand why there is almost no change. As mentioned in 
 
 <figure show that the stem compartment makes no difference to the clone size distributions; maybe a figure to show the final equilibrium distributions?>
 
+\subsection{\label{sec:single-cells}Single basal cell clones}
+
+As we have seen, the stem cell compartment does not make an appreciable difference to the clone size distribution for sufficiently large clones, where sufficiently large is actually quite small. We are then led to consider clones as small as possible, i.e. of size one. Model \ref{eq:full-model}, modified to track suprabasal cells, has the property that clone sizes cannot decrease. Thus similar to model \ref{eq:ABC-model} we can solve for a truncated distribution exactly. In particular, we can write down the distribution of single cell clones where the cell is basal:
+\begin{equation*}
+P_{10} = \rho_S \exp(-\Lambda t) + (1-\rho_S) \rho \exp(-\lambda t) + (1-\rho_S) (1-\rho) \exp(-\gamma t).
+\end{equation*}
+
+However, we know that $\rho$ is very close to half, and thus $\gamma \approx \lambda = 0.76/\textrm{week}^{-1}$ (see figure \ref{fig:inferences}). Thus we expect: 
+\begin{equation*}
+P_{10} = \rho_S \exp(-\Lambda t) + (1-\rho_S) \exp(-\lambda t).
+\end{equation*}
+Thus given counts of single cell clones we can infer the parameters $\Lambda$ and $\rho_S$. Figure \ref{fig:single-cell} shows a comparison between the experimental counts and the theoretical predictions. It is clear that the data is consistent with a small amount of slowly cycling stem cells. Figure \ref{fig:single-cell-inference} shows the posterior distribution for $\rho_S$ and $\Lambda$; it is necessarily quite broad given the low counts available for single cell clones at long times.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=4in]{single-cell-inference.png}
+	\caption{\label{fig:single-cell-inference}With $\lambda=0.76/\textrm{week}^{-1}$ we can carry out Bayesian inference for $\rho_S$ and $\Lambda$. The prior was chosen to be maximum entropy: $p(\rho_S, \Lambda) \sim 1/\Lambda$. Longer time points are more informative, but it becomes increasingly difficult to find any clones; thus the posterior distribution is not brilliantly localised --- the prior is still having a strong effect.}
+\end{figure}
+
 \section{Main text}
 
 <paragraphs in the main text go here>
@@ -219,9 +239,13 @@ Heuristically, we can understand why there is almost no change. As mentioned in 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[height=4in]{oes-combined-prior.png}
-	\caption{\label{fig:inferences}The inference from short time suprabasal data is in orange, showing $68\%$ and $95\%$ confidence regions. The inference from long time basal data is show in blue. The combined data produces the region ($95\%$) shown in green, with projections shown on the axes planes.}
+	\caption{\label{fig:inferences}The inference from short time suprabasal data is in orange, showing $68\%$ and $95\%$ confidence regions. The inference from long time basal data is show in blue. The combined data produces the region ($95\%$) shown in green, with projections shown on the axes planes. The mean lies at $\rho = 0.52$, $r = 0.19$, $\lambda = 0.77/\textrm{week}^{-1}$.}
 \end{figure}
 
-\subsection{Single cell clones}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=4in]{single-cell-clones.png}
+	\caption{\label{fig:single-cell}The proportion of single cell clones does not decrease exponentially, as expected. The error bars correspond to \emph{theoretical} errors given the total clones counted at that time point. The shaded regions correspond to $1\sigma$ ($68\%$) and $2\sigma$ ($95\%$) intervals. The theoretical curves are obtained by using $\lambda$ from the pure CP dynamics model (\ref{eq:ABC-model}), and inferring $\rho_S$ and $\Lambda$ from the limited data available (see section \ref{sec:single-cells}).}
+\end{figure}
 
 \end{document}
