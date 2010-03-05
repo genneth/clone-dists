@@ -23,49 +23,54 @@ data7 = [1 12; 2 18; 3 15; 4 14; 5 6; 6 11; 7 8; 8 6; 9 9; 10 9; 11 3; 12 4; 13 
 
 ts = [t1 t2 t3 t4 t5 t6 t7];
 data = {data1 data2 data3 data4 data5 data6 data7};
+av = zeros(size(ts));
 for i = 1:numel(ts)
     av(i) = dot(data{i}(:,1), data{i}(:,2) / sum(data{i}(:,2)));
 end
 
-lambda = 0.79;
-r = 0.25;
-rho = 0.5;
+lambda = 0.7676;
+r = 0.1926;
+rho = 0.5164;
 gamma = lambda * rho / (1-rho);
 tau = rho / (r * lambda);
 
-[p0, ts2] = xi(lambda, r, rho, max(ts), 0);
-loglog(newplot(figure), ts, av, '*', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
+[p0, ts2] = xi(lambda, r, rho, 100, 0);
+loglog(newplot(figure), ts, av, '+', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
 set(gca, 'XLim', [0.1 100]);
 xlabel('$t$ / weeks', 'Interpreter', 'latex');
 ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
 saveas(gcf, 'average-count', 'fig');
 
+%     function scp = smooth(cp)
+%         scp = (cp + [1; cp(1:end-1)]) / 2;
+%     end
+
 gh = newplot(figure);
+colour = 'rgbcmyk';
+hold all;
 for i = 1:numel(ts);
-    semilogy(gh, data{i}(:,1) / ts(i), 1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2)));
-    hold all;
+%     plot(gh, data{i}(:,1) / ts(i), smooth(1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2))), strcat('+:', colour(i)));
+    stairs(gh, data{i}(:,1) / ts(i), 1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2)), strcat('-', colour(i)));
+    ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1));
+    plot(gh, (0:floor(10*ts(i))) / ts(i), 1 - cumsum(ps) / sum(ps), strcat('-', colour(i)));
 end
-semilogy(gh, data{end}(:,1) / ts(end), exp(-data{end}(:,1) / ts(end) * tau), '--');
-
-ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(1), 16));
-semilogy(gh, [0:15] / ts(1), 1 - cumsum(ps) / sum(ps), '-.');
-
-ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(5), 151));
-semilogy(gh, [0:150] / ts(5), 1 - cumsum(ps) / sum(ps), '-.');
-
-ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(end), 151));
-semilogy(gh, [0:150] / ts(end), 1 - cumsum(ps) / sum(ps), '-.');
+plot(gh, data{end}(:,1) / ts(end), exp(-data{end}(:,1) / ts(end) * tau), '-r', 'LineWidth', 2);
 
 hold off;
 
-set(gh, 'XLim', [0 10], 'YLim', [1e-3 1]);
+set(gh, 'XLim', [0 10], 'YLim', [1e-3 1], 'YScale', 'log');
 xlabel(gh, '$n/t$ / $\textrm{weeks}^{-1}$', 'Interpreter', 'latex');
-%ylabel(gh, '$1 - \textrm{cum. prob.}$', 'Interpreter', 'latex');
 
-legend('3 days', '10 days', '3 weeks', '6 weeks', ...
-    '12 weeks', '26 weeks', '52 weeks', ...
-    'limit (theory, ABC tau)', ...
-    '3 days (theory)', '12 weeks (theory)', '52 weeks (theory)', ...
-    'Location', 'SouthEast');
+legend('', '3 days', ...
+    '', '10 days', ...
+    '', '3 weeks', ...
+    '', '6 weeks', ...
+    '', '12 weeks', ...
+    '', '26 weeks', ...
+    '', '52 weeks', ...
+    'limit', ...
+    'Location', 'NorthEast');
 
 saveas(gh, 'oes-compare', 'fig');
+
+end
