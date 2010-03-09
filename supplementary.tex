@@ -15,7 +15,7 @@
 \usepackage{microtype}
 \usepackage{nicefrac}
 \usepackage{subfigure}
-\usepackage[unicode=true, pdfusetitle, bookmarks=true, bookmarksnumbered=false, bookmarksopen=false, breaklinks=false, pdfborder={0 0 1}, backref=false, colorlinks=false]{hyperref}
+\usepackage[unicode=true, pdfusetitle, bookmarks=true, bookmarksnumbered=false, bookmarksopen=false, breaklinks=false, pdfborder={0 0 1}, backref=false, colorlinks=false, pdfstartview=FitBH]{hyperref}
 
 \begin{document}
 
@@ -29,7 +29,15 @@
 
 \section{\label{sec:introduction}Background and motivation}
 
-The possibility of proliferative heterogeneity leads us to consider a complicated model of cell fate choice: 
+<Clayton> introduced a balanced stochastic fate choice model of \emph{committed progenitor} (CP) cells in epithelial tissue. The model can be represented as a Markovian branching process for the basal layer 
+\begin{align}
+A &\overset{\lambda}{\longmapsto} \begin{cases}
+A+A & r \\
+A+B & 1-2r \\
+B+B & r\end{cases}, & B &\overset{\gamma}{\longmapsto} \emptyset.
+\label{eq:basal-model}
+\end{align}
+where $A$ represents a committed progenitor and $B$ represents a terminally differentiated cell. This was shown to be a good fit to the available clone size distribution data. However, in oesophagus, we have found a discrete population of stem cells and thus proliferative heterogeneity; further, this implies that CP cells must be imbalanced to preserve homeostasis. Thus we are led to consider a significantly more complicated system: 
 \begin{align}
 S &\overset{\Lambda}{\longmapsto} \begin{cases}
 S+S & r_S \\
@@ -40,39 +48,32 @@ A+B & 1-2r \\
 B+B & r(1+\Delta)\end{cases} & B &\overset{\gamma}{\longmapsto} \emptyset
 \label{eq:really-full-model}
 \end{align}
-In addition to the parameters above, there are parameters for the proportion of stem cells and \emph{committed progenitors} (CP) in the basal layer, $\rho_S$ and $\rho$ respectively. In addition, whilst we have good evidence <clayton,etc> that CP cells observe a stochastic fate, there is evidence <klein patterning> that stem cells do not and instead have an intrinsically two-dimensional dynamics. However, it is observed that the stem population is long-lived and slow-cycling. This offers the possibility of approximating the stem compartment as also stochastic, which would be statistically exact if stem cell behaviour is uncorrelated on time scales we can observe. In particular, the behaviour should only become correlated if two stem cells are close together; with a low induction rate, this will be negligible. In addition, it is observed <main text> that symmetric division of stem cells is extremely rare, possibly non-existent, in homeostasis.
+where $S$ represents a stem cell. In addition, it is likely that the stem compartment does not follow a simple branching model where daughter cells are uncorrelated, but instead have an intrinsically two-dimensional dynamics <klein patterning>.
 
-Thus we are led to consider: 
-\begin{align}
+In principle, the model above can produce extremely complex behaviour. However, the experimental observation that the stem cycling rate $\Lambda \ll \lambda$ implies a good separation of time scales, and leads to mathematical tractability. Our strategy then will be to fix the parameters of CP dynamics as accurately as possible, then using the established parameters $\lambda$, $\gamma$ and $r$, examine the behaviour of the stem population.
+
+Experimentally, we induce cells and track clonal fate. Stem cells, by observation, are rarely labelled and widely separated. This means that on the time scale of the experiment, there can be no significant correlations, and it is possible to approximate their behaviour as independent and stochastic. In a way, we are \emph{averaging} over the potential environments surrounding a stem cell, and thus randomise the stem cell's fate. Further, no symmetric division is observed, and thus in homeostasis we are led to consider a simplified process \begin{align}
 S &\overset{\Lambda}{\longmapsto} S+A & A &\overset{\lambda}{\longmapsto} \begin{cases}
 A+A & r(1-\Delta) \\
 A+B & 1-2r \\
 B+B & r(1+\Delta)\end{cases} & B &\overset{\gamma}{\longmapsto} \emptyset
 \label{eq:full-model}
 \end{align}
-In effect, we are looking for statistical evidence of stem cells in CP dynamics --- the latter acts as an amplifier of stem cells. It is then necessary to be as exact as possible about CP dynamics. For this purpose, we focus on the model introduced in <Clayton> of CP cells with balanced fate:
-\begin{align}
-A &\overset{\lambda}{\longmapsto} \begin{cases}
-A+A & r \\
-A+B & 1-2r \\
-B+B & r\end{cases}, & B &\overset{\gamma}{\longmapsto} \emptyset.
-\label{eq:basal-model}
-\end{align}
-We proceed then to quantify the parameters of this model in section \ref{sec:suprabasal-inference}, before considering the stem compartment as a perturbation in section \ref{sec:stem}. <Harvard> has given a comprehensive study of model \ref{eq:basal-model}. In the limit of large time, i.e. $t\rightarrow \infty$, there is a linear growth of surviving clones $$\left\langle n^\textrm{surv.} \right\rangle = \frac{t}{\tau},$$ where the characteristic time scale $\tau = \rho/r\lambda$, with $\rho = \gamma/(\lambda+\gamma)$ being the equilibrium proportion of CP cells in the basal layer. In addition, the surviving clone size distribution tends to a scaling limit: $$P^\textrm{surv.}_n(t) = \frac{1}{\left\langle n^\textrm{surv.} \right\rangle}\exp\left(-\frac{n}{\left\langle n^\textrm{surv.} \right\rangle}\right).$$ <Harvard> shows that this scaling limit is approached quickly, and becomes very good as soon as $t/\tau$ reaches a few.
+The parameter $\Delta$ is the main link between CP and stem populations; it controls the relative population sizes (which in homeostasis are in ratios of $\rho_S$, $(1-\rho_S)\rho$ and $(1-\rho_S)(1-\rho)$ for stem, CP and differentiated cells, respectively). $\Delta$ is also expectly to be very small. We shall find, self-consistently, that as far as determining the parameters of CP dynamics, it is possible to entirely decouple the system ($\Delta = 0$) and thus measure $\rho$, $r$ and $\lambda$, and then re-introduce the full dynamics as a perturbation.
 
-The reason for this is that in the large time limit, $\left\langle n^\textrm{surv.} \right\rangle$ becomes large, thus most clones are macroscopic and fluctuations are negligible. In particular, the limiting proportion $\rho$ is attained. Thus, the differentiated basal cells (B) are completely slave to the CP cells' dynamics, and we reduce to the even simpler model <klein>: 
+Thus we are back to the simple balanced CP model \ref{eq:basal-model}. <Klein, Harvard> have shown that this model exihibits scaling, where in the large time limit $t\rightarrow\infty$ the clone size distribution becomes exponential: $$P^\textrm{surv.}_n \sim \exp\left(-\frac{n}{\left\langle n^\textrm{surv.} \right\rangle}\right)$$ with a linear growth of the average size of surviving clones $\left\langle n^\textrm{surv.} \right\rangle \rightarrow t/\tau$ and characteristic time scale $\tau = \rho/r\lambda$. This can be shown by noting that large clones are macroscopic, and fluctuations in the proportion of CP cells versus differentiated cells are small --- in essence large clones are overwhelmingly likely to be representative of the tissue as a whole. <Harvard> have shown that this process happens remarkably quickly, and clones of even ten cells become quite representative. Thus, we can erase the difference between CP and differentiated cells, and average them into a \emph{representative basal cell} $D$: 
 \begin{align}
 D &\overset{1/\tau}{\longmapsto} \begin{cases}
 D+D & \frac{1}{2} \\
-\emptyset & \frac{1}{2}\end{cases}\label{eq:simple-balanced-model}.
+\emptyset & \frac{1}{2}\end{cases}\label{eq:simple-balanced-model}
 \end{align}
-This is a classic \emph{critical branching process} <atherya>, which is exactly solvable. The average size is $\left\langle n^\textrm{surv.} \right\rangle = 1+t/\tau$. The clone size distribution is geometric at all times: $P^\textrm{surv.}_n(t) \sim x^n$, thus $x = 1 - \left\langle n^\textrm{surv.} \right\rangle^{-1}$.
+This is now a classic \emph{one-type critical branching process} <atherya>, and has an exact solution. The clone size distribution is geometric at all times $$P^\textrm{surv.}_n \sim \left(1-\frac{1}{\left\langle n^\textrm{surv.} \right\rangle}\right)^n$$ with an average clone size $\left\langle n^\textrm{surv.} \right\rangle = 1 + t/\tau$.
 
-Although theoretically very attractive, this long-time scaling behaviour is actually unhelpful in so far as inferring the parameters $(\rho, r, \lambda)$ from experimental data. Since after just a few cell divisions the clone distribution becomes a featureless exponential, it is only possible to measure the characteristic time scale $\tau$ (though this may be determined very accurately, see section \ref{sec:ball-plane}). The cycling rate $\lambda$ may be directly measured from observation of proliferation and the proportion of proliferating progenitor cells $\rho$ may be measured from the expression of the genetic marker Ki67. Finally, $r$ may be obtained by inverting the equation $\tau = \rho/r\lambda$. However, these all introduce additional errors, both systematic and random; worse, these errors are difficult to estimate. In particular, if the genetic marker is unreliable or inefficient, then this would have a very direct effect on the inferred value of $r$.
+Although theoretically very attractive, this long-time scaling behaviour is actually unhelpful in so far as inferring the parameters from experimental data. Since after just a few cell divisions the clone distribution becomes a featureless exponential, it is only possible to measure the characteristic time scale $\tau$ (though this may be determined very accurately, see section \ref{sec:ball-plane}). The cycling rate $\lambda$ may be directly measured from observation of proliferation and the proportion of proliferating progenitor cells $\rho$ may be measured from the expression of the genetic marker Ki67. Finally, $r$ may be obtained by inverting the equation $\tau = \rho/r\lambda$. However, these all introduce additional errors, both systematic and random; worse, these errors are difficult to estimate. In particular, if the genetic marker is unreliable or inefficient, then this would have a very direct effect on the inferred value of $r$.
 
 To do better, it is necessary concentrate on the short-time behaviour and the approach to scaling. In section \ref{sec:suprabasal-inference} below, we show that if clone size distributions \emph{with suprabasal counts} are available, then it is possible to directly infer the triplet $(\rho, r, \lambda)$ from the experimental data. The datasets obtained this way are very rich, with complex structure. To fully incorporate the available information, we use a first-principles Bayesian analysis.
 
-Finally in section \ref{sec:stem}, we show that the scaling behaviour is robust even in the presence of a stem cell population, but that single cell clones provide statistical means to infer the parameters of model \ref{eq:full-model}.
+As mentioned, the parameter $\Delta$ is very small, and essentially controls the coupling between CP and stem populations. In section \ref{sec:stem}, we show that even in the presence of stem turn-over the clone size distribution is dominated by an exponential tail which is indistinguishable from the balanced CP model to within current experiments. The change is confined to proportions of small clones, which leads us to focus on single cell clones. We find that there is enough information to infer the remaining parameters in model \ref{eq:full-model}.
 
 \section{\label{sec:suprabasal-inference}Bayesian analysis of clone fate data}
 
@@ -142,14 +143,14 @@ S \overset{\Lambda}{\longmapsto} S+A. \label{eq:stem-division-model}
 \end{equation}
 This is a mathematical simplification and, to within accessible statistics, is exact in the limit. It does not imply a biological assumption of stochasticity; in particular, we are not ruling out other dynamics of the stem population, which must necessarily include self-renewal and environmentally controlled division to produce the patterning observed (figure <main text>).
 
-Since the imbalance is small, we expect that at short times the dynamics is essentially the same as the balanced case. Thus if we only care about the long time behaviour, i.e. large clones, we can (like in model \ref{eq:simple-balanced-model}) neglect fluctuations of $\rho$ and simplify the CP dynamics to be
+Since the imbalance is small, we expect that on time scales shorter than $O(1/\Delta \lambda)$ the dynamics is essentially the same as the balanced case. Thus if we only care about the long time behaviour, the CP sector should reach its scaling limit and we can (like in model \ref{eq:simple-balanced-model}) neglect fluctuations of $\rho$ and consider an averaged CP-differentiated cell, which would allow analytical treatment. In model \ref{eq:full-model} the imbalance causes CP loss with a time constant $2 r \Delta \lambda$, thus:
 \begin{equation}
-A \overset{\lambda}{\longmapsto} \begin{cases}
-A+A & r(1 - \Delta) \\
-A & 1 - 2r \\
-\emptyset & r(1 + \Delta)
+D \overset{1/\tau}{\longmapsto} \begin{cases}
+D+D & \frac{1}{2} - \rho \Delta \\
+\emptyset & \frac{1}{2} + \rho \Delta
 \end{cases}\label{eq:subcritical-cp-model}
-\end{equation} which allows analytical treatment.
+\end{equation}
+with $\tau = \rho/r\lambda$ describes the same scaling behaviour.
 
 Due to the low induction frequency and low proportion of cycling stem cells, we expect each clone contain at most one stem cell. Thus we have two cases to consider: clones with no stem cells at all, which will all eventually go extinct, and clones with one stem cell which will equilibrate at some finite clone size. Below, we take these cases separately, in sections <> and <>.
 
