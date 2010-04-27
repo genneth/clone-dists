@@ -41,9 +41,20 @@ end
     end
 
 gh = newplot(figure);
+colours = [
+ 0.996078, 0.360784, 0.027451;
+ 0.996078, 0.988235, 0.0352941;
+ 0.541176, 0.713725, 0.027451;
+ 0.145098, 0.435294, 0.384314;
+ 0.00784314, 0.509804, 0.929412;
+ 0.152941, 0.113725, 0.490196;
+ 0.470588, 0.262745, 0.584314;
+ 0.890196, 0.0117647, 0.490196;
+ 0.905882, 0.027451, 0.129412
+];
 for i = 1:numel(ts)
     [X, Y] = generate_dots(data{i}, 75 + (i-1)*150);
-    plot(gh, X, Y, 'o', 'MarkerSize', 2);
+    plot(gh, X, Y, 'o', 'MarkerSize', 2, 'MarkerEdgeColor', colours(i,:));
     hold all;
 end
 hold off;
@@ -64,7 +75,10 @@ tau = rho / (r * lambda);
 
 [p0, ts2] = xi(lambda, r, rho, logspace(-1, 2, 40), 0);
 inset = axes('pos', [0.23 0.57 0.4 0.3]);
-loglog(inset, ts, av, '+', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
+loglog(inset, ts, av, '+', 'MarkerEdgeColor', colours(1,:));
+hold all;
+loglog(inset, ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-k');
+hold off;
 set(inset, 'XLim', [0.1 100]);
 xlabel('$t$ / weeks', 'Interpreter', 'latex');
 ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');

@@ -34,35 +34,40 @@ rho = 0.5164;
 gamma = lambda * rho / (1-rho);
 tau = rho / (r * lambda);
 
-[p0, ts2] = xi(lambda, r, rho, logspace(-1, 2, 40), 0);
-loglog(newplot(figure), ts, av, '+', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
-set(gca, 'XLim', [0.1 100]);
-xlabel('$t$ / weeks', 'Interpreter', 'latex');
-ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
-set(gca, 'FontName', 'Times');
-
-%     function scp = smooth(cp)
-%         scp = (cp + [1; cp(1:end-1)]) / 2;
-%     end
+%[p0, ts2] = xi(lambda, r, rho, logspace(-1, 2, 40), 0);
+%loglog(newplot(figure), ts, av, '+', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
+%set(gca, 'XLim', [0.1 100]);
+%xlabel('$t$ / weeks', 'Interpreter', 'latex');
+%ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
+%set(gca, 'FontName', 'Times');
 
 gh = newplot(figure);
-colour = 'rgbcmyk';
+colours = [
+ 0.996078, 0.360784, 0.027451;
+ 0.996078, 0.988235, 0.0352941;
+ 0.541176, 0.713725, 0.027451;
+ 0.145098, 0.435294, 0.384314;
+ 0.00784314, 0.509804, 0.929412;
+ 0.152941, 0.113725, 0.490196;
+ 0.470588, 0.262745, 0.584314;
+ 0.890196, 0.0117647, 0.490196;
+ 0.905882, 0.027451, 0.129412
+];
 hold all;
 for i = 1:numel(ts);
-%     plot(gh, data{i}(:,1) / ts(i), smooth(1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2))), strcat('+:', colour(i)));
     av = dot(data{i}(:,2) / sum(data{i}(:,2)), data{i}(:,1));
-    lh = plot(gh, data{i}(:,1) / av, (1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2))) .* (10^(i-1)), strcat('+', colour(i)));
+    lh = plot(gh, data{i}(:,1) / av, (1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2))) .* (10^(i-1)), '^', 'MarkerEdgeColor', colours(i,:), 'MarkerFaceColor', colours(i,:), 'MarkerSize', 3);
     ah = get(lh, 'Annotation');
     leh = get(ah, 'LegendInformation');
     set(leh, 'IconDisplayStyle', 'off');
     ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1));
     av = dot(0:(numel(ps)-1), ps);
-    plot(gh, (0:(numel(ps)-1)) / av, (1 - cumsum(ps)) .* (10^(i-1)), strcat('-', colour(i)));
+    plot(gh, (0:(numel(ps)-1)) / av, (1 - cumsum(ps)) .* (10^(i-1)), '-', 'Color', colours(i,:));
     set(gh, 'XLim', [0 5], 'YLim', [1e-2 1e6], 'YScale', 'log');
     xlabel(gh, '$n/\langle n \rangle$', 'Interpreter', 'latex');
     pause(0.1);
 end
-plot(gh, linspace(0,5,50), exp(-linspace(0,5,50)) .* 10^6, '-r', 'LineWidth', 1);
+plot(gh, linspace(0,5,50), exp(-linspace(0,5,50)) .* 10^6, '-', 'Color', 'black', 'LineWidth', 1);
 set(gh, 'FontName', 'Times');
 
 hold off;
@@ -75,6 +80,6 @@ legend('3 days', ...
     '6 months', ...
     '1 year', ...
     'limit', ...
-    'Location', 'NorthEast');
+    'Location', 'SouthEast');
 
 end
