@@ -1,4 +1,4 @@
-function oes_compare
+function oes_scaling
 
 t1 = 3/7;
 data1 = [1 142; 2 71; 3 8; 4 3];
@@ -34,12 +34,12 @@ rho = 0.5164;
 gamma = lambda * rho / (1-rho);
 tau = rho / (r * lambda);
 
-[p0, ts2] = xi(lambda, r, rho, 100, 0);
+[p0, ts2] = xi(lambda, r, rho, logspace(-1, 2, 40), 0);
 loglog(newplot(figure), ts, av, '+', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
 set(gca, 'XLim', [0.1 100]);
 xlabel('$t$ / weeks', 'Interpreter', 'latex');
 ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
-saveas(gcf, 'average-count', 'fig');
+set(gca, 'FontName', 'Times');
 
 %     function scp = smooth(cp)
 %         scp = (cp + [1; cp(1:end-1)]) / 2;
@@ -59,10 +59,11 @@ for i = 1:numel(ts);
     av = dot(0:(numel(ps)-1), ps);
     plot(gh, (0:(numel(ps)-1)) / av, (1 - cumsum(ps)) .* (10^(i-1)), strcat('-', colour(i)));
     set(gh, 'XLim', [0 5], 'YLim', [1e-2 1e6], 'YScale', 'log');
-    xlabel(gh, '$n/\langle n \rangle$ / $\textrm{weeks}^{-1}$', 'Interpreter', 'latex');
+    xlabel(gh, '$n/\langle n \rangle$', 'Interpreter', 'latex');
     pause(0.1);
 end
-plot(gh, linspace(0,5,50), exp(-linspace(0,5,50)) .* 10^6, '-r', 'LineWidth', 2);
+plot(gh, linspace(0,5,50), exp(-linspace(0,5,50)) .* 10^6, '-r', 'LineWidth', 1);
+set(gh, 'FontName', 'Times');
 
 hold off;
 
@@ -75,7 +76,5 @@ legend('3 days', ...
     '52 weeks', ...
     'limit', ...
     'Location', 'NorthEast');
-
-saveas(gh, 'oes-compare', 'fig');
 
 end
