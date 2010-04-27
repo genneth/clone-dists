@@ -3,9 +3,19 @@ function [xis, ts] = xi(lambda, r, gamma, t, z)
 % we seek xi((1-z) exp(-g tau)) where:
 g = gamma/lambda;
 tau = t*lambda;
+if numel(t) == 1
+    taus = [0 tau/2 tau];
+else
+    if t(1) > 0
+        taus = [0 tau];
+    else
+        taus = tau;
+    end
+end
 
-if tau == 0
-    xi = z;
+if numel(t) == 1 && t == 0
+    ts = 0;
+    xis = z;
     return;
 end
 
@@ -19,15 +29,23 @@ end
     end
 
 options = odeset('RelTol',1e-7,'AbsTol',1e-14);
-if nargout <= 1
-    [ts, xis] = ode45(@dxi, [0 tau/2 tau], [real(z); imag(z)], options);
-    xis = xis(end,:);
+if numel(taus) ~= 2
+    [ts, xis] = ode45(@dxi, taus, [real(z); imag(z)], options);
 else
-    [ts, xis] = ode45(@dxi, [0 tau], [real(z); imag(z)], options);
+    [ts, xis] = ode45(@dxi, [taus(1) (taus(1)+taus(2))/2 taus(2)], [real(z); imag(z)], options);
+    ts = [ts(1); ts(3)];
+    xis = [xis(1,:); xis(3,:)];
+end
+if numel(t) == 1 && nargout <= 1
+    xis = xis(end,:); % ts does not matter
+else
+    if t(1) > 0
+        ts = ts(2:end);
+        xis = xis(2:end,:);
+    end
 end
 
 ts = ts ./ lambda;
 xis = complex(xis(:,1), xis(:,2));
-xi = xis(end);
 
 end
