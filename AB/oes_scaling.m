@@ -41,10 +41,11 @@ tau = rho / (r * lambda);
 %ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
 %set(gca, 'FontName', 'Times');
 
-gh = newplot(figure);
+fh = figure;
+gh = newplot(fh);
 colours = [
  0.996078, 0.360784, 0.027451;
- 0.996078, 0.988235, 0.0352941;
+% 0.996078, 0.988235, 0.0352941;
  0.541176, 0.713725, 0.027451;
  0.145098, 0.435294, 0.384314;
  0.00784314, 0.509804, 0.929412;
@@ -56,21 +57,34 @@ colours = [
 hold all;
 for i = 1:numel(ts);
     av = dot(data{i}(:,2) / sum(data{i}(:,2)), data{i}(:,1));
-    lh = plot(gh, data{i}(:,1) / av, (1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2))) .* (10^(i-1)), '^', 'MarkerEdgeColor', colours(i,:), 'MarkerFaceColor', colours(i,:), 'MarkerSize', 3);
-    ah = get(lh, 'Annotation');
-    leh = get(ah, 'LegendInformation');
-    set(leh, 'IconDisplayStyle', 'off');
+    lh = plot(gh, data{i}(:,1) / av, log10((1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2)))) + (i-1), ...
+        '^', 'MarkerEdgeColor', colours(i,:), 'MarkerFaceColor', colours(i,:), 'MarkerSize', 4);
+    ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
     ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1));
     av = dot(0:(numel(ps)-1), ps);
-    plot(gh, (0:(numel(ps)-1)) / av, (1 - cumsum(ps)) .* (10^(i-1)), '-', 'Color', colours(i,:));
-    set(gh, 'XLim', [0 5], 'YLim', [1e-2 1e6], 'YScale', 'log');
-    xlabel(gh, '$n/\langle n \rangle$', 'Interpreter', 'latex');
+    cps = min(cumsum(ps),1);
+    err = sqrt(cps .* (1-cps) ./ sum(data{i}(:,2)));
+    plot(gh, (0:(numel(ps)-1)) / av, log10(1 - cps) + (i-1), '-', 'Color', colours(i,:), 'LineWidth', 1);
+%     lh = plot(gh, (0:(numel(ps)-1)) / av, (1 - cps + err) .* (10^(i-1)), '-.', 'Color', colours(i,:));
+%     ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
+%     lh = plot(gh, (0:(numel(ps)-1)) / av, (1 - cps - err) .* (10^(i-1)), '-.', 'Color', colours(i,:));
+%     ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
+    fill_plot(gh, (0:(numel(ps)-1)) / av, ...
+        log10(max(1 - cps - err,1e-323)) + (i-1), ...
+        log10(max(1 - cps + err,1e-323)) + (i-1), ...
+        colours(i,:), 0.8);
+    set(gh, 'XLim', [0 5], 'YLim', [-2 6]);
     pause(0.1);
 end
-plot(gh, linspace(0,5,50), exp(-linspace(0,5,50)) .* 10^6, '-', 'Color', 'black', 'LineWidth', 1);
-set(gh, 'FontName', 'Times');
-
+plot(gh, linspace(0,5,50), -linspace(0,5,50).*log10(exp(1)) + 6, '-', 'Color', 'black', 'LineWidth', 2);
 hold off;
+
+xlabel(gh, '$n/\langle n \rangle$', 'Interpreter', 'latex');
+set(gh, 'YTick', log10([reshape([1:9]' * 10.^[-2:5], 8*9, 1); 10^6]));
+set(gh, 'YTickLabel', '10 ||||||||');
+set(gh, 'TickLength', get(gh, 'TickLength') / 2);
+
+set(gh, 'FontName', 'Times', 'FontSize', 9);
 
 legend('3 days', ...
     '10 days', ...
@@ -81,5 +95,22 @@ legend('3 days', ...
     '1 year', ...
     'limit', ...
     'Location', 'SouthEast');
+
+set(gh, 'Position', get(gh, 'OuterPosition') - ...
+    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
+
+set(fh, 'PaperUnits', 'inches');
+w = 6.25; h = 7.5;
+set(fh, 'PaperSize', [w h]);
+set(fh, 'PaperPosition', [0 0 w h]);
+
+set(fh, 'Color', 'white');
+
+set(fh, 'Renderer', 'Painters');
+pause(0.1);
+set(fh, 'Renderer', 'OpenGL');
+pause(0.1);
+%print(fh, '-dpdf', '-opengl', '-r300', 'oes-scaling-b.pdf');
+print(fh, '-dpng', '-opengl', '-r300', 'oes-scaling-b');
 
 end
