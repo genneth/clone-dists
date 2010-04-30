@@ -40,10 +40,11 @@ end
         end
     end
 
-gh = newplot(figure);
+fh = figure;
+gh = newplot(fh);
 colours = [
  0.996078, 0.360784, 0.027451;
- 0.996078, 0.988235, 0.0352941;
+% 0.996078, 0.988235, 0.0352941;
  0.541176, 0.713725, 0.027451;
  0.145098, 0.435294, 0.384314;
  0.00784314, 0.509804, 0.929412;
@@ -58,13 +59,15 @@ for i = 1:numel(ts)
     hold all;
 end
 hold off;
-ylabel('clone size', 'Interpreter', 'latex');
-set(gh, 'FontName', 'Times');
+ylabel('clone size', 'Interpreter', 'latex', 'FontSize', 9);
+set(gh, 'FontName', 'Times', 'FontSize', 8);
+set(gh, 'XLim', [0 7*150]);
 set(gh, 'XTick', [75:150:975]);
 set(gh, 'XTickLabel', {'3 days'; '10 days'; '3 weeks'; '6 weeks'; '3 months'; '6 months'; '1 year'});
 ticklengths = get(gh, 'TickLength');
 ticklengths(1) = 0.0;
 set(gh, 'TickLength', ticklengths);
+set(gh, 'YGrid', 'on');
 
 % copied from oes_scaling
 lambda = 0.7676;
@@ -74,16 +77,29 @@ gamma = lambda * rho / (1-rho);
 tau = rho / (r * lambda);
 
 [p0, ts2] = xi(lambda, r, rho, logspace(-1, 2, 40), 0);
-inset = axes('pos', [0.23 0.57 0.4 0.3]);
+inset = axes('pos', [0.25 0.57 0.4 0.3]);
 loglog(inset, ts, av, '+', 'MarkerEdgeColor', colours(1,:));
 hold all;
 loglog(inset, ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-k');
 hold off;
 set(inset, 'XLim', [0.1 100]);
-xlabel('$t$ / weeks', 'Interpreter', 'latex');
-ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
-set(inset, 'FontName', 'Times');
+xlabel('$t$ / weeks', 'Interpreter', 'latex', 'FontSize', 8);
+ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex', 'FontSize', 8);
+set(inset, 'FontName', 'Times', 'FontSize', 8);
+set(inset, 'Position', get(inset, 'OuterPosition') - ...
+    get(inset, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
 
+set(fh, 'PaperUnits', 'inches');
+w = 4; h = 3;
+set(fh, 'PaperSize', [w h]);
+set(fh, 'PaperPosition', [0 0 w h]);
 
+%set(gh, 'Position', get(gh, 'OuterPosition') - ...
+%    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
+
+set(fh, 'Color', 'white');
+
+pause(0.1);
+print(fh, '-dpdf', 'oes-raw-dots');
 
 end
