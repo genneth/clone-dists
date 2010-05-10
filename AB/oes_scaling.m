@@ -24,8 +24,10 @@ data7 = [1 12; 2 18; 3 15; 4 14; 5 6; 6 11; 7 8; 8 6; 9 9; 10 9; 11 3; 12 4; 13 
 ts = [t1 t2 t3 t4 t5 t6 t7];
 data = {data1 data2 data3 data4 data5 data6 data7};
 av = zeros(size(ts));
+tot = zeros(size(ts));
 for i = 1:numel(ts)
-    av(i) = dot(data{i}(:,1), data{i}(:,2) / sum(data{i}(:,2)));
+    tot(i) = sum(data{i}(:,2));
+    av(i) = dot(data{i}(:,1), data{i}(:,2) / tot(i));
 end
 
 lambda = 0.7676;
@@ -33,13 +35,6 @@ r = 0.1926;
 rho = 0.5164;
 gamma = lambda * rho / (1-rho);
 tau = rho / (r * lambda);
-
-%[p0, ts2] = xi(lambda, r, rho, logspace(-1, 2, 40), 0);
-%loglog(newplot(figure), ts, av, '+', ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-');
-%set(gca, 'XLim', [0.1 100]);
-%xlabel('$t$ / weeks', 'Interpreter', 'latex');
-%ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex');
-%set(gca, 'FontName', 'Times');
 
 fh = figure;
 gh = newplot(fh);
@@ -54,37 +49,56 @@ colours = [
  0.890196, 0.0117647, 0.490196;
  0.905882, 0.027451, 0.129412
 ];
-hold all;
+set(gh, 'NextPlot', 'add');
 for i = 1:numel(ts);
-    av = dot(data{i}(:,2) / sum(data{i}(:,2)), data{i}(:,1));
-    lh = plot(gh, data{i}(:,1) / av, log10((1 - cumsum(data{i}(:,2)) / sum(data{i}(:,2)))) + (i-1), ...
+    ps = condPb2(abs(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1)));
+    ps = ps(2:end);
+    tav = dot(1:numel(ps), ps);
+    err = sqrt(ps .* (1-ps) ./ tot(i));
+    plot(gh, (1:numel(ps)) ./ tav, log10(ps * tav) + (i-1), '-', 'Color', colours(i,:), 'LineWidth', 1);
+    fill_plot(gh, (1:numel(ps)) ./ tav, ...
+        log10(max(ps - err, 1e-10) * tav) + (i-1), ...
+        log10(max(ps + err, 1e-10) * tav) + (i-1), ...
+        colours(i,:), 0.4);
+
+    sdata = sparse(data{i}(:,1), ones(size(data{i}(:,1))), data{i}(:,2), 1000000, 1);
+    marker = 1;
+    acc = 0;
+    lo = zeros(0,0);
+    hi = zeros(0,0);
+    binned = zeros(0,0);
+    for j = 1:numel(ps)
+       acc = acc + ps(j);
+       if (1-acc) ^ tot(i) < 0.01
+           lo(end+1) = marker;
+           hi(end+1) = j;
+           binned(end+1) = sum(sdata(marker:j));
+           marker = j+1;
+           acc = 0;
+       end
+    end
+
+    lh = plot(gh, (lo + hi) / 2 / av(i), log10((binned ./ (hi - lo + 1)) / tot(i) * av(i)) + (i-1), ...
         '^', 'MarkerEdgeColor', colours(i,:), 'MarkerFaceColor', colours(i,:), 'MarkerSize', 4);
     ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
-    ps = condPb2(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1));
-    av = dot(0:(numel(ps)-1), ps);
-    cps = min(cumsum(ps),1);
-    err = sqrt(cps .* (1-cps) ./ sum(data{i}(:,2)));
-    plot(gh, (0:(numel(ps)-1)) / av, log10(1 - cps) + (i-1), '-', 'Color', colours(i,:), 'LineWidth', 1);
-%     lh = plot(gh, (0:(numel(ps)-1)) / av, (1 - cps + err) .* (10^(i-1)), '-.', 'Color', colours(i,:));
-%     ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
-%     lh = plot(gh, (0:(numel(ps)-1)) / av, (1 - cps - err) .* (10^(i-1)), '-.', 'Color', colours(i,:));
-%     ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
-    fill_plot(gh, (0:(numel(ps)-1)) / av, ...
-        log10(max(1 - cps - err,1e-323)) + (i-1), ...
-        log10(max(1 - cps + err,1e-323)) + (i-1), ...
-        colours(i,:), 0.8);
+    for j = 1:numel(binned)
+        lh = plot(gh, [lo(j)-0.5 hi(j)+0.5] / av(i), log10([binned(j) binned(j)] ./ (hi(j) - lo(j) + 1) / tot(i) * av(i)) + (i-1), ...
+           '-', 'Color', colours(i,:));
+        ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
+    end
+
+
     set(gh, 'XLim', [0 5], 'YLim', [-2 6]);
     pause(0.1);
 end
 plot(gh, linspace(0,5,50), -linspace(0,5,50).*log10(exp(1)) + 6, '-', 'Color', 'black', 'LineWidth', 2);
-hold off;
 
-xlabel(gh, '$n/\langle n \rangle$', 'Interpreter', 'latex');
+xlabel(gh, 'scaled clone size', 'FontSize', 8, 'FontName', 'Times');
 set(gh, 'YTick', log10([reshape([1:9]' * 10.^[-2:5], 8*9, 1); 10^6]));
 set(gh, 'YTickLabel', '10 ||||||||');
 set(gh, 'TickLength', get(gh, 'TickLength') / 2);
 
-set(gh, 'FontName', 'Times', 'FontSize', 9);
+set(gh, 'FontName', 'Times', 'FontSize', 8);
 
 legend('3 days', ...
     '10 days', ...
@@ -110,7 +124,6 @@ set(fh, 'Renderer', 'Painters');
 pause(0.1);
 set(fh, 'Renderer', 'OpenGL');
 pause(0.1);
-%print(fh, '-dpdf', '-opengl', '-r300', 'oes-scaling-b.pdf');
 print(fh, '-dpng', '-opengl', '-r300', 'oes-scaling-b');
 
 end
