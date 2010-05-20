@@ -55,11 +55,11 @@ for i = 1:numel(ts);
     ps = ps(2:end);
     tav = dot(1:numel(ps), ps);
     err = sqrt(ps .* (1-ps) ./ tot(i));
-    plot(gh, (1:numel(ps)) ./ tav, log10(ps * tav) + (i-1), '-', 'Color', colours(i,:), 'LineWidth', 1);
-    fill_plot(gh, (1:numel(ps)) ./ tav, ...
-        log10(max(ps - err, 1e-10) * tav) + (i-1), ...
-        log10(max(ps + err, 1e-10) * tav) + (i-1), ...
-        colours(i,:), 0.4);
+    plot(gh, (1:numel(ps)) ./ tav, ps * tav * 10^(i-1), '-', 'Color', colours(i,:), 'LineWidth', 1);
+    %fill_plot(gh, (1:numel(ps)) ./ tav, ...
+    %    log10(max(ps - err, 1e-10) * tav) + (i-1), ...
+    %    log10(max(ps + err, 1e-10) * tav) + (i-1), ...
+    %    colours(i,:), 0.4);
 
     sdata = sparse(data{i}(:,1), ones(size(data{i}(:,1))), data{i}(:,2), 1000000, 1);
     marker = 1;
@@ -78,27 +78,26 @@ for i = 1:numel(ts);
        end
     end
 
-    lh = plot(gh, (lo + hi) / 2 / av(i), log10((binned ./ (hi - lo + 1)) / tot(i) * av(i)) + (i-1), ...
-        '^', 'MarkerEdgeColor', colours(i,:), 'MarkerFaceColor', colours(i,:), 'MarkerSize', 4);
+    lh = plot(gh, (lo + hi) / 2 / av(i), (binned ./ (hi - lo + 1)) / tot(i) * av(i) * 10^(i-1), ...
+        '^', 'MarkerEdgeColor', colours(i,:), 'MarkerFaceColor', colours(i,:), 'MarkerSize', 2);
     ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
     for j = 1:numel(binned)
-        lh = plot(gh, [lo(j)-0.5 hi(j)+0.5] / av(i), log10([binned(j) binned(j)] ./ (hi(j) - lo(j) + 1) / tot(i) * av(i)) + (i-1), ...
+        lh = plot(gh, [lo(j)-0.5 hi(j)+0.5] / av(i), [binned(j) binned(j)] ./ (hi(j) - lo(j) + 1) / tot(i) * av(i) * 10^(i-1), ...
            '-', 'Color', colours(i,:));
         ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
     end
 
-
-    set(gh, 'XLim', [0 5], 'YLim', [-2 6]);
+    set(gh, 'XLim', [0 5], 'YLim', [1e-2 10^(6.5)], 'YScale', 'log');
     pause(0.1);
 end
-plot(gh, linspace(0,5,50), -linspace(0,5,50).*log10(exp(1)) + 6, '-', 'Color', 'black', 'LineWidth', 2);
+plot(gh, linspace(0,5,50), exp(-linspace(0,5,50)) * 1e6, '-', 'Color', 'black', 'LineWidth', 1.5);
 
 xlabel(gh, 'scaled clone size', 'FontSize', 8, 'FontName', 'Times');
-set(gh, 'YTick', log10([reshape([1:9]' * 10.^[-2:5], 8*9, 1); 10^6]));
-set(gh, 'YTickLabel', '10 ||||||||');
-set(gh, 'TickLength', get(gh, 'TickLength') / 2);
+%set(gh, 'YTick', log10([reshape([1:9]' * 10.^[-2:5], 8*9, 1); 10^6]));
+%set(gh, 'YTickLabel', '10 ||||||||');
+%set(gh, 'TickLength', get(gh, 'TickLength') / 2);
 
-set(gh, 'FontName', 'Times', 'FontSize', 8);
+set(gh, 'FontName', 'Times', 'FontSize', 7);
 
 legend('3 days', ...
     '10 days', ...
@@ -110,20 +109,20 @@ legend('3 days', ...
     'limit', ...
     'Location', 'SouthEast');
 
-set(gh, 'Position', get(gh, 'OuterPosition') - ...
-    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
-
 set(fh, 'PaperUnits', 'inches');
-w = 6.25; h = 7.5;
+w = 2.5; h = 3.5;
 set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
+
+%set(gh, 'Position', get(gh, 'OuterPosition') - ...
+%    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
 
 set(fh, 'Color', 'white');
 
 set(fh, 'Renderer', 'Painters');
 pause(0.1);
-set(fh, 'Renderer', 'OpenGL');
-pause(0.1);
-print(fh, '-dpng', '-opengl', '-r300', 'oes-scaling-b');
+%set(fh, 'Renderer', 'OpenGL');
+%pause(0.1);
+print(fh, '-dpng', '-painters', '-r300', 'oes-scaling-b');
 
 end
