@@ -147,23 +147,44 @@ databs{6} = sparse([
 	0	0	0	0	0	0	0	1	0	0	0;
 	0	0	0	0	0	0	0	0	0	0	1]);
 
-    function plot_slice(ah, cx, cy, r, theta, colour, transparency)
-        X = [cx cx + r * cos(linspace(theta(1), theta(2), 20))];
-	Y = [cy cy + r * sin(linspace(theta(1), theta(2), 20))];
-	axes(ah);
-	fill_h = fill(X, Y, 'b');
+%lambda = 0.7676;
+lambda = 1.4;
+r = 0.1926;
+rho = 0.5164;
+gamma = lambda * rho / (1-rho);
+tau = rho / (r * lambda);
+
+[Tl Tr Tg] = generate_transition_matrix(14);
+P0 = initial_eyp(14);
+theorybs = condPbs3(Pbs(...
+    population(Tl, Tr, Tg, lambda, r, lambda * rho / (1-rho), ts(1), P0)));
+
+tot = sum(sum(condDbs3(databs{1})));
+expected = full(tot * theorybs(2:8,1:8));
+observed = condDbs3(databs{1});
+observed = full(observed(2:8,1:8));
+expected(1,1) = 1; observed(1,1) = 1;
+
+chi2 = sum(sum((expected - observed).^2 ./ expected))
+
+    function plot_slice(ah, cx, cy, r, theta, colour, linespec, transparency)
+        X = [cx + r * cos(linspace(theta(1), theta(2), 20))];
+        Y = [cy + r * sin(linspace(theta(1), theta(2), 20))];
+        axes(ah);
+        fill_h = fill(X, Y, linespec);
         set(fill_h, 'EdgeColor', colour, 'FaceColor', colour, ...
-            'EdgeAlpha', transparency, 'FaceAlpha', transparency/2);
+            'EdgeAlpha', 1.0, 'FaceAlpha', transparency, 'LineWidth', 1.2);
+        %plot(ah, X, Y, linespec, 'Color', colour, 'LineWidth', 1.2);
     end
 
-    function plot_slices(ah, bs, scale, theta, colour, transparency)
-	[m,n,c] = find(bs);
-	tot = sum(sum(bs));
-	for i = 1:numel(c)
-	    if c > 0
-                plot_slice(ah, m(i)-1, n(i)-1, sqrt(c(i) / tot) * scale, theta, colour, transparency);
-	    end
-	end
+    function plot_slices(ah, bs, scale, theta, colour, linespec, transparency)
+        [m,n,c] = find(bs);
+        tot = sum(sum(bs));
+        for i = 1:numel(c)
+            if c > 0
+                    plot_slice(ah, m(i)-1, n(i)-1, sqrt(c(i) / tot) * scale, theta, colour, linespec, transparency);
+            end
+        end
     end
 
 
@@ -182,26 +203,28 @@ colours = [
 ];
 set(gh, 'NextPlot', 'add');
 
-plot_slices(gh, databs{1}, 1.0, [pi/2 3*pi/2], colours(1,:), 0.95);
-plot_slices(gh, databs{5}, 1.0, [3*pi/2 2*pi], colours(2,:), 0.95);
-plot_slices(gh, databs{6}, 1.0, [0      pi/2], colours(3,:), 0.95);
+plot_slices(gh, condDbs3(databs{1}), 1.0, [0 2*pi], colours(1,:), '-', 1.0);
+plot_slices(gh, theorybs, 1.0, [0 2*pi], colours(4,:), '-', 0.0);
+%plot_slices(gh, databs{5}, 1.0, [3*pi/2 2*pi], colours(2,:), 0.95);
+%plot_slices(gh, databs{6}, 1.0, [0      pi/2], colours(3,:), 0.95);
 
 set(gh, 'DataAspectRatio', [1 1 1]);
 axes(gh);
-axis tight;
+%axis tight;
+set(gh, 'XLim', [0.5 7.5], 'YLim', [-0.5 7.5]);
 
 xlabel(gh, 'Basal count', 'FontName', 'Times', 'FontSize', 8);
 ylabel(gh, 'Suprabasal count', 'FontName', 'Times', 'FontSize', 8);
 
-set(gh, 'FontName', 'Times', 'FontSize', 8);
+set(gh, 'FontName', 'Times', 'FontSize', 7);
 
 set(fh, 'PaperUnits', 'inches');
-w = 7; h = 5;
+w = 2.5; h = 2;
 set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
 
-set(gh, 'Position', get(gh, 'OuterPosition') - ...
-    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
+%set(gh, 'Position', get(gh, 'OuterPosition') - ...
+%    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
 
 set(fh, 'Color', 'white');
 
@@ -209,7 +232,7 @@ set(fh, 'Renderer', 'Painters');
 pause(0.1);
 set(fh, 'Renderer', 'OpenGL');
 pause(0.1);
-print(fh, '-dpng', '-opengl', '-r300', 'oes-atra-bubbles');
+print(fh, '-dpng', '-opengl', '-r600', 'oes-atra-bubbles');
 
 
 end
