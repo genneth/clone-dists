@@ -41,7 +41,13 @@ end
     end
 
 fh = figure;
-gh = newplot(fh);
+gh(1) = newplot(fh);
+gh(2) = axes('Position',get(gh(1),'Position'),...
+           'XAxisLocation','bottom',...
+           'YAxisLocation','right',...
+           'Color','none',...
+           'XColor','k','YColor','k');
+linkaxes(gh, 'x');
 colours = [
  0.996078, 0.360784, 0.027451;
 % 0.996078, 0.988235, 0.0352941;
@@ -53,44 +59,56 @@ colours = [
  0.890196, 0.0117647, 0.490196;
  0.905882, 0.027451, 0.129412
 ];
-for i = 1:numel(ts)
-    [X, Y] = generate_dots(data{i}, 75 + (i-1)*150);
-    plot(gh, X, Y, 'o', 'MarkerSize', 2, 'MarkerEdgeColor', colours(i,:));
-    hold all;
+offset = 75 + ((1:numel(ts)) - 1)*150;
+offset(6) = offset(6) + 75;
+offset(7) = offset(7) + 75;
+for i = [1 2]
+    set(gh(i), 'NextPlot', 'add');
+    set(gh(i), 'XLim', [0 7*150+75]);
+    ticklengths = get(gh(i), 'TickLength');
+    ticklengths(1) = 0.0;
+    set(gh(i), 'TickLength', ticklengths);
+    set(gh(i), 'YGrid', 'on');
+    set(gh(i), 'FontName', 'Times', 'FontSize', 8);
 end
-hold off;
-ylabel('clone size', 'Interpreter', 'latex', 'FontSize', 9);
-set(gh, 'FontName', 'Times', 'FontSize', 8);
-set(gh, 'XLim', [0 7*150]);
-set(gh, 'XTick', [75:150:975]);
-set(gh, 'XTickLabel', {'3 days'; '10 days'; '3 weeks'; '6 weeks'; '3 months'; '6 months'; '1 year'});
-ticklengths = get(gh, 'TickLength');
-ticklengths(1) = 0.0;
-set(gh, 'TickLength', ticklengths);
-set(gh, 'YGrid', 'on');
+set(gh(1), 'XTick', offset);
+set(gh(1), 'XTickLabel', {'3 days'; '10 days'; '3 weeks'; '6 weeks'; '3 months'; '6 months'; '1 year'});
+set(gh(2), 'XTick', [5*150+75/2], 'XTickLabel', {''});
+set(gh(2), 'XGrid', 'on');
+ylabel(gh(1), 'clone size', 'FontName', 'Times', 'FontSize', 8);
+ghi = [1 1 1 1 1 2 2];
+for i = 1:numel(ts)
+    [X, Y] = generate_dots(data{i}, offset(i));
+    plot(gh(ghi(i)), X, Y, 'o', 'MarkerSize', 2, 'MarkerEdgeColor', colours(i,:));
+    drawnow;
+end
+
+ylimits = get(gh(2),'YLim');
+yinc = (ylimits(2)-ylimits(1))/6;
+set(gh(2), 'YTick', [ylimits(1):yinc:ylimits(2)]);
 
 % copied from oes_scaling
-lambda = 0.7676;
-r = 0.1926;
-rho = 0.5164;
-gamma = lambda * rho / (1-rho);
-tau = rho / (r * lambda);
-
-[p0, ts2] = xi(lambda, r, rho, logspace(-1, 2, 40), 0);
-inset = axes('pos', [0.25 0.57 0.4 0.3]);
-loglog(inset, ts, av, '+', 'MarkerEdgeColor', colours(1,:));
-hold all;
-loglog(inset, ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-k');
-hold off;
-set(inset, 'XLim', [0.1 100]);
-xlabel('$t$ / weeks', 'Interpreter', 'latex', 'FontSize', 8);
-ylabel('$\langle n^\textrm{surv} \rangle$', 'Interpreter', 'latex', 'FontSize', 8);
-set(inset, 'FontName', 'Times', 'FontSize', 8);
-set(inset, 'Position', get(inset, 'OuterPosition') - ...
-    get(inset, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
+% lambda = 0.7676;
+% r = 0.1926;
+% rho = 0.5164;
+% gamma = lambda * rho / (1-rho);
+% tau = rho / (r * lambda);
+% 
+% [p0, ts2] = xi(lambda, r, rho, logspace(-1, 2, 40), 0);
+% inset = axes('pos', [0.25 0.57 0.4 0.3]);
+% set(inset, 'NextPlot', 'add');
+% loglog(inset, ts, av, '+', 'MarkerEdgeColor', colours(1,:));
+% loglog(inset, ts2, (1 + (lambda/gamma)*(1-exp(-gamma*ts2))) ./ (1 - p0), '-k');
+% set(inset, 'XScale', 'log', 'YScale', 'log');
+% set(inset, 'XLim', [0.1 100]);
+% xlabel('time (weeks)', 'FontName', 'Times', 'FontSize', 8);
+% ylabel('average clone size', 'FontName', 'Times', 'FontSize', 8);
+% set(inset, 'FontName', 'Times', 'FontSize', 8);
+% set(inset, 'Position', get(inset, 'OuterPosition') - ...
+%     get(inset, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
 
 set(fh, 'PaperUnits', 'inches');
-w = 4; h = 3;
+w = 5; h = 3.5;
 set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
 
@@ -99,7 +117,7 @@ set(fh, 'PaperPosition', [0 0 w h]);
 
 set(fh, 'Color', 'white');
 
-pause(0.1);
+drawnow;
 print(fh, '-dpdf', 'oes-raw-dots');
 
 end
