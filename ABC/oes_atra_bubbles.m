@@ -148,7 +148,7 @@ databs{6} = sparse([
 	0	0	0	0	0	0	0	1	0	0	0;
 	0	0	0	0	0	0	0	0	0	0	1]);
 
-dataset = 1;
+dataset = 4;
 %lambda = 1.4;
 lambda = (1.4 * 3 + 0.7676 * (ts(dataset)-3)) / ts(dataset);
 r = 0.1926;
@@ -215,13 +215,13 @@ axes(gh);
 %axis tight;
 set(gh, 'XLim', [0.5 7.5], 'YLim', [-0.5 7.5]);
 
-xlabel(gh, 'Basal count', 'FontName', 'Times', 'FontSize', 8);
-ylabel(gh, 'Suprabasal count', 'FontName', 'Times', 'FontSize', 8);
+xlabel(gh, 'Basal count', 'FontName', 'Times', 'FontSize', 10);
+ylabel(gh, 'Suprabasal count', 'FontName', 'Times', 'FontSize', 10);
 
-set(gh, 'FontName', 'Times', 'FontSize', 7);
+set(gh, 'FontName', 'Times', 'FontSize', 9);
 
 set(fh, 'PaperUnits', 'inches');
-w = 2.5; h = 2;
+w = 5; h = 5;
 set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
 
