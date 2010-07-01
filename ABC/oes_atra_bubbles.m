@@ -113,6 +113,7 @@ databs{4} = sparse([
 	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0;
 	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0]);
 
+% control
 databs{5} = sparse([
 	0	69	39	14	7	4	1	0;
 	32	59	24	6	3	0	0	0;
@@ -147,8 +148,9 @@ databs{6} = sparse([
 	0	0	0	0	0	0	0	1	0	0	0;
 	0	0	0	0	0	0	0	0	0	0	1]);
 
-%lambda = 0.7676;
-lambda = 1.4;
+dataset = 4;
+%lambda = 1.4;
+lambda = (1.4 * 3 + 0.7676 * (ts(dataset)-3)) / ts(dataset);
 r = 0.1926;
 rho = 0.5164;
 gamma = lambda * rho / (1-rho);
@@ -159,9 +161,9 @@ P0 = initial_eyp(14);
 theorybs = condPbs3(Pbs(...
     population(Tl, Tr, Tg, lambda, r, lambda * rho / (1-rho), ts(1), P0)));
 
-tot = sum(sum(condDbs3(databs{1})));
+tot = sum(sum(condDbs3(databs{dataset})));
 expected = full(tot * theorybs(2:8,1:8));
-observed = condDbs3(databs{1});
+observed = condDbs3(databs{3});
 observed = full(observed(2:8,1:8));
 expected(1,1) = 1; observed(1,1) = 1;
 
@@ -203,7 +205,7 @@ colours = [
 ];
 set(gh, 'NextPlot', 'add');
 
-plot_slices(gh, condDbs3(databs{1}), 1.0, [0 2*pi], colours(1,:), '-', 1.0);
+plot_slices(gh, condDbs3(databs{dataset}), 1.0, [0 2*pi], colours(1,:), '-', 1.0);
 plot_slices(gh, theorybs, 1.0, [0 2*pi], colours(4,:), '-', 0.0);
 %plot_slices(gh, databs{5}, 1.0, [3*pi/2 2*pi], colours(2,:), 0.95);
 %plot_slices(gh, databs{6}, 1.0, [0      pi/2], colours(3,:), 0.95);
@@ -213,26 +215,25 @@ axes(gh);
 %axis tight;
 set(gh, 'XLim', [0.5 7.5], 'YLim', [-0.5 7.5]);
 
-xlabel(gh, 'Basal count', 'FontName', 'Times', 'FontSize', 8);
-ylabel(gh, 'Suprabasal count', 'FontName', 'Times', 'FontSize', 8);
+xlabel(gh, 'Basal count', 'FontName', 'Times', 'FontSize', 10);
+ylabel(gh, 'Suprabasal count', 'FontName', 'Times', 'FontSize', 10);
 
-set(gh, 'FontName', 'Times', 'FontSize', 7);
+set(gh, 'FontName', 'Times', 'FontSize', 9);
 
 set(fh, 'PaperUnits', 'inches');
-w = 2.5; h = 2;
+w = 5; h = 5;
 set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
 
-%set(gh, 'Position', get(gh, 'OuterPosition') - ...
-%    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
-
 set(fh, 'Color', 'white');
 
-set(fh, 'Renderer', 'Painters');
-pause(0.1);
-set(fh, 'Renderer', 'OpenGL');
-pause(0.1);
-print(fh, '-dpng', '-opengl', '-r600', 'oes-atra-bubbles');
+drawnow
+
+if dataset == 1
+    print(fh, '-dpng', '-opengl', '-r300', 'oes-atra-pre-treat-bubbles');
+elseif dataset == 4
+    print(fh, '-dpng', '-opengl', '-r300', 'oes-atra-post-treat-bubbles');
+end
 
 
 end
