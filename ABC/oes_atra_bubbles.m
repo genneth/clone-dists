@@ -149,8 +149,11 @@ databs{6} = sparse([
 	0	0	0	0	0	0	0	0	0	0	1]);
 
 dataset = 4;
-%lambda = 1.4;
-lambda = (1.4 * 3 + 0.7676 * (ts(dataset)-3)) / ts(dataset);
+if dataset == 1
+    lambda = 1.4;
+elseif dataset == 4
+    lambda = (1.4 * 3 + 0.7676 * (ts(dataset)-3)) / ts(dataset);
+end
 r = 0.1926;
 rho = 0.5164;
 gamma = lambda * rho / (1-rho);
