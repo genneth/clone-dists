@@ -1,4 +1,4 @@
-function p1 = single_cells(r, gamma, mu, ts)
+function p1 = single_cell(r, gamma, mu, ts)
 
 n = 40;
 
