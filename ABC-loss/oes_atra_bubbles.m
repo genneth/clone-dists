@@ -178,7 +178,7 @@ for dataset = [1 4]
     end
     r = 0.1926;
     rho = 0.5164;
-    gamma = lambda * rho / (1-rho);
+    gamma = rho / (1-rho);
 
     theorybs = clone_size_distribution_cond(r, gamma, 0.0, [t/2 t] .* lambda, 7, 7);
 

@@ -29,4 +29,6 @@ set(ah, 'FontName', 'Times', 'FontSize', 8);
 xlabel(ah, 'time (weeks)', 'FontName', 'Times', 'FontSize', 8);
 ylabel(ah, 'proportion', 'FontName', 'Times', 'FontSize', 8);
 
+print(fh, '-dpng', 'single-cell');
+
 end
