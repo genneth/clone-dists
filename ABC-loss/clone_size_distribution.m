@@ -2,18 +2,22 @@ function pbs = clone_size_distribution(r, gamma, mu, ts, M0, N0)
 
 M = M0+1; N = N0+1;
 
-curr_samples = zeros(M,N, numel(ts));
+    function pmn = fourier2(fyz)
+        pmn = abs(fft(fft(fyz, [], 1), [], 2)) / (M*N);
+    end
+
+%curr_samples = zeros(M,N, numel(ts));
 curr_ps      = zeros(M,N, numel(ts));
 next_samples = zeros(M,N, numel(ts));
 next_ps      = zeros(M,N, numel(ts));
 for i = 1:M
-    parfor j = 1:N
+    for j = 1:N
         y = exp(2i*pi/M * (i-1));
         z = exp(2i*pi/N * (j-1));
         next_samples(i,j,:) = generating_function3(r, gamma, mu, ts, y, y, z);
     end
 end
-next_ps = abs(fft2(next_samples)) / (M*N);
+next_ps = fourier2(next_samples);
 
     function e = rel_err
         e = max(max(max(abs(curr_ps(1:(M0+1),1:(N0+1),:) - next_ps(1:(M0+1),1:(N0+1),:)) ./ next_ps(1:(M0+1),1:(N0+1),:))));
@@ -51,7 +55,7 @@ while rel_err > 1e-2 && abs_err > 1e-3
         end
     end
     M = M*2; N = N*2;
-    next_ps = abs(fft2(next_samples)) / (M*N);
+    next_ps = fourier2(next_samples);
     fprintf(1, 'oversampled %d rel error %g\t abs error %g\n', (M/(M0+1))*(N/(N0+1)), rel_err, abs_err);
 end
 

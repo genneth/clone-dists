@@ -209,10 +209,10 @@ for dataset = [1 4]
     %axis tight;
     set(gh, 'XLim', [0.5 7.5], 'YLim', [-0.5 7.5]);
 
-    xlabel(gh, 'Basal count', 'FontName', 'Times', 'FontSize', 10);
-    ylabel(gh, 'Suprabasal count', 'FontName', 'Times', 'FontSize', 10);
+    xlabel(gh, 'Basal count', 'FontName', 'Times New Roman', 'FontSize', 10);
+    ylabel(gh, 'Suprabasal count', 'FontName', 'Times New Roman', 'FontSize', 10);
 
-    set(gh, 'FontName', 'Times', 'FontSize', 9);
+    set(gh, 'FontName', 'Times New Roman', 'FontSize', 9);
 
     set(fh, 'PaperUnits', 'inches');
     w = 5; h = 5;

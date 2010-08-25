@@ -13,10 +13,16 @@ function f = generating_function2(r, gamma, ts, x0, y0)
 %  2. use exact solution to y
 
 assert(ts(1) >= 0, 'must start at a positive time');
-assert(numel(ts) > 1, 'must give a range of times to compute');
 assert(~(numel(ts) == 2 && ts(1) == 0), 'not allowed to give ts=[0 t]');
 
-if ts(1) > 0
+[r,~] = size(ts);
+if r ~= 1
+    ts = ts';
+end
+
+if numel(ts) == 1
+    times = [0 ts/2 ts];
+elseif ts(1) > 0
     times = [0 ts];
 else
     times = ts;
@@ -31,10 +37,12 @@ end
     end
 
 X0 = x0;
-[T,X] = ode45(@deriv, times, X0, ...
+[~,X] = ode45(@deriv, times, X0, ...
     odeset('RelTol', 1e-10, 'AbsTol', 1e-7));
 
-if ts(1) > 0
+if numel(ts) == 1
+    f = X(end);
+elseif ts(1) > 0
     f = X(2:end);
 else
     f = X;
