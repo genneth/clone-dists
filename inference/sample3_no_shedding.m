@@ -63,15 +63,8 @@ for i = 1:n
     [lts, SI] = sort(lts);
     tsi     = tsi(SI);
     
-    dist3_ = clone_dist_bs_expv(Tl, Tr, Tg, P0, r, gamma, lts);
-    basal_ = clone_dist_b(r, gamma, lts, 4);
-    [m_,n_,l_] = size(dist3_);
-    for j = 1:l_
-        Z = 1 - basal_(0+1,j) - dist3_(1+1,0+1,j);
-        dist3_(0+1,:,  j) = 0;
-        dist3_(1+1,0+1,j) = 0;
-        dist3_(:,:,j) = dist3_(:,:,j) ./ Z;        
-    end
+    dist3_ = clone_dist_bs_expv_cond(Tl, Tr, Tg, P0, r, gamma, lts);
+    [m_,n_,~] = size(dist3_);
     dist3 = zeros(m_,n_,mult,numel(ts3));
 
     for j = 1:numel(ts3)
