@@ -1,5 +1,9 @@
 function samples = sample3_no_shedding(rfun, gammafun, lambdafun, ts2, data2, ts3, data3, n)
 
+p = addpath(strcat(pwd, '/ParforProgMon'));
+jp = javaclasspath;
+pctRunOnAll javaaddpath(strcat(pwd, '/ParforProgMon'));
+
 % lambdafun is unitful; ts2 and ts3 are unitful. everything else is unitless.
 % rfun, gammafun, lambdafun :: (MonadRandom m) => m (Double, Double)
 % ts2 :: [], data2 :: {} -- times and observations of basal sizes
@@ -16,9 +20,17 @@ assert(numel(ts3) > 0, 'no suprabasal data. should run sample2');
 % separate distributions for different lambdas
 mult = floor(sqrt(n)/numel(ts3));
 
-wbh = waitbar(0.0, 'initialising...');
-
-samples = cell(n*mult, 6);
+% samples = cell(n*mult, 6);
+samples_prob   = zeros(n,mult);
+samples_r      = zeros(n,mult);
+samples_gamma  = zeros(n,mult);
+samples_lambda = zeros(n,mult);
+if numel(ts2) > 0
+    samples_p2     = zeros(n,mult, numel(ts2));
+else
+    samples_p2     = zeros(n,mult);
+end
+samples_p3     = zeros(n,mult, numel(ts3));
 
 maxN2 = 0;
 for i = 1:numel(ts2)
@@ -36,19 +48,19 @@ maxK = maxM3 + maxN3;
 
 [Tl Tr Tg P0] = clone_dist_bs_expv_setup(maxK);
 
-tstart = tic;
+ppm = ParforProgMon('sample3_no_shedding', n);
 
-for i = 1:n
+parfor i = 1:n
     
-    [rp, r] = rfun();
+    [rp, r] = feval(rfun);
     lambdap = zeros(mult, 1);
     lambda  = zeros(mult, 1);
     for j = 1:mult
-        [lambdap(j), lambda(j)] = lambdafun();
+        [lambdap(j), lambda(j)] = feval(lambdafun);
     end
     [lambda, SI] = sort(lambda);
     lambdap = lambdap(SI);
-    [gammap, gamma] = gammafun();
+    [gammap, gamma] = feval(gammafun);
 
 %     fprintf(1, 'parameters: r = %f, gamma = %f\n', r, gamma);
 %     fprintf(1, '            lambdas =\n');
@@ -71,34 +83,42 @@ for i = 1:n
         ind = find(tsi == j);
         dist3(:,:,:,j) = dist3_(:,:,ind);
     end
-
+    
+    samples_prob(i,:)   = rp*gammap .* lambdap;
+    samples_r(i,:)      = r; 
+    samples_gamma(i,:)  = gamma;
+    samples_lambda(i,:) = lambda; 
+    if numel(ts2) > 0
+        % TODO
+    else
+        samples_p2(i,:) = 1;
+    end
+    
+    samples_p3_ = zeros(mult,numel(ts3));
     for j = 1:mult
-        samples{(i-1)*mult+j,1} = rp*lambdap(j)*gammap;
-        samples{(i-1)*mult+j,2} = r; 
-        samples{(i-1)*mult+j,3} = gamma;
-        samples{(i-1)*mult+j,4} = lambda(j); 
-
-        if numel(ts2) > 0
-            samples{(i-1)*mult+j,5} = zeros(numel(ts2), 1);
-        else
-            samples{(i-1)*mult+j,5} = 1;
-        end
-        samples{(i-1)*mult+j,6} = zeros(numel(ts3), 1);
-
         for k = 1:numel(ts3)
             [row,col,v] = find(data3{k});
             for l = numel(v)
-                samples{(i-1)*mult+j,6}(k) = ...
-                    samples{(i-1)*mult+j,6}(k) ...
+                samples_p3_(j,k) = ...
+                    samples_p3_(j,k) ...
                   + log(dist3(row(l),col(l),j,k)) * data3{k}(row(l),col(l));
             end
         end
     end
+    samples_p3(i,:,:) = samples_p3_;
     
-    waitbar(i/n, wbh, sprintf('%.0f completed, %.1f min to go', i/n*100, (toc(tstart)/i*n)/60));
+    ppm.increment();
 
 end
 
-close(wbh);
+samples = [cell2mat(samples_prob,   n*mult,1) ...
+           cell2mat(samples_r,      n*mult,1) ...
+           cell2mat(samples_gamma,  n*mult,1) ...
+           cell2mat(samples_lambda, n*mult,1) ...
+           cell2mat(samples_p2,     n*mult,1) ...
+           cell2mat(samples_p3,     n*mult,1)];
+
+path(p);
+pctRunOnAll javaclasspath(jp);
 
 end
