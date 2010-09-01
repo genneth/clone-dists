@@ -32,17 +32,14 @@ samples_p3     = zeros(n,mult, numel(ts3));
 
 maxN2 = 0;
 for i = 1:numel(ts2)
-    maxN2 = max(maxN2, max(size(data2{i})));
+    maxN2 = max(maxN2, max(size(data2{i}))) - 1;
 end
 
-maxM3 = 0;
-maxN3 = 0;
+maxK = 0;
 for i = 1:numel(ts3)
-    s = size(data3{i});
-    maxM3 = max(maxM3, s(1));
-    maxN3 = max(maxN3, s(2));
+    [rows,cols,~] = find(data3{i});
+    maxK  = max(maxK, max(rows + cols) - 2);
 end
-maxK = maxM3 + maxN3;
 
 [Tl Tr Tg P0] = clone_dist_bs_expv_setup(maxK);
 

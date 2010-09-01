@@ -103,9 +103,6 @@ public class ParforProgressMonitor {
             // How far we are through - requires synchronized access
             fValue = 0;
             
-            // Start time
-            tStart = System.currentTimeMillis();
-
             // Get an anonymous port
             fSocket = new ServerSocket( 0 );
             // Set SO_TIMEOUT so that we don't block forever
@@ -117,6 +114,9 @@ public class ParforProgressMonitor {
 
             // Used to indicate to fThread when it's time to go
             fKeepGoing = new AtomicBoolean( true );
+
+            // Start time
+            tStart = System.currentTimeMillis();
         }
         
         /**
@@ -165,7 +165,7 @@ public class ParforProgressMonitor {
                         float toc = System.currentTimeMillis() - tStart;
                         float n = fBar.getMaximum();
                         float i = newVal;
-                        fLabel.setText( String.format("%.0f%% completed, %.1f min to go", i/n*100, (toc/i*n)/60000));
+                        fLabel.setText( String.format("%.0f%% completed, %.1f min to go", i/n*100, ((toc/i*n) - toc)/60000));
                         if ( newVal == fBar.getMaximum() ) {
                             done();
                         }
