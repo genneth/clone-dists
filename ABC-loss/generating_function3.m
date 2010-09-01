@@ -16,8 +16,8 @@ function f = generating_function3(r, gamma, mu, ts, x0, y0, z0)
 assert(ts(1) >= 0, 'must start at a positive time');
 assert(~(numel(ts) == 2 && ts(1) == 0), 'not allowed to give ts=[0 t]');
 
-[r,~] = size(ts);
-if r ~= 1
+[rows,~] = size(ts);
+if rows ~= 1
     ts = ts';
 end
 
