@@ -5,8 +5,7 @@ function pbs = clone_dist_bs_expv(Tl, Tr, Tg, P0, r, gamma, ts)
 
 % dP/dt = T P ==> P = P0 * exp(T t)
 
-p = path;
-path(strcat(pwd, '/clone_dist_bs_expv_private'), p);
+p = addpath(strcat(pwd, '/clone_dist_bs_expv_private'));
 
 P = zeros(numel(P0), numel(ts));
 t = 0;

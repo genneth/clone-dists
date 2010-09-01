@@ -1,7 +1,6 @@
 function samples = sample3_no_shedding(rfun, gammafun, lambdafun, ts2, data2, ts3, data3, n)
 
 p = addpath(strcat(pwd, '/ParforProgMon'));
-jp = javaclasspath;
 pctRunOnAll javaaddpath(strcat(pwd, '/ParforProgMon'));
 
 % lambdafun is unitful; ts2 and ts3 are unitful. everything else is unitless.
@@ -20,7 +19,6 @@ assert(numel(ts3) > 0, 'no suprabasal data. should run sample2');
 % separate distributions for different lambdas
 mult = floor(sqrt(n)/numel(ts3));
 
-% samples = cell(n*mult, 6);
 samples_prob   = zeros(n,mult);
 samples_r      = zeros(n,mult);
 samples_gamma  = zeros(n,mult);
@@ -111,14 +109,18 @@ parfor i = 1:n
 
 end
 
-samples = [cell2mat(samples_prob,   n*mult,1) ...
-           cell2mat(samples_r,      n*mult,1) ...
-           cell2mat(samples_gamma,  n*mult,1) ...
-           cell2mat(samples_lambda, n*mult,1) ...
-           cell2mat(samples_p2,     n*mult,1) ...
-           cell2mat(samples_p3,     n*mult,1)];
+samples = cell(n*mult, 6);
+for i = 1:n
+    for j = 1:mult
+        samples{(i-1)*mult+j,1} = samples_prob(i,j);
+        samples{(i-1)*mult+j,2} = samples_r(i,j);
+        samples{(i-1)*mult+j,3} = samples_gamma(i,j);
+        samples{(i-1)*mult+j,4} = samples_lambda(i,j);
+        samples{(i-1)*mult+j,5} = squeeze(samples_p2(i,j,:));
+        samples{(i-1)*mult+j,6} = squeeze(samples_p3(i,j,:));
+    end
+end
 
 path(p);
-pctRunOnAll javaclasspath(jp);
 
 end

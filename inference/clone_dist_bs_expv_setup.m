@@ -5,8 +5,7 @@ function [Tlambda Tr Tgamma P0] = clone_dist_bs_expv_setup(k)
 
 % k is the maximum number of cells we track
 
-p = path;
-path(strcat(pwd, '/clone_dist_bs_expv_private'), p);
+p = addpath(strcat(pwd, '/clone_dist_bs_expv_private'));
 
 M = tetra(k+1);
 Tlambda = sparse(M,M);
