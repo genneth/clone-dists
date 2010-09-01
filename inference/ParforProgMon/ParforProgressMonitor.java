@@ -1,3 +1,4 @@
+import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 import java.net.*;
@@ -76,23 +77,34 @@ public class ParforProgressMonitor {
      */
     private static class ProgServer implements Runnable, ProgThing {
         private JFrame fFrame;
+        private JLabel fLabel;
         private JProgressBar fBar;
         private ServerSocket fSocket;
         private int fValue;
+        private long tStart;
         private Thread fThread;
         private AtomicBoolean fKeepGoing;
         
         private ProgServer( String s, int N ) throws IOException {
             // The UI
             fFrame = new JFrame( s );
+            fLabel = new JLabel("Initialising...");
             fBar   = new JProgressBar( 0, N );
-            fFrame.getContentPane().add( fBar );
+            JPanel contentPane = new JPanel(new BorderLayout());
+            //contentPane.setBorder(someBorder);
+            contentPane.add(fLabel, BorderLayout.NORTH);
+            contentPane.add(fBar, BorderLayout.SOUTH);
+            fFrame.setContentPane(contentPane);
             fFrame.pack();
             fFrame.setLocationRelativeTo( null );
             fFrame.setVisible( true );
+            fFrame.setDefaultLookAndFeelDecorated( true );
 
             // How far we are through - requires synchronized access
             fValue = 0;
+            
+            // Start time
+            tStart = System.currentTimeMillis();
 
             // Get an anonymous port
             fSocket = new ServerSocket( 0 );
@@ -150,6 +162,10 @@ public class ParforProgressMonitor {
             SwingUtilities.invokeLater( new Runnable() {
                     public void run() {
                         fBar.setValue( newVal );
+                        float toc = System.currentTimeMillis() - tStart;
+                        float n = fBar.getMaximum();
+                        float i = newVal;
+                        fLabel.setText( String.format("%.0f%% completed, %.1f min to go", i/n*100, (toc/i*n)/60000));
                         if ( newVal == fBar.getMaximum() ) {
                             done();
                         }
