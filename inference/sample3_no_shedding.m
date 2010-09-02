@@ -32,7 +32,7 @@ samples_p3     = zeros(n,mult, numel(ts3));
 
 maxN2 = 0;
 for i = 1:numel(ts2)
-    maxN2 = max(maxN2, max(size(data2{i}))) - 1;
+    maxN2 = max(maxN2, numel(data2{i}) - 1);
 end
 
 maxK = 0;
@@ -73,7 +73,7 @@ parfor i = 1:n
     dist3_ = clone_dist_bs_expv_cond(Tl, Tr, Tg, P0, r, gamma, lts);
     [m_,n_,~] = size(dist3_);
     dist3 = zeros(m_,n_,mult,numel(ts3));
-
+    
     for j = 1:numel(ts3)
         ind = find(tsi == j);
         dist3(:,:,:,j) = dist3_(:,:,ind);
@@ -83,11 +83,26 @@ parfor i = 1:n
     samples_r(i,:)      = r; 
     samples_gamma(i,:)  = gamma;
     samples_lambda(i,:) = lambda; 
+
     if numel(ts2) > 0
-        % TODO
+        samples_p2_ = zeros(mult, numel(ts2));
+        for j = 1:mult
+            dist2 = clone_dist_b(r, gamma, ts2 .* lambda(j), maxN2);
+            for k = 1:numel(ts2)
+                % condition on b > 1
+                dist2(:,k) = dist2(:,k) ./ (1 - dist2(0+1,k) - dist2(1+1,k));
+                [~,col,v] = find(data2{k});
+                for l = numel(v)
+                    samples_p2_(j,k) = ...
+                        samples_p2_(j,k) ...
+                      + log(dist2(col(l),k)) * data2{k}(col(l));
+                end
+            end
+        end
     else
-        samples_p2(i,:) = 1;
+        samples_p2_ = ones(mult, 1);
     end
+    samples_p2(i,:,:) = samples_p2_;
     
     samples_p3_ = zeros(mult,numel(ts3));
     for j = 1:mult
