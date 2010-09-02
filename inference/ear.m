@@ -32,8 +32,8 @@ for i = 1:numel(ts2)
 end
 
     function [rp, r] = rfun
-        r = random('beta', 4, 4);
-        rp = betapdf(r, 4, 4);
+        r = random('beta', 2, 2);
+        rp = betapdf(r, 2, 2);
         r = r / 2; % actually between 0 and 1/2
     end
 
@@ -47,8 +47,18 @@ end
         gp = lognpdf(g, 0, log(2));
     end
 
-samples = sample3_no_shedding(@rfun, @gammafun, @lambdafun, ts2, data2, ts3, data3, 10);
+rfunh = @rfun;
+gfunh = @gammafun;
+lfunh = @lambdafun;
 
-save ear_samples.mat samples;
+p = addpath(strcat(pwd, '/ParforProgMon'));
+pctRunOnAll javaaddpath(strcat(pwd, '/ParforProgMon'));
+ppm = ParforProgMon('sample3_no_shedding', 900);
+spmd (8)
+    samples = sample3_no_shedding(rfunh, gfunh, lfunh, ts2, data2, ts3, data3, 900/8, ppm);
+    psave('ear_samples_');
+end
+
+path(p);
 
 end

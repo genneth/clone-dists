@@ -98,7 +98,6 @@ public class ParforProgressMonitor {
             fFrame.pack();
             fFrame.setLocationRelativeTo( null );
             fFrame.setVisible( true );
-            fFrame.setDefaultLookAndFeelDecorated( true );
 
             // How far we are through - requires synchronized access
             fValue = 0;

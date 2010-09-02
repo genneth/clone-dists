@@ -1,7 +1,10 @@
-function samples = sample3_no_shedding(rfun, gammafun, lambdafun, ts2, data2, ts3, data3, n)
+function samples = sample3_no_shedding(rfun, gammafun, lambdafun, ts2, data2, ts3, data3, n, ppm)
 
-p = addpath(strcat(pwd, '/ParforProgMon'));
-pctRunOnAll javaaddpath(strcat(pwd, '/ParforProgMon'));
+if nargin == 8
+    ppm_ = 0;
+elseif nargin == 9
+    ppm_ = 1;
+end
 
 % lambdafun is unitful; ts2 and ts3 are unitful. everything else is unitless.
 % rfun, gammafun, lambdafun :: (MonadRandom m) => m (Double, Double)
@@ -15,6 +18,10 @@ assert(numel(ts2) == numel(data2), 'inconsistent sizes between ts2 and data2');
 assert(numel(ts3) == numel(data3), 'inconsistent sizes between ts3 and data3');
 assert(numel(ts3) > 0, 'no suprabasal data. should run sample2');
 
+if ~ppm_
+    wbh = waitbar(0.0, 'initialising...');
+end
+
 % we use the fact that per invocation of clone_dist_* we can extract many
 % separate distributions for different lambdas
 mult = floor(sqrt(n)/numel(ts3));
@@ -26,7 +33,7 @@ samples_lambda = zeros(n,mult);
 if numel(ts2) > 0
     samples_p2     = zeros(n,mult, numel(ts2));
 else
-    samples_p2     = zeros(n,mult);
+    samples_p2     = zeros(n,mult, 1);
 end
 samples_p3     = zeros(n,mult, numel(ts3));
 
@@ -38,14 +45,17 @@ end
 maxK = 0;
 for i = 1:numel(ts3)
     [rows,cols,~] = find(data3{i});
-    maxK  = max(maxK, max(rows + cols) - 2);
+    maxK = max(maxK, max(rows + cols) - 2);
 end
 
 [Tl Tr Tg P0] = clone_dist_bs_expv_setup(maxK);
 
-ppm = ParforProgMon('sample3_no_shedding', n);
+if ~ppm_
+    waitbar(0.0, wbh, 'running...');
+    tstart = tic;
+end
 
-parfor i = 1:n
+for i = 1:n
     
     [rp, r] = feval(rfun);
     lambdap = zeros(mult, 1);
@@ -117,8 +127,18 @@ parfor i = 1:n
     end
     samples_p3(i,:,:) = samples_p3_;
     
-    ppm.increment();
+    if ppm_
+        ppm.increment();
+    else
+        waitbar(i/n, wbh, ...
+            sprintf('%.1f%% complete, %.1f min to go', ...
+            i/n*100, (toc(tstart)/i*n - toc(tstart))/60));
+    end
 
+end
+
+if ~ppm_
+    close(wbh);
 end
 
 samples = cell(n*mult, 6);
@@ -132,7 +152,5 @@ for i = 1:n
         samples{(i-1)*mult+j,6} = squeeze(samples_p3(i,j,:));
     end
 end
-
-path(p);
 
 end
