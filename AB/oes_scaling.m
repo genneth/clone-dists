@@ -50,6 +50,11 @@ colours = [
  0.905882, 0.027451, 0.129412
 ];
 set(gh, 'NextPlot', 'add');
+set(gh, 'XLim', [0 5], 'YLim', [1e-2 10^(6.5)], 'YScale', 'log');
+set(gh, 'Box', 'on');
+set(gh, 'FontName', 'Helvetica', 'FontSize', 9);
+xlabel(gh, 'scaled clone size', 'FontSize', 9, 'FontName', 'Helvetica');
+
 for i = 1:numel(ts);
     ps = condPb2(abs(exact_pops(lambda, r, lambda * rho / (1-rho), ts(i), floor(10*ts(i))+1)));
     ps = ps(2:end);
@@ -81,23 +86,15 @@ for i = 1:numel(ts);
     lh = plot(gh, (lo + hi) / 2 / av(i), (binned ./ (hi - lo + 1)) / tot(i) * av(i) * 10^(i-1), ...
         '^', 'MarkerEdgeColor', colours(i,:), 'MarkerFaceColor', colours(i,:), 'MarkerSize', 2);
     ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
-    for j = 1:numel(binned)
-        lh = plot(gh, [lo(j)-0.5 hi(j)+0.5] / av(i), [binned(j) binned(j)] ./ (hi(j) - lo(j) + 1) / tot(i) * av(i) * 10^(i-1), ...
-           '-', 'Color', colours(i,:));
-        ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
-    end
+%     for j = 1:numel(binned)
+%         lh = plot(gh, [lo(j)-0.5 hi(j)+0.5] / av(i), [binned(j) binned(j)] ./ (hi(j) - lo(j) + 1) / tot(i) * av(i) * 10^(i-1), ...
+%            '-', 'Color', colours(i,:));
+%         ah = get(lh, 'Annotation'); leh = get(ah, 'LegendInformation'); set(leh, 'IconDisplayStyle', 'off');
+%     end
 
-    set(gh, 'XLim', [0 5], 'YLim', [1e-2 10^(6.5)], 'YScale', 'log');
-    pause(0.1);
+    drawnow;
 end
 plot(gh, linspace(0,5,50), exp(-linspace(0,5,50)) * 1e6, '-', 'Color', 'black', 'LineWidth', 1.5);
-
-xlabel(gh, 'scaled clone size', 'FontSize', 8, 'FontName', 'Times');
-%set(gh, 'YTick', log10([reshape([1:9]' * 10.^[-2:5], 8*9, 1); 10^6]));
-%set(gh, 'YTickLabel', '10 ||||||||');
-%set(gh, 'TickLength', get(gh, 'TickLength') / 2);
-
-set(gh, 'FontName', 'Times', 'FontSize', 7);
 
 legend('3 days', ...
     '10 days', ...
@@ -107,22 +104,13 @@ legend('3 days', ...
     '6 months', ...
     '1 year', ...
     'limit', ...
-    'Location', 'SouthEast');
+    'Location', 'NorthOutside');
 
 set(fh, 'PaperUnits', 'inches');
-w = 2.5; h = 3.5;
+w = 4; h = 6;
 set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
 
-%set(gh, 'Position', get(gh, 'OuterPosition') - ...
-%    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
-
-set(fh, 'Color', 'white');
-
-set(fh, 'Renderer', 'Painters');
-pause(0.1);
-%set(fh, 'Renderer', 'OpenGL');
-%pause(0.1);
-print(fh, '-dpng', '-painters', '-r300', 'oes-scaling-b');
+print(fh, '-dpdf', '-painters', 'oes-scaling-b');
 
 end
