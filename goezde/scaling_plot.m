@@ -13,9 +13,11 @@ for i = 1:numel(ts)
     av = average_size(r1, r2, ts(i));
     p = ps(:,i);
     c = 1 - cumsum(p);
-    plot(gh, (1:n) ./ av, c);
+    plot(gh, (1:n) ./ av, c, '-', 'Color', [1 ts(i)/max(ts) 0]);
     drawnow;
 end
+
+set(gh, 'YLim', [0 1]);
 
 xlabel(gh, 'scaled size', 'FontName', 'Times', 'FontSize', 8);
 ylabel(gh, 'cumulative distribution', 'FontName', 'Times', 'FontSize', 8);
