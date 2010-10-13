@@ -170,5 +170,6 @@ bubble_compare(lambda1*3 + lambda2*(ts3(6)-3), ...
     data3{6}, r, rho/(1-rho), ...    
     'oes-comparison-atra-post-treat-30-days');
 
+!rubber --pdf oesophagus-fit.tex
 
 end
