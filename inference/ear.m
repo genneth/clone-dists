@@ -51,27 +51,8 @@ rfunh = @rfun;
 gfunh = @gammafun;
 lfunh = @lambdafun;
 
-p = addpath(strcat(pwd, '/ParforProgMon'));
-pctRunOnAll javaaddpath(strcat(pwd, '/ParforProgMon'));
-n = 900;
-spmd
-    m = numlabs;
-    s = numlabs^(2/3);
-end
-m_ = m{1}; s_ = s{1};
-ppm = ParforProgMon('sample3_no_shedding', m_*floor(n/s_));
-spmd
-    localsamples = sample3_no_shedding(rfunh, gfunh, lfunh, ts2, data2, ts3, data3, floor(n/s), ppm);
-    [m,~] = size(localsamples);
-    partition = codistributed.build(m, codistributor1d(2, ones(1,numlabs), [1 numlabs]));
-    distsamples = codistributed.build(localsamples, ...
-        codistributor1d(1, partition, [sum(partition) 6]));
-end
-
-samples = gather(distsamples);
+samples = sample3_no_shedding(rfunh, gfunh, lfunh, ts2, data2, ts3, data3, 10, 3);
 
 save ear_samples.mat samples;
-
-path(p);
 
 end
