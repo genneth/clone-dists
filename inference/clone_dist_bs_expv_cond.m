@@ -1,5 +1,7 @@
 function pbs = clone_dist_bs_expv_cond(Tl, Tr, Tg, P0, r, gamma, ts)
 
+% condition on b+s>1, b>0
+
 dist3_ = clone_dist_bs_expv(Tl, Tr, Tg, P0, r, gamma, ts);
 basal_ = clone_dist_b(r, gamma, ts, 4);
 [~,~,l_] = size(dist3_);

@@ -13,7 +13,7 @@ assert(numel(ts2) == numel(data2), 'inconsistent sizes between ts2 and data2');
 assert(numel(ts3) == numel(data3), 'inconsistent sizes between ts3 and data3');
 assert(numel(ts3) > 0, 'no suprabasal data. should run sample2');
 
-% wbh = waitbar(0.0, 'initialising...');
+wbh = waitbar(0.0, 'initialising...');
 
 % we use the fact that per invocation of clone_dist_* we can extract many
 % separate distributions for different lambdas
@@ -41,10 +41,10 @@ end
 
 [Tl Tr Tg P0] = clone_dist_bs_expv_setup(maxK);
 
-% waitbar(0.0, wbh, 'running...');
-% tstart = tic;
+waitbar(0.0, wbh, 'running...');
+tstart = tic;
 
-parfor i = 1:nsamples
+for i = 1:nsamples
     
     [rp, r] = feval(rfun);
     lambdap = zeros(nlambdas, 1);
@@ -91,12 +91,8 @@ parfor i = 1:nsamples
     samples_p3_ = zeros(nlambdas,numel(ts3));
     for j = 1:nlambdas
         for k = 1:numel(ts3)
-            [row,col,v] = find(data3{k});
-            for l = numel(v)
-                samples_p3_(j,k) = ...
-                    samples_p3_(j,k) ...
-                  + log(dist3(row(l),col(l),j,k)) * data3{k}(row(l),col(l));
-            end
+            [m_,n_] = size(data3{k});
+            samples_p3_(j,k) = sum(sum(data3{k} .* log(dist3(1:m_,1:n_,j,k))));
         end
     end
     samples_p3(i,:,:) = samples_p3_;
@@ -130,27 +126,23 @@ parfor i = 1:nsamples
         samples_p2_ = zeros(nlambdas, numel(ts2));
         for j = 1:nlambdas
             for k = 1:numel(ts2)
-                [~,col,v] = find(data2{k});
-                for l = numel(v)
-                    samples_p2_(j,k) = ...
-                        samples_p2_(j,k) ...
-                      + log(dist2(col(l),j,k)) * data2{k}(col(l));
-                end
+                [~,n_] = size(data2{k});
+                samples_p2_(j,k) = sum(data2{k} .* log(dist2(1:n_,j,k)));
             end
         end
     else
-        samples_p2_ = ones(mult, 1);
+        samples_p2_ = ones(nlambdas, 1);
     end
     samples_p2(i,:,:) = samples_p2_;
     
     
-%     waitbar(i/nsamples, wbh, ...
-%         sprintf('%.1f%% complete, %.1f min to go', ...
-%         i/nsamples*100, (toc(tstart)/i*nsamples - toc(tstart))/60));
+    waitbar(i/nsamples, wbh, ...
+        sprintf('%.1f%% complete, %.1f min to go', ...
+        i/nsamples*100, (toc(tstart)/i*nsamples - toc(tstart))/60));
 
 end
 
-% close(wbh);
+close(wbh);
 
 samples = cell(nsamples*nlambdas, 6);
 for i = 1:nsamples
