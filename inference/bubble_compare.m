@@ -58,11 +58,12 @@ colours = [
 
 set(ah, 'NextPlot', 'add');
 set(ah, 'FontName', 'Helvetica', 'FontSize', 9);
-xlabel(ah, 'Basal', 'FontName', 'Helvetica', 'FontSize', 9);
-ylabel(ah, 'Suprabasal', 'FontName', 'Helvetica', 'FontSize', 9);
+xlabel(ah, 'Basal', 'FontName', 'Helvetica', 'FontSize', 9, 'FontWeight', 'bold');
+ylabel(ah, 'Suprabasal', 'FontName', 'Helvetica', 'FontSize', 9, 'FontWeight', 'bold');
 set(ah, 'DataAspectRatio', [1 1 1]);
 set(ah, 'XLim', [0.5 kk+0.5], 'YLim', [-0.5 kk+0.5]);
-set(ah, 'XAxisLocation', 'top', 'YDir', 'reverse', 'Box', 'on');
+%set(ah, 'XAxisLocation', 'top', 'YDir', 'reverse', 'Box', 'on');
+set(ah, 'Box', 'on');
 
 for i=2:kk+1
     for j=1:kk+1
@@ -91,5 +92,7 @@ set(fh, 'PaperPosition', [0 0 w h]);
 if ~strcmp(file, '')
     print(fh, '-dpdf', '-painters', strcat(file, '.pdf'));
 end
+
+close(fh);
 
 end
