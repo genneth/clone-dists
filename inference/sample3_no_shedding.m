@@ -91,8 +91,11 @@ for i = 1:nsamples
     samples_p3_ = zeros(nlambdas,numel(ts3));
     for j = 1:nlambdas
         for k = 1:numel(ts3)
-            [m_,n_] = size(data3{k});
-            samples_p3_(j,k) = sum(sum(data3{k} .* log(dist3(1:m_,1:n_,j,k))));
+            [rows,cols,v] = find(data3{k});
+            for l = 1:numel(v)
+                samples_p3_(j,k) = samples_p3_(j,k) + ...
+                    v(l) * log(dist3(rows(l),cols(l),j,k));
+            end
         end
     end
     samples_p3(i,:,:) = samples_p3_;
@@ -126,8 +129,11 @@ for i = 1:nsamples
         samples_p2_ = zeros(nlambdas, numel(ts2));
         for j = 1:nlambdas
             for k = 1:numel(ts2)
-                [~,n_] = size(data2{k});
-                samples_p2_(j,k) = sum(data2{k} .* log(dist2(1:n_,j,k)));
+                [~,cols,v] = find(data2{k});
+                for l = 1:numel(v)
+                    samples_p2_(j,k) = samples_p2_(j,k) + ...
+                        v(l) * log(dist2(cols(l),j,k));
+                end
             end
         end
     else

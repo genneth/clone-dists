@@ -51,7 +51,8 @@ rfunh = @rfun;
 gfunh = @gammafun;
 lfunh = @lambdafun;
 
-samples = sample3_no_shedding(rfunh, gfunh, lfunh, ts2, data2, ts3, data3, 10, 3);
+% samples = sample3_no_shedding(rfunh, gfunh, lfunh, ts2, data2, ts3, data3, 1000, 30);
+samples = sample3_no_shedding(rfunh, gfunh, lfunh, [], {}, ts3, data3, 1000, 30);
 
 save ear_samples.mat samples;
 
