@@ -15,4 +15,10 @@ lambda2 = trapz(lambdas, lambdas'.^2 .* squeeze(trapz(rhos, trapz(rs, pxd))));
 gamma1 = trapz(lambdas, trapz(rhos, ((rhos ./ (1-rhos))' * lambdas) .* squeeze(trapz(rs, pxd))));
 gamma2 = trapz(lambdas, trapz(rhos, ((rhos ./ (1-rhos))' * lambdas).^2 .* squeeze(trapz(rs, pxd))));
 
+fprintf(1, 'parameters (+- 95%% confidence intervals):\n');
+fprintf(1, '  1/lambda = %.1f +- %.1f days\n', 7/lambda1, 7/lambda1* 2*sqrt(lambda2-lambda1^2)/lambda1);
+fprintf(1, '  1/gamma = %.1f +- %.1f days\n', 7/gamma1, 7/gamma1* 2*sqrt(gamma2-gamma1^2)/gamma1);
+fprintf(1, '  rho = %.2f +- %.2f\n', rho1, 2*sqrt(rho2-rho1^2));
+fprintf(1, '  r = %.2f +- %.2f\n', r1, 2*sqrt(r2-r1^2));
+
 end
