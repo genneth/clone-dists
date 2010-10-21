@@ -28,18 +28,6 @@ for i = 1:numel(ts)
     av(i) = dot(data{i}(:,1), data{i}(:,2) / sum(data{i}(:,2)));
 end
 
-    function [X, Y] = generate_dots(data, xoffset)
-        X = zeros(0,0);
-        Y = zeros(0,0);
-        for d = data'
-            n = d(1); counts = d(2);
-            for x = (-floor(counts/2)):(counts - ceil(counts/2))
-                Y(end+1) = n;
-                X(end+1) = x+xoffset;
-            end
-        end
-    end
-
 fh = figure;
 gh(1) = newplot(fh);
 gh(2) = axes('Position',get(gh(1),'Position'),...
@@ -69,17 +57,24 @@ for i = [1 2]
     ticklengths(1) = 0.0;
     set(gh(i), 'TickLength', ticklengths);
     set(gh(i), 'YGrid', 'on');
-    set(gh(i), 'FontName', 'Times', 'FontSize', 8);
+    set(gh(i), 'FontName', 'Helvetica', 'FontSize', 9);
 end
 set(gh(1), 'XTick', offset);
 set(gh(1), 'XTickLabel', {'3 days'; '10 days'; '3 weeks'; '6 weeks'; '3 months'; '6 months'; '1 year'});
 set(gh(2), 'XTick', [5*150+75/2], 'XTickLabel', {''});
 set(gh(2), 'XGrid', 'on');
-ylabel(gh(1), 'clone size', 'FontName', 'Times', 'FontSize', 8);
+ylabel(gh(1), 'clone size', 'FontName', 'Helvetica', 'FontSize', 9);
 ghi = [1 1 1 1 1 2 2];
 for i = 1:numel(ts)
-    [X, Y] = generate_dots(data{i}, offset(i));
-    plot(gh(ghi(i)), X, Y, 'o', 'MarkerSize', 2, 'MarkerEdgeColor', colours(i,:));
+    for j = 1:numel(data{i}(:,1))
+        axes(gh(ghi(i)));
+        rectangle('Position', ...
+            [-data{i}(j,2)/2+offset(i) data{i}(j,1)...
+            data{i}(j,2) 1], ...
+            'EdgeColor', colours(i,:) , 'FaceColor', colours(i,:));
+    end
+%     [X, Y] = drawbar(data{i}, offset(i));
+%     plot(gh(ghi(i)), X, Y, 'o', 'MarkerSize', 2, 'MarkerEdgeColor', colours(i,:));
     drawnow;
 end
 
@@ -108,16 +103,12 @@ set(gh(2), 'YTick', [ylimits(1):yinc:ylimits(2)]);
 %     get(inset, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
 
 set(fh, 'PaperUnits', 'inches');
-w = 5; h = 3.5;
+w = 5; h = 4;
 set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
 
-%set(gh, 'Position', get(gh, 'OuterPosition') - ...
-%    get(gh, 'TightInset') * [-1 0 1 0; 0 -1 0 1; 0 0 1 0; 0 0 0 1]);
-
 set(fh, 'Color', 'white');
 
-drawnow;
-print(fh, '-dpdf', 'oes-raw-dots');
+print(fh, '-dpdf', '-painters', 'oes-raw-dots');
 
 end
