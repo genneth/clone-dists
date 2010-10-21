@@ -149,14 +149,10 @@ data3{6} = sparse([
 	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0]);
 
 % optimal estimates
-% rho:	0.49465 +- 0.0298334
-% r:	0.220243 +- 0.0239353
-% lambda:	0.797034 +- 0.0328321 (control)
-%           1.4 (ATRA homoeostasis)
-rho = 0.49465;
-r = 0.220243;
-lambda1 = 0.797034;
-lambda2 = 1.4;
+rho = 0.48;
+r = 0.22;
+lambda1 = 7/8.8;
+lambda2 = 7/5.1;
 
 bubble_compare(lambda1*ts3(1), data3{1}, r, rho/(1-rho), ...
     'oes-comparison-control-22-days');
