@@ -168,4 +168,52 @@ bubble_compare(lambda1*3 + lambda2*(ts3(6)-3), ...
 
 !rubber --pdf oesophagus-fit.tex
 
+% make the legend
+
+colours = [
+ 0.996078, 0.360784, 0.027451;
+% 0.996078, 0.988235, 0.0352941;
+ 0.541176, 0.713725, 0.027451;
+ 0.145098, 0.435294, 0.384314;
+ 0.00784314, 0.509804, 0.929412;
+ 0.152941, 0.113725, 0.490196;
+ 0.470588, 0.262745, 0.584314;
+ 0.890196, 0.0117647, 0.490196;
+ 0.905882, 0.027451, 0.129412
+];
+
+fh = figure;
+ah = newplot(fh);
+set(ah, 'NextPlot', 'add');
+set(ah, 'FontName', 'Helvetica', 'FontSize', 9);
+set(ah, 'DataAspectRatio', [1 1 1]);
+set(ah, 'XLim', [-0.5 2.0], 'YLim', [-0.5 kk+0.5]);
+set(ah, 'Visible', 'off');
+
+labels = {'1%', '5%', '10%'};
+r = sqrt([1 5 10] / 100);
+y = 2 + cumsum(2*r) + [0 0.2 0.4];
+for i = 1:numel(r)
+    rectangle('Position', [0-r(i) y(i)-r(i) 2*r(i) 2*r(i)], 'Curvature', [1 1], ...
+        'FaceColor', colours(1,:) * 0.50 + [1 1 1] * 0.50, 'EdgeColor', 'none');
+    rectangle('Position', [1-r(i) y(i)-r(i) 2*r(i) 2*r(i)], 'Curvature', [1 1], ...
+        'FaceColor', 'none', 'EdgeColor', 'k', 'LineWidth', 1);
+    text(1.1+r(i), y(i), labels{i}, ...
+        'FontName', 'Helvetica', 'FontSize', 8, 'Color', 'k');
+end
+
+text(0, 1.8-sqrt(0.01), 'theory', 'Rotation', 90, 'HorizontalAlignment', 'Right', ...
+    'FontName', 'Helvetica', 'FontSize', 8, 'FontWeight', 'bold', 'Color', colours(1,:));
+text(1, 1.8-sqrt(0.01), 'experiment', 'Rotation', 90, 'HorizontalAlignment', 'Right', ...
+    'FontName', 'Helvetica', 'FontSize', 8, 'FontWeight', 'bold', 'Color', 'k');
+
+set(fh, 'PaperUnits', 'inches');
+w = 1; h = 4;
+set(fh, 'PaperSize', [w h]);
+set(fh, 'PaperPosition', [0 0 w h]);
+
+print(fh, '-dpdf', '-painters', 'oes-comparison-legend');
+
+close(fh);
+
 end

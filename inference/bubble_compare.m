@@ -67,20 +67,20 @@ set(ah, 'Box', 'on');
 
 for i=2:kk+1
     for j=1:kk+1
-        % experiment
-        if experiment(i,j) > 0
-            r = sqrt(experiment(i,j)/count);
-            rectangle('Position', [i-1-r j-1-r 2*r 2*r], 'Curvature', [1 1], ...
-                'FaceColor', colours(1,:), 'EdgeColor', 'none');
-        end
-        
         % theory
         if theory(i,j) > 0
             r = sqrt(theory(i,j));
             rectangle('Position', [i-1-r j-1-r 2*r 2*r], 'Curvature', [1 1], ...
-                'FaceColor', 'none', 'EdgeColor', colours(4,:), ...
-                'LineWidth', 1.2);
+                'FaceColor', colours(1,:) * 0.50 + [1 1 1] * 0.50, 'EdgeColor', 'none');
         end
+        
+        % experiment
+        if experiment(i,j) > 0
+            r = sqrt(experiment(i,j)/count);
+            rectangle('Position', [i-1-r j-1-r 2*r 2*r], 'Curvature', [1 1], ...
+                'FaceColor', 'none', 'EdgeColor', 'k', 'LineWidth', 1);
+        end
+        
     end
 end
 

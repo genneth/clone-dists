@@ -19,6 +19,7 @@ data3{1} = sparse([
 data3{1}(0+1,:) = 0;
 tot{1} = sum(sum(data3{1}));
 
+% ATRA
 ts3(2) = 3;
 data3{2} = sparse([
 	0	31	23	21	10	7	1	0	0	1	0	0	0;
@@ -56,13 +57,6 @@ colours = [
 
 kk=6;
 
-    function sector(x0, y0, r, theta0, theta1, facecolour)
-        fill(x0 + r*cos(linspace(theta0,theta1,10)), ...
-            y0 + r*sin(linspace(theta0,theta1,10)), ...
-            facecolour, ...
-            'EdgeColor', 'none');
-    end
-
 fh = figure;
 ah = newplot;
 set(ah, 'NextPlot', 'add');
@@ -70,31 +64,26 @@ set(ah, 'FontName', 'Helvetica', 'FontSize', 9);
 xlabel(ah, 'Basal', 'FontName', 'Helvetica', 'FontSize', 9, 'FontWeight', 'bold');
 ylabel(ah, 'Suprabasal', 'FontName', 'Helvetica', 'FontSize', 9, 'FontWeight', 'bold');
 set(ah, 'DataAspectRatio', [1 1 1]);
-set(ah, 'XLim', [-0.5 kk+0.5], 'YLim', [-0.5 kk+0.5]);
+set(ah, 'XLim', [0.5 kk+0.5], 'YLim', [-0.5 kk+0.5]);
 %set(ah, 'XAxisLocation', 'top', 'YDir', 'reverse', 'Box', 'on');
 set(ah, 'Box', 'on');
 
 for i=2:kk+1
     for j=1:kk+1
-        if data3{1}(i,j) > 0
-            r = sqrt(data3{1}(i,j)/tot{2});
-            sector(i-1,j-1,r, pi/2, 3*pi/2, colours(2,:));
-        end
-        
         if data3{2}(i,j) > 0
             r = sqrt(data3{2}(i,j)/tot{2});
-            sector(i-1,j-1,r, 3*pi/2, 5*pi/2, colours(3,:));
+            rectangle('Position', [i-1-r j-1-r 2*r 2*r], 'Curvature', [1 1], ...
+                'FaceColor', colours(1,:) * 0.50 + [1 1 1] * 0.50, 'EdgeColor', 'none');
         end
+        
+        if data3{1}(i,j) > 0
+            r = sqrt(data3{1}(i,j)/tot{2});
+            rectangle('Position', [i-1-r j-1-r 2*r 2*r], 'Curvature', [1 1], ...
+                'FaceColor', 'none', 'EdgeColor', 'k', 'LineWidth', 1);
+        end
+        
     end
 end
-
-sector(0, 6, sqrt(0.01), pi/2, 3*pi/2, colours(2,:));
-text(-0.23, 5, 'control 1%', 'Rotation', 90, ...
-    'FontName', 'Helvetica', 'FontSize', 8, 'Color', colours(2,:));
-
-sector(0, 6, sqrt(0.05), 3*pi/2, 5*pi/2, colours(3,:));
-text(0.39, 5.1, 'ATRA 5%', 'Rotation', 90, ...
-    'FontName', 'Helvetica', 'FontSize', 8, 'Color', colours(3,:));
 
 set(fh, 'PaperUnits', 'inches');
 w = 4; h = 4;
@@ -102,6 +91,42 @@ set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
 
 print(fh, '-dpdf', '-painters', 'oesophaguse-atra-comparison-plot');
+
+close(fh);
+
+% make the legend
+
+fh = figure;
+ah = newplot(fh);
+set(ah, 'NextPlot', 'add');
+set(ah, 'FontName', 'Helvetica', 'FontSize', 9);
+set(ah, 'DataAspectRatio', [1 1 1]);
+set(ah, 'XLim', [-0.5 2.0], 'YLim', [-0.5 kk+0.5]);
+set(ah, 'Visible', 'off');
+
+labels = {'1%', '5%', '10%'};
+r = sqrt([1 5 10] / 100);
+y = 2 + cumsum(2*r) + [0 0.2 0.4];
+for i = 1:numel(r)
+    rectangle('Position', [0-r(i) y(i)-r(i) 2*r(i) 2*r(i)], 'Curvature', [1 1], ...
+        'FaceColor', colours(1,:) * 0.50 + [1 1 1] * 0.50, 'EdgeColor', 'none');
+    rectangle('Position', [1-r(i) y(i)-r(i) 2*r(i) 2*r(i)], 'Curvature', [1 1], ...
+        'FaceColor', 'none', 'EdgeColor', 'k', 'LineWidth', 1);
+    text(1.1+r(i), y(i), labels{i}, ...
+        'FontName', 'Helvetica', 'FontSize', 8, 'Color', 'k');
+end
+
+text(0, 1.8-sqrt(0.01), 'control', 'Rotation', 90, 'HorizontalAlignment', 'Right', ...
+    'FontName', 'Helvetica', 'FontSize', 8, 'FontWeight', 'bold', 'Color', colours(1,:));
+text(1, 1.8-sqrt(0.01), 'ATRA', 'Rotation', 90, 'HorizontalAlignment', 'Right', ...
+    'FontName', 'Helvetica', 'FontSize', 8, 'FontWeight', 'bold', 'Color', 'k');
+
+set(fh, 'PaperUnits', 'inches');
+w = 1; h = 4;
+set(fh, 'PaperSize', [w h]);
+set(fh, 'PaperPosition', [0 0 w h]);
+
+print(fh, '-dpdf', '-painters', 'oesophaguse-atra-comparison-plot-legend');
 
 close(fh);
 
