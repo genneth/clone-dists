@@ -29,6 +29,7 @@ data2{6} = sparse([0 25 33 26 21 15 10 9 6 8 6 1 5 6 2 3 7 2 0 1 1 1 0 ...
 % take out unreliable entries
 for i = 1:numel(ts2)
     data2{i}(0+1) = 0;
+    data2{i}(1+1) = 0;
 end
 
     function [rp, r] = rfun
@@ -51,8 +52,7 @@ rfunh = @rfun;
 gfunh = @gammafun;
 lfunh = @lambdafun;
 
-% samples = sample3_no_shedding(rfunh, gfunh, lfunh, ts2, data2, ts3, data3, 1000, 30);
-samples = sample3_no_shedding(rfunh, gfunh, lfunh, [], {}, ts3, data3, 1000, 30);
+samples = sample3_no_shedding(rfunh, gfunh, lfunh, ts2, data2, ts3, data3, 10, 3);
 
 save ear_samples.mat samples;
 
