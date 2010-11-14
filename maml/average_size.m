@@ -1,7 +1,11 @@
-function av = average_size(gamma, q, t)
+function av = average_size(~, gamma, ts)
 
-g = sqrt(gamma * (4 * q + gamma));
+% dp = gamma*d
+% dd = p
+% => ddp = gamma*dd = gamma*p
+% => p = exp(sqrt(gamma) * t)
+% => d = sqrt(gamma) * [exp(sqrt(gamma) * t) - 1]
 
-av = exp(-(gamma + g) * t / 2) * ((-2 - gamma + g) + exp(g*t) * (2 + gamma + g)) / (2*g);
+av = exp(sqrt(gamma) * ts) + sqrt(gamma) * expm1(sqrt(gamma) * ts);
 
 end
