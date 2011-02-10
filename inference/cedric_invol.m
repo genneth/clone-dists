@@ -68,8 +68,8 @@ end
     end
 
     function [lp, l] = lambdafun
-        l = random('logn', log(1/4), log(2));
-        lp = lognpdf(l, log(1/4), log(2));
+        l = random('logn', 0, log(2));
+        lp = lognpdf(l, 0, log(2));
     end
 
     function [gp, g] = gammafun
