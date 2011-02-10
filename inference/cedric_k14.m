@@ -87,7 +87,7 @@ end
         gp = lognpdf(g, 0, log(2));
     end
 
-samples = sample3_no_shedding(@rfun, @gammafun, @lambdafun, [], {}, times, data, 1000, 30);
+samples = sample3_no_shed(@rfun, @gammafun, @lambdafun, [], {}, times, data, 1000, 30);
 
 save cedric_k14_samples.mat samples
 
