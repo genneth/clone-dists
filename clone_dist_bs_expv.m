@@ -18,6 +18,8 @@ for i = 1:numel(ts)
     t = ts(i); P0 = P(:,i);
 end
 
+pbs = abs(pbs); % is this the right thing to do?
+
 path(p);
 
 end
