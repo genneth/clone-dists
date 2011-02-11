@@ -59,6 +59,6 @@ while rel_err > 1e-2 && abs_err > 1e-3
 %     fprintf(1, 'oversampled %d rel error %g\t abs error %g\n', (M/(M0+1))*(N/(N0+1)), rel_err, abs_err);
 end
 
-pbs = next_ps(1:(M0+1), 1:(N0+1), :);
+pbs = abs(next_ps(1:(M0+1), 1:(N0+1), :));
 
 end
