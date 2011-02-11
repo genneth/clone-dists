@@ -1,4 +1,4 @@
-function cedric_invol
+function invol
 
 times = [3.5/7 1 2 4 8 12]; % weeks
 data = {
@@ -67,6 +67,6 @@ samples = sample3_no_shed(...
     @()(random('logn', 0, log(2))), ...
     [], {}, times, data, 1000, 30);
 
-save cedric_invol_samples.mat samples
+save invol_samples.mat samples
 
 end
