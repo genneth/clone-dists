@@ -62,8 +62,8 @@ for i = 1:numel(times)
 end
 
     function [rp, r] = rfun
-        r = random('beta', 2, 2);
-        rp = betapdf(r, 2, 2);
+        r = random('beta', 1, 3);
+        rp = betapdf(r, 1, 3);
         r = r / 2; % actually between 0 and 1/2
     end
 
@@ -73,8 +73,8 @@ end
     end
 
     function [gp, g] = gammafun
-        g = random('logn', 0, log(2));
-        gp = lognpdf(g, 0, log(2));
+        g = random('logn', log(2), log(1.8));
+        gp = lognpdf(g, log(2), log(1.8));
     end
 
 samples = sample3_no_shed(@rfun, @gammafun, @lambdafun, [], {}, times, data, 1000, 30);
