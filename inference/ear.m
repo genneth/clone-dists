@@ -32,27 +32,11 @@ for i = 1:numel(ts2)
     data2{i}(1+1) = 0;
 end
 
-    function [rp, r] = rfun
-        r = random('beta', 2, 2);
-        rp = betapdf(r, 2, 2);
-        r = r / 2; % actually between 0 and 1/2
-    end
-
-    function [lp, l] = lambdafun
-        l = random('logn', log(1/4), log(2));
-        lp = lognpdf(l, log(1/4), log(2));
-    end
-
-    function [gp, g] = gammafun
-        g = random('logn', 0, log(2));
-        gp = lognpdf(g, 0, log(2));
-    end
-
-rfunh = @rfun;
-gfunh = @gammafun;
-lfunh = @lambdafun;
-
-samples = sample3_no_shed(rfunh, gfunh, lfunh, ts2, data2, ts3, data3, 10, 3);
+samples = sample3_no_shed(...
+    @()(random('beta', 2, 2) / 2), ...
+    @()(random('logn', log(1/4), log(2))), ...
+    @()(random('logn', 0, log(2))), ...
+    ts2, data2, ts3, data3, 1000, 30);
 
 save ear_samples.mat samples;
 

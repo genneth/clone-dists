@@ -61,23 +61,11 @@ for i = 1:numel(times)
     data{i}(1+1,0+1) = 0;
 end
 
-    function [rp, r] = rfun
-        r = random('beta', 1, 3);
-        rp = betapdf(r, 1, 3);
-        r = r / 2; % actually between 0 and 1/2
-    end
-
-    function [lp, l] = lambdafun
-        l = random('logn', 0, log(2));
-        lp = lognpdf(l, 0, log(2));
-    end
-
-    function [gp, g] = gammafun
-        g = random('logn', log(2), log(1.8));
-        gp = lognpdf(g, log(2), log(1.8));
-    end
-
-samples = sample3_no_shed(@rfun, @gammafun, @lambdafun, [], {}, times, data, 1000, 30);
+samples = sample3_no_shed(...
+    @()(random('beta', 1, 3) / 2), ...
+    @()(random('logn', log(2), log(1.8))), ...
+    @()(random('logn', 0, log(2))), ...
+    [], {}, times, data, 1000, 30);
 
 save cedric_invol_samples.mat samples
 

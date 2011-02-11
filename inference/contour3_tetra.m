@@ -4,6 +4,7 @@ function contour3_tetra(ah, X, Y, Z, W, c)
 % samples{i,:} = {prob, r, gamma, lambda, [log p2], [log p3]}
 % integrand :: (r, gamma, lambda) -> Double
 
+warning off MATLAB:delaunay3:DeprecatedFunction;
 tetras = delaunay3(X, Y, Z);
 
 [ntetras, ~] = size(tetras);

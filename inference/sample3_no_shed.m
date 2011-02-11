@@ -1,10 +1,10 @@
-function samples = sample3_no_shedding(rfun, gammafun, lambdafun, ts2, data2, ts3, data3, nsamples, nlambdas)
+function samples = sample3_no_shed(rfun, gammafun, lambdafun, ts2, data2, ts3, data3, nsamples, nlambdas)
 
 % lambdafun is unitful; ts2 and ts3 are unitful. everything else is unitless.
-% rfun, gammafun, lambdafun :: (MonadRandom m) => m (Double, Double)
+% rfun, gammafun, lambdafun :: (MonadRandom m) => m Double
 % ts2 :: [], data2 :: {} -- times and observations of basal sizes
 % ts3 :: [], data3 :: {} -- times and observations of suprabasal clone sizes
-% samples :: [{prob, r, lambda, gamma, [log p2], [log p3]}]
+% samples :: [{r, lambda, gamma, [log p2], [log p3]}]
 %     p2 and p3 are likelihoods, not posterior distributions
 % nsamples -- number of samples in (gamma,rho) space to take
 % nlambdas -- number of lambda points to sample per (gamma,rho) point
@@ -17,7 +17,6 @@ wbh = waitbar(0.0, 'initialising...');
 
 % we use the fact that per invocation of clone_dist_* we can extract many
 % separate distributions for different lambdas
-samples_prob   = zeros(nsamples,nlambdas);
 samples_r      = zeros(nsamples,nlambdas);
 samples_gamma  = zeros(nsamples,nlambdas);
 samples_lambda = zeros(nsamples,nlambdas);
@@ -46,15 +45,13 @@ tstart = tic;
 
 for i = 1:nsamples
     
-    [rp, r] = feval(rfun);
-    lambdap = zeros(nlambdas, 1);
+    r = feval(rfun);
     lambda  = zeros(nlambdas, 1);
     for j = 1:nlambdas
-        [lambdap(j), lambda(j)] = feval(lambdafun);
+        lambda(j) = feval(lambdafun);
     end
-    [gammap, gamma] = feval(gammafun);
+    gamma = feval(gammafun);
 
-    samples_prob(i,:)   = rp*gammap .* lambdap;
     samples_r(i,:)      = r; 
     samples_gamma(i,:)  = gamma;
     samples_lambda(i,:) = lambda; 
@@ -150,15 +147,14 @@ end
 
 close(wbh);
 
-samples = cell(nsamples*nlambdas, 6);
+samples = cell(nsamples*nlambdas, 5);
 for i = 1:nsamples
     for j = 1:nlambdas
-        samples{(i-1)*nlambdas+j,1} = samples_prob(i,j);
-        samples{(i-1)*nlambdas+j,2} = samples_r(i,j);
-        samples{(i-1)*nlambdas+j,3} = samples_gamma(i,j);
-        samples{(i-1)*nlambdas+j,4} = samples_lambda(i,j);
-        samples{(i-1)*nlambdas+j,5} = squeeze(samples_p2(i,j,:));
-        samples{(i-1)*nlambdas+j,6} = squeeze(samples_p3(i,j,:));
+        samples{(i-1)*nlambdas+j,1} = samples_r(i,j);
+        samples{(i-1)*nlambdas+j,2} = samples_gamma(i,j);
+        samples{(i-1)*nlambdas+j,3} = samples_lambda(i,j);
+        samples{(i-1)*nlambdas+j,4} = squeeze(samples_p2(i,j,:));
+        samples{(i-1)*nlambdas+j,5} = squeeze(samples_p3(i,j,:));
     end
 end
 
