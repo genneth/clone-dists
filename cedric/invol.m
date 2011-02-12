@@ -148,6 +148,52 @@ else
     print(fh, '-depsc2', '-painters', 'invol-theory-comparison-basal-pdf-linear');
     close(fh);
 
+    fh = figure;
+    set(fh, 'PaperUnits', 'inches');
+    w = 7; h = 4.5;
+    set(fh, 'PaperSize', [w h]);
+    set(fh, 'PaperPosition', [0 0 w h]);
+    margin_left = 0.1; margin_bottom = 0.1;
+    hpadding = 0.03/w*h; vpadding = 0.03;
+    for i = 1:numel(times)
+        i_ = mod(i-1,3); j_ = floor((i-1)/3);
+        ah = subplot('Position', [
+            margin_left+i_/3*(1-margin_left-2*hpadding)+i_*hpadding
+            margin_bottom+(1-j_)/2*(1-margin_bottom-vpadding)+(1-j_)*vpadding
+            (1-margin_left-2*hpadding)/3 
+            (1-margin_bottom-vpadding)/2]);
+        set(ah, 'NextPlot', 'add');
+        set(ah, 'FontName', 'Helvetica', 'FontSize', 10);
+        set(ah, 'Box', 'on');
+        [m,n] = size(data{i});
+        total = sum(sum(data{i}));
+        exp_wz = arrayfun(@(d) sum(diag(flipud(full(data{i})), d)), -(m-1):(n-1));
+        exp_wz(sum(max_size)) = 0;
+        plot(ah, 1:(sum(max_size)-2), exp_wz(2:(sum(max_size)-1)) / total, 's');
+        tot_wz = arrayfun(@(d) sum(diag(flipud(theory(1:m,1:n,i)), d)), -(m-1):(n-1));
+        tot_wz(sum(max_size)) = 0;
+        plot(ah, 1:(sum(max_size)-2), tot_wz(2:(sum(max_size)-1)), '-');
+        plot(ah, 1:(sum(max_size)-2), binoinv(0.158655254, total, tot_wz(2:(sum(max_size)-1))) / total, '--');
+        plot(ah, 1:(sum(max_size)-2), binoinv(1-0.158655254, total, tot_wz(2:(sum(max_size)-1))) / total, '--');
+        set(ah, 'XLim', [0 20]);
+        if i <= 3
+            set(ah, 'YLim', [0 1]);
+            set(ah, 'XTickLabel', {});
+        else
+            set(ah, 'YLim', [0 0.5]);
+        end
+        if mod(i,3)==1
+            ylabel(ah, 'probability', 'FontName', 'Helvetica', 'FontSize', 10, 'FontWeight', 'bold');
+        else
+            set(ah, 'YTickLabel', {});
+        end
+        if i == 5
+            xlabel(ah, 'clone size', 'FontName', 'Helvetica', 'FontSize', 10, 'FontWeight', 'bold');
+        end
+    end
+    
+    print(fh, '-depsc2', '-painters', 'invol-theory-comparison-total-pdf-linear');
+    close(fh);
 end
 
 end
