@@ -13,7 +13,7 @@ assert(numel(ts2) == numel(data2), 'inconsistent sizes between ts2 and data2');
 assert(numel(ts3) == numel(data3), 'inconsistent sizes between ts3 and data3');
 assert(numel(ts3) > 0, 'no suprabasal data. should run sample2');
 
-wbh = waitbar(0.0, 'initialising...');
+wbh = waitbar(0.0, 'initialising...', 'Name', 'sample3_no_shed: inference');
 
 % we use the fact that per invocation of clone_dist_* we can extract many
 % separate distributions for different lambdas
