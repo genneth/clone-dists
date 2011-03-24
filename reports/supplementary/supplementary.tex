@@ -16,513 +16,81 @@
 \usepackage{nicefrac}
 \usepackage{subfigure}
 \usepackage[unicode=true, pdfusetitle, bookmarks=true, bookmarksnumbered=false, bookmarksopen=false, breaklinks=false, pdfborder={0 0 1}, backref=false, colorlinks=false, pdfstartview=FitBH]{hyperref}
+\usepackage[margins,adjustmargins]{trackchanges}
+\addeditor{GZ}
 
 \begin{document}
 
 \title{Supplementary theory}
 \author{Gen Zhang}
+\date{}
  
 \maketitle
 
 \renewcommand{\thesection}{S-\Roman{section}}
 \numberwithin{equation}{subsection}
 
-\section{\label{sec:introduction}Background and motivation}
+The key feature of adult tissue is homeostasis in the absence of external
+factors such as wounding or infection; in epithelia like the oesophageal lining,
+this gives us two precise quantitative rules: the total number of cells in the
+basal layer must be conserved, and the total number of cells in the whole tissue
+must be conserved. This means that, for example, we must balance the loss of
+cells from the basal layer with the generation of new cells; failure to do so
+would lead to exponential growth (cancer) or loss (tissue failure). Although
+this delicate balance must be maintained, it may be kept only on average ---
+small fluctuations in cell number or density is not catastrophic.
 
-<Clayton> introduced a balanced stochastic fate choice model of \emph{committed
-progenitor} (CP) cells in epithelial tissue. The model can be represented as a
-Markovian branching process for the basal layer 
-\begin{align}
-A &\overset{\lambda}{\longmapsto} \begin{cases}
-A+A & r \\
-A+B & 1-2r \\
-B+B & r\end{cases}, & B &\overset{\gamma}{\longmapsto} \emptyset.
-\label{eq:basal-model}
-\end{align}
-where $A$ represents a committed progenitor and $B$ represents a terminally
-differentiated cell. This was shown to be a good fit to the available clone size
-distribution data. However, in oesophagus, we have found a discrete population
-of stem cells and thus proliferative heterogeneity; further, this implies that
-CP cells must be imbalanced to preserve homeostasis. Thus we are led to consider
-a significantly more complicated system: 
-\begin{align}
-S &\overset{\Lambda}{\longmapsto} \begin{cases}
-S+S & r_S \\
-S+A & 1-2r_S \\
-A+A & r_S\end{cases} & A &\overset{\lambda}{\longmapsto} \begin{cases}
-A+A & r(1-\Delta) \\
-A+B & 1-2r \\
-B+B & r(1+\Delta)\end{cases} & B &\overset{\gamma}{\longmapsto} \emptyset
-\label{eq:really-full-model}
-\end{align}
-where $S$ represents a stem cell. In addition, it is likely that the stem
-compartment does not follow a simple branching model where daughter cells are
-uncorrelated, but instead have an intrinsically two-dimensional dynamics <klein
-patterning>.
+We see this conservation of basal cells through clonal labelling: it is observed
+that the average size of clones increase (main text, fig ??); at the same time,
+\annote[GZ]{the density of clones decrease}{do we have a graph for this? is it
+any good?}, such that the total number of labelled cells remains roughly
+constant. The interpretation is that occasionally all cells in a clone will
+detach from the basal layer, resulting in a zero-cell clone, from which it will
+never recover. Thus, the remaining clones must expand (on average) to maintain
+homoeostasis.
 
-In principle, the model above can produce extremely complex behaviour. However,
-the experimental observation that the stem cycling rate $\Lambda \ll \lambda$
-implies a good separation of time scales, and leads to mathematical
-tractability. Our strategy then will be to fix the parameters of CP dynamics as
-accurately as possible, then using the established parameters $\lambda$,
-$\gamma$ and $r$, examine the behaviour of the stem population.
+The central observation is that at late times the basal clone distribution
+\emph{scales}: the probability of finding a 2 cell clone at 1 month is twice
+that of finding a 4 cell clone at 2 months, which in turn is twice that for an 8
+cell clone at 4 months, and so on. \annote[GZ]{Klein et al. 2007}{should I avoid
+mentioning Clayton?} showed that this implies that \annote[GZ]{there is only one
+process which controls the eventual clone evolution}{I took this line out of
+Klein '07; is that a bad idea?}. This is the observation that suggests a simple
+description of the tissue maintainence.
 
-Experimentally, we induce cells and track clonal fate. Stem cells, by
-observation, are rarely labelled and widely separated. This means that on the
-time scale of the experiment, there can be no significant correlations, and it
-is possible to approximate their behaviour as independent and stochastic. In a
-way, we are \emph{averaging} over the potential environments surrounding a stem
-cell, and thus randomise the stem cell's fate. Further, no symmetric division is
-observed, and thus in homeostasis we are led to consider a simplified process
-\begin{align}
-S &\overset{\Lambda}{\longmapsto} S+A & A &\overset{\lambda}{\longmapsto} \begin{cases}
-A+A & r(1-\Delta) \\
-A+B & 1-2r \\
-B+B & r(1+\Delta)\end{cases} & B &\overset{\gamma}{\longmapsto} \emptyset
-\label{eq:full-model}
-\end{align}
-The parameter $\Delta$ is the main link between CP and stem populations; it
-controls the relative population sizes (which in homeostasis are in ratios of
-$\rho_S$, $(1-\rho_S)\rho$ and $(1-\rho_S)(1-\rho)$ for stem, CP and
-differentiated cells, respectively). $\Delta$ is also expectly to be very small.
-We shall find, self-consistently, that as far as determining the parameters of
-CP dynamics, it is possible to entirely decouple the system ($\Delta = 0$) and
-thus measure $\rho$, $r$ and $\lambda$, and then re-introduce the full dynamics
-as a perturbation.
+At this point, we must make assumptions to make progress. Clayton et al.
+introduced a model of committed progenitors (main text, Fig ??) which can
+explain the observations above. A key feature of this model is the existence of
+progenitor cells which divide, and adopt one of three fates: produce a pair of
+progenitors, produce a pair of differentiated cells, or produce one of each. It
+is important to emphasize that we are not stating in particular when this choice
+is made --- it may be independently in each daughter cell, or upon division
+itself, or even prior to division. Furthermore, we classify cells purely based
+on its \emph{fate}, rather than gene expression; progenitors are defined to be
+cells which will divide, and differentiated otherwise. 
 
-Thus we are back to the simple balanced CP model \ref{eq:basal-model}. <Klein,
-Harvard> have shown that this model exihibits scaling, where in the large time
-limit $t\rightarrow\infty$ the clone size distribution becomes exponential:
-$$P^\textrm{surv.}_n \sim \exp\left(-\frac{n}{\left\langle n^\textrm{surv.}
-\right\rangle}\right)$$ with a linear growth of the average size of surviving
-clones $\left\langle n^\textrm{surv.} \right\rangle \rightarrow t/\tau$ and
-characteristic time scale $\tau = \rho/r\lambda$. This can be shown by noting
-that large clones are macroscopic, and fluctuations in the proportion of CP
-cells versus differentiated cells are small --- in essence large clones are
-overwhelmingly likely to be representative of the tissue as a whole. <Harvard>
-have shown that this process happens remarkably quickly, and clones of even ten
-cells become quite representative. Thus, we can erase the difference between CP
-and differentiated cells, and average them into a \emph{representative basal
-cell} $D$: 
-\begin{align}
-D &\overset{1/\tau}{\longmapsto} \begin{cases}
-D+D & \frac{1}{2} \\
-\emptyset & \frac{1}{2}\end{cases}\label{eq:simple-balanced-model}
-\end{align}
-This is now a classic \emph{one-type critical branching process} <atherya>, and
-has an exact solution. The clone size distribution is geometric at all times
-$$P^\textrm{surv.}_n \sim \left(1-\frac{1}{\left\langle n^\textrm{surv.}
-\right\rangle}\right)^n$$ with an average clone size $\left\langle
-n^\textrm{surv.} \right\rangle = 1 + t/\tau$.
+Here, we go further, and consider both the basal clone size distribution, and
+the joint basal and suprabasal distribution. We find that it becomes possible to
+infer, from data, the parameters of the model: the division rate of progenitors
+in the basal layer, the stratification rate of differentiated cells out of the
+basal layer, and the ratio of self-renewing divisions versus all divisions.
+Furthermore, this enriched data set allows us to reduce the total number of
+observations needed, and also to provide an independent validation that genetic
+markers are reliable indicators of fate. 
 
-Although theoretically very attractive, this long-time scaling behaviour is
-actually unhelpful in so far as inferring the parameters from experimental data.
-Since after just a few cell divisions the clone distribution becomes a
-featureless exponential, it is only possible to measure the characteristic time
-scale $\tau$ (though this may be determined very accurately, see section
-\ref{sec:ball-plane}). The cycling rate $\lambda$ may be directly measured from
-observation of proliferation and the proportion of proliferating progenitor
-cells $\rho$ may be measured from the expression of the genetic marker Ki67.
-Finally, $r$ may be obtained by inverting the equation $\tau = \rho/r\lambda$.
-However, these all introduce additional errors, both systematic and random;
-worse, these errors are difficult to estimate. In particular, if the genetic
-marker is unreliable or inefficient, then this would have a very direct effect
-on the inferred value of $r$.
+Our methodology is based on Bayesian inference, the technical details of which
+are in section ??. The process by which numerical predictions of the joint clone
+size distributions are generated is explained in section ??; this is necessarily
+mathematical, but is not essential for understanding the overall strategy.
+Finally, we demonstrate an application to quantify drug action in section ??.
 
-To do better, it is necessary concentrate on the short-time behaviour and the
-approach to scaling. In section \ref{sec:suprabasal-inference} below, we show
-that if clone size distributions \emph{with suprabasal counts} are available,
-then it is possible to directly infer the triplet $(\rho, r, \lambda)$ from the
-experimental data. The datasets obtained this way are very rich, with complex
-structure. To fully incorporate the available information, we use a
-first-principles Bayesian analysis.
+\section{Critical branching processes and scaling}
 
-As mentioned, the parameter $\Delta$ is very small, and essentially controls the
-coupling between CP and stem populations. In section \ref{sec:stem}, we show
-that even in the presence of stem turn-over the clone size distribution is
-dominated by an exponential tail which is indistinguishable from the balanced CP
-model to within current experiments. The change is confined to proportions of
-small clones, which leads us to focus on single cell clones. We find that there
-is enough information to infer the remaining parameters in model
-\ref{eq:full-model}.
+\section{Bayesian inference of parameters}
 
-\section{\label{sec:suprabasal-inference}Bayesian analysis of clone fate data}
+\section{Computation of joint clone size distributions}
 
-\subsection{Inferring parameters from observations}
-
-Bayes' theorem gives the \emph{posterior distribution} of the parameters
-$\theta$ as a result of some observations $O$: $$p(\theta|O) =
-\frac{p(O|\theta)}{p(O)} p(\theta).$$ The factor of $p(O)$ acts as a
-\emph{normalisation} to make the left-hand side a proper probability
-distribution and so is biologically uninteresting. 
-
-The \emph{likelihood} $p(O|\theta)$ depends fundamentally on the predicted clone
-size distributions $P_{mn}$ (see below, section \ref{sec:p-mn-calculation}). The
-observations $O$ are an unordered list (but with repetition) of cohorts $O_t =
-\{(m,n)\}$ with $m$ basal cells and $n$ suprabasal cells seen at a time $t$
-after induction. We assume that the induction probability is sufficiently low
-that the initial conditions are essentially just single cell clones. We can
-filter out induction of suprabasal cells by conditioning $P_{mn}$ on $m \ge 1$,
-i.e. \emph{floating clones}. Even so, we have an unknown chance of inducing a
-terminally differentiated cell in the basal layer; we do not want to make
-extraneous assumptions about induction rates, and filter out such data by
-conditioning on clones of size 2 or above, i.e. $m+n \ge 2$. The latter
-criterion also excludes from consideration extinct clones, which are by
-definition unobservable. As such, we define the \emph{observable clone
-distribution} $$P^\textrm{obs.}_{mn} = \frac{P_{mn}}{1 - P_{00} - P_{10} -
-\sum_j P_{0j}}.$$ Now given that the observation $O_t$ is filtered as above, we
-can compute the likelihood: $$p(O_t|\theta) = \prod_{(m,n) \in O_t}
-P^\textrm{obs.}_{mn}(t),$$ where the product is intended to repeat factors
-according to the multiplicity of the pair $(m,n)$.
-
-The only ingredient remaining is the \emph{prior distribution} $p(\theta)$. To
-be completely rigorous, we should pick it to be a maximum entropy distribution
-over the parameter space $\theta$ <jaynes>. In this case that means a uniform
-distribution in $\rho$ and $r$. The rate $lambda$ has no natural scale, and the
-maximum entropy distribution over $\lambda$ must be invariant under a change of
-units. Thus we choose a log-uniform distribution, $p(\theta) \propto 1/\lambda$;
-this is technically \emph{improper}, as it cannot be normalised, but actually
-causes no real problems --- we only require the final posterior distribution to
-be proper.
-
-Multiple time points can be combined by simply multiplying the likelihood
-functions together, since by the very nature of cohort studies there are no
-correlations between different observations at different times.
-
-Figure \ref{fig:blob} shows a typical example of the inference. The posterior
-distribution is well-localised distribution. Below, we will incorporate
-information from the scaling limit.
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[height=4in]{ABC/oes_eyp_bs_combined_atra_control_cond_prior.png}
-	\caption{\label{fig:blob}The posterior distribution upon inference using
-	22 day and 30 day data with suprabasal counts. Here we plot the $68\%$
-	and $95\%$ confidence regions, and their projections.}
-\end{figure}
-
-\subsection{\label{sec:p-mn-calculation}Clone size distributions with suprabasal cells}
-
-The central prediction of the theory is a distribution $P_{mn}(t)$, the
-probability of a clone having $m$ basal cells and $n$ suprabasal cells at time
-$t$ after induction. Since we are tracking suprabasal cells, we will expand the
-stochastic model \ref{eq:basal-model} to include:
-\begin{equation}
-B \overset{\gamma}{\longmapsto} C
-\label{eq:ABC-model}
-\end{equation}
-where suprabasal cells are represented as $C$.
-
-Whilst we cannot experimentally distinguish between proliferating CP cells ($A$) and terminally differentiated cells in the basal layer ($B$), it is necessary to do so mathematically as they produce entirely different progeny trees. Thus we will work with the finer grained distribution $P_{m_A m_B n}$ which is related $$P_{mn} = \sum_{m_A + m_B = m} P_{m_A m_B n}.$$ 
-
-Our model has the Markovian property, which is that the future behaviour only
-depends on the current state of the system, and not directly on the past
-history. As with all Markovian systems <cite>, the behaviour can be described by
-a (infinite) system set of first order differential equations, known as the
-master equation for the system: 
-\begin{equation}
-\frac{dP_{m_A m_B n}}{dt} = \sum_{m_A^\prime m_B^\prime n^\prime} T_{m_A m_B n; m_A^\prime m_B^\prime n^\prime} P_{m_A^\prime m_B^\prime n^\prime}. \label{eq:infinite-master}
-\end{equation}
-
-Our model also has a special property: the number of cells in a clone can never
-decrease. This means that $P_{m_A m_B n}(t)$ can only depend on the
-probabilities of clones with the same or fewer total cells. Thus if we only care
-about clones up to a certain size we can truncate the infinite set $P_{m_A m_B
-n}$ to a finite one, and package them up into a vector $\mathbf P$. At the same
-time, only a finite number of elements of $T$ will be needed, and moving them
-into a matrix $\mathbf T$ allows the master equation \eqref{eq:infinite-master}
-to be written compactly as $$\frac{d\mathbf P}{dt} = \mathbf{T P}.$$ This is
-then a standard differential equation, whose solution is a matrix exponential
-$$\mathbf P = \exp(\mathbf T t) \mathbf P_0,$$ where $\mathbf P_0$ is the
-initial condition, i.e. one type $A$ cell.
-
-\subsection{\label{sec:ball-plane}Consistency and improvement with basal statistics}
-
-The need to count suprabasal cells limits the scope of the experiment, as
-eventually shedding becomes a serious effect, and its statistical effects are
-likely to be environmentally dominated. Counting basal statistics only, it
-becomes possible to extend the experiment to longer time scales and accurately
-measure the scaling behaviour. This would then provide both a consistency check
-of the methodology and also extra information with which to improve the
-inference. Whilst it would be straightforward to extract $\tau = \rho/r\lambda$
-as shown in <klein>, it is also worthwhile to run a full-scale Bayesian
-analysis, and combine this with the inference from short-time suprabasal data.
-
-Fundamentally, there is very little change in the procedure already described
-above. The main difference is that the branching model \ref{eq:basal-model} does
-not enjoy the triangular structure which allowed the probabilities to be
-computed simply via a matrix exponential, and the full infinite system must be
-treated. The basal distributions $P_m$ are best computed via generating function
-methods, e.g. <tedious paper; maybe there should be a section here to explain
-how to do it?>. It is also possible to do a simple truncation, but the errors
-are difficult to bound. Either way, it is possible to calculate the likelihood
-function $p(O|\theta)$.
-
-As mentioned in the introduction (section \ref{sec:introduction}), the basal
-statistics quickly converge to the scaling limit. In this limit, all choices of
-parameters which give the same time scale $\tau=\rho/r\lambda$ would give the
-same predictions, and thus would be indistinguishable. The posterior
-distribution (figure \ref{fig:inferences}, main text) is tightly concentrated
-along the hyperbolic sheet defined by some particular value of $\tau$. There is
-a small amount of variation within the sheet; it seems that the basal statistics
-does contain some non-scaling information, mostly within the early time points.
-This is a good example of the sensitivity of Bayesian analysis.
-
-Consistency between basal and basal-plus-suprabasal statistics manifest as
-non-trivial overlaps of significant parts of the respective posterior
-distributions. These estimates may then be combined by the usual multiplication
-of likelihoods (figure \ref{fig:inferences}, main text). 
-
-\subsection{Meaning of posterior probabilities}
-
-It is important to be clear about what the 95\% confidence region in figure
-\ref{fig:blob} means. The exact statement is that \emph{given the correctness of
-the underlying model, there is only a 1 in 20 chance that the data collected is
-perverse to the extent that the true parameters of the model lie outside of the
-region}.
-
-<inference of MC-generated data; shows spread in inferred ball locations>
-
-Although the posterior distribution is nicely peaked, it would be a mistake to
-think that the true parameters are more likely to be at the most probable value,
-as opposed to some definite distance away from the peak. This can be clearly
-seen in figure \ref{fig:blob} above, where the true parameters are actually
-never very close to the centres of the confidence regions. This can be
-understood very simply as a consequence of multi-dimensional distributions. For
-example, if we had a three-dimensional Gaussian $$p(\mathbf{r}) \propto
-\exp\left(-|\mathbf r|^2\right),$$ the expectation $\left\langle \mathbf
-|\mathbf r| \right\rangle > 0$ and is in fact of the order of the standard
-deviation. In section \ref{sec:ball-plane}, when we look for consistency against
-long time course basal statistics, we should not be surprised that the
-hyperbolic sheet does not exactly intersect the centre of the ball.
-
-\section{\label{sec:stem}Impact of stem cell population}
-
-Previously, we have analysed the data on the basis that only CP cells
-proliferatively contribute. However, the existence of a long-lived, slow-cycling
-stem population has the potential to change the clone size distribution. Indeed
-one of the most significant traits is the relative enrichment of single cell
-clones --- interpreted as a single stem cell which was induced but then never
-divided <main text>. Here, we show that deviations from the balanced CP model
-(\ref{eq:basal-model}) are small, and essentially constrained to a very slight
-increase in small clones, but well within currently achievable statistical
-errors.
-
-Fundamentally, if stem cells can differentiate to committed progenitors, then
-the CP dynamics must be slightly imbalanced --- otherwise homoeostasis would be
-violated. At the same time, for the stem cells to be only slowly cycling, the
-asymmetry must be very small. Figure <main text> shows that the balanced CP
-process is an excellent fit to the data, therefore, any deviation must be very
-small. This would be all consistent with the hypothesis that stem cells are
-recruited for repair <wounding cite>, but are otherwise quiescent in normal
-tissue.
-
-This slow turn-over means that we do not expect to be able to statistically
-resolve the stem cell dynamics; only changes in the CP dynamics will be
-measurable. In the limit of small numbers of active stem cells, the main effect
-will be a random injection of a CP cell into an existing clone: 
-\begin{equation}
-S \overset{\Lambda}{\longmapsto} S+A. \label{eq:stem-division-model}
-\end{equation}
-This is a mathematical simplification and, to within accessible statistics, is
-exact in the limit. It does not imply a biological assumption of stochasticity;
-in particular, we are not ruling out other dynamics of the stem population,
-which must necessarily include self-renewal and environmentally controlled
-division to produce the patterning observed (figure <main text>).
-
-Since the imbalance is small, we expect that on time scales shorter than
-$O(1/\Delta \lambda)$ the dynamics is essentially the same as the balanced case.
-Thus if we only care about the long time behaviour, the CP sector should reach
-its scaling limit and we can (like in model \ref{eq:simple-balanced-model})
-neglect fluctuations of $\rho$ and consider an averaged CP-differentiated cell,
-which would allow analytical treatment. In model \ref{eq:full-model} the
-imbalance causes CP loss with a time constant $2 r \Delta \lambda$, thus:
-\begin{equation}
-D \overset{1/\tau}{\longmapsto} \begin{cases}
-D+D & \frac{1}{2} - \rho \Delta \\
-\emptyset & \frac{1}{2} + \rho \Delta
-\end{cases}\label{eq:subcritical-cp-model}
-\end{equation}
-with $\tau = \rho/r\lambda$ describes the same scaling behaviour.
-
-Due to the low induction frequency and low proportion of cycling stem cells, we
-expect each clone contain at most one stem cell. Thus we have two cases to
-consider: clones with no stem cells at all, which will all eventually go
-extinct, and clones with one stem cell which will equilibrate at some finite
-clone size. Below, we take these cases separately, in sections <> and <>.
-
-We now have three extra parameters to determine: the \emph{active stem cell
-proportion} $\rho_S$, the mean stem cell division rate $\Lambda$ and the
-imbalance (and so CP loss rate) $\Delta$. In section <> we see that, up to
-uncertainties in labelling efficiency, it is possible to obtain all three from
-the statistics of single cell clones, when combined with the quantitative
-inference from pure CP dynamics. 
-
-\subsection{Subcritical CP dynamics}
-
-Model \ref{eq:subcritical-cp-model} is a \emph{subcritical branching process} <cite>. The expected clone size decreases monotonically $\langle n \rangle = n_0 e^{-2 r \Delta \lambda t}$, i.e. we lose cells at a rate of $2 r \Delta \lambda$. Define
-\begin{align*}
-\beta &= \frac{\left(1-e^{-2 r \Delta \lambda t}\right)(1-\Delta)+2\Delta}{2\Delta}.
-\end{align*}
-The clone size distribution is:
-\begin{equation*}
-P_m(t) = \begin{cases}
-1 - \frac{e^{-2 r \Delta \lambda t}}{\beta} & m=0 \\
-\frac{e^{-2 r \Delta \lambda t}}{\beta} \frac{1}{\beta-1} \left(1-\frac{1}{\beta}\right)^m & m\ge1
-\end{cases}
-\end{equation*}
-Note that the distribution is geometric for $m \ge 1$, and the surviving average clone size $\left\langle n^\textrm{surv.} \right\rangle = \beta$. This information can be packaged up into a single \emph{generating function} $f(z,t) = \sum_m P_m(t) z^m$:
-\begin{equation*}
-f(z,t) = \frac{e^{2 r \Delta \lambda t}\left[(1-z) + (1+z)\Delta\right] + (z-1)(1+\Delta)}{e^{2 r \Delta \lambda t}\left[(1-z) + (1+z)\Delta\right] + (z-1)(1-\Delta)}.
-\end{equation*}
-
-\subsection{\label{sec:subcritical-immigration}Stem supported clones}
-
-Homoeostasis requires that the loss of CP cells be balanced by creation via stem
-cell division. If the overall cycling stem population as a proportion of all
-basal cells is $\rho_S$, then we must have $$\rho_S \Lambda = (1-\rho_S) \times
-2 r \Delta \lambda.$$ The division process \ref{eq:stem-division-model}
-preserves the number of stem cells and each of the created CP cells go on to
-divide and differentiate independently.
-
-Consider then a stem cell which undergoes asymmetric division $n$ times within a
-time $t$, at times $t_1 < t_2 < \ldots < t_n$. Since the process is Poisson, the
-probability of having $n$ divisions is independent of when they occur, and is
-$\Lambda^n e^{-\Lambda t}$. The generating function for the distribution of CP
-cells for such a sequence of divisions is then
-\begin{align*}
-g_n(z,t) &= \Lambda^n e^{-\Lambda t} \int_0^t dt_1 \int_{t_1}^t dt_2 \ldots \int_{t_{n-1}}^t dt_n f(z,t-t_1) \times f(z,t-t_2) \times \ldots \times f(z,t-t_n) \\
- &= \frac{\Lambda^n e^{-\Lambda t}}{n!} \left[\int_0^t f(z,t-\tau) d\tau \right]^n
-\end{align*}
-where we notice that the need to order the times $t_n$ can be removed since it
-just results in an over counting. The generating function for the number of CP
-cells in total is then
-\begin{align*}
-g(z,t) &= \sum_n g_n(z,t) \\
- &= e^{-\Lambda t} \exp\left[\Lambda \int_0^t f(z,t-\tau) d\tau \right] \\
- &= \exp\left\{\Lambda \int_0^t \left[f(z,\tau) - 1\right] d\tau \right\} \\
- &= \exp\left(\frac{4 r \Delta \Lambda t}{1-\Delta}\right) \left\{ \frac{\left(e^{2 r \Delta \lambda t}-1 \right)(z-1)}{2\Delta} + \frac{1}{2}\left[(1-z) + e^{2 r \Delta \lambda t}(1+z) \right]\right\}^{-2\Delta\Lambda/\lambda}.
-\end{align*}
-
-The distribution $P_m$ may be obtained by computing the coefficients of the
-Taylor expansion $$g(z,t) = \sum_m P_m(t) z^m.$$ In this case, exact expressions
-are not easily available, but are still numerically efficient to extract. Note
-that since the function $g(z,t)$ has a branch point in the $z$ complex plane,
-the radius of convergence of the Taylor expansion has a finite radius of
-convergence $R$. In addition, $$g(z=1,t) = \sum_m P_m(t) = 1,$$ the radius of
-converge $R \ge 1$. The ratio test for convergence gives $$\lim_{m\rightarrow
-\infty} \left| \frac{P_{m+1}}{P_m} \right| = \frac{1}{R},$$ thus for large $m$,
-the distribution becomes geometric.
-
-\subsection{Mean clone size}
-
-As mentioned, the imbalance $\Delta$ is very small, and we expect that short
-time dynamics is essentially the same as the balanced case. Further, we expect
-that major deviations only occur on time scales $1/\Lambda \sim 1/2 r \Delta
-\lambda$.
-
-Experimentally, we induce single cells. These may be either a CP or a stem cell.
-Assuming proportional induction, the generating function for the total
-distribution is $$h(z,t) = \rho_S z g(z,t) + (1-\rho_S) f(z,t).$$ The factor of
-$z$ simply accounts for the fact that each stem-derived clone will contain one
-stem cell. The average clone size, by construction, is constant. The observed
-average size will still increase, since extinct clones will not contribute: 
-\begin{align*}
-\left\langle n^\textrm{obs} \right\rangle &= \frac{1}{1 - h(z=0)} \\
-  &= \frac{1}{\rho_S + \beta (1-\rho_S) e^{-2 r \Delta \lambda t}}.
-\end{align*}
-At early times, we have the linear growth characteristic of a critical branching
-process, before reaching a plateau at $1/\rho_S$ as $t\rightarrow\infty$. The
-turn over occurs, as expected, around $1/\Lambda$. Since the long time basal
-data, out to a year, does not show any sign of a plateau, we can infer an upper
-bound for imbalance $\Delta$.
-
-<figure showing difference>
-
-\subsection{Basal distribution}
-
-Given the generating function <ref>, we can numerically extract the clone size
-distribution. As we shall see, the existence of a stem cell compartment is still
-consistent with the experimental observations.
-
-Heuristically, we can understand why there is almost no change. As mentioned in
-section \ref{sec:subcritical-immigration}, the distribution for stem-supported
-clones has a exponential tail. This remains true for the equilibrium
-distribution. Upon scaling, this tail dominates the observable clones;
-deviations from this exponential distribution is only visible in small clones.
-Furthermore, this exponential tail is weaker than the tail from the near
-critical CP sector, and so is drowned out.
-
-<figure show that the stem compartment makes no difference to the clone size
-distributions; maybe a figure to show the final equilibrium distributions?>
-
-\subsection{\label{sec:single-cells}Single basal cell clones}
-
-As we have seen, the stem cell compartment does not make an appreciable
-difference to the clone size distribution for sufficiently large clones, where
-sufficiently large is actually quite small. We are then led to consider clones
-as small as possible, i.e. of size one. Model \ref{eq:full-model}, modified to
-track suprabasal cells, has the property that clone sizes cannot decrease. Thus
-similar to model \ref{eq:ABC-model} we can solve for a truncated distribution
-exactly. In particular, we can write down the distribution of single cell clones
-where the cell is basal:
-\begin{equation*}
-P_{10} = \rho_S \exp(-\Lambda t) + (1-\rho_S) \rho \exp(-\lambda t) + (1-\rho_S) (1-\rho) \exp(-\gamma t).
-\end{equation*}
-
-However, we know that $\rho$ is very close to half, and thus $\gamma \approx \lambda = 0.76/\textrm{week}^{-1}$ (see figure \ref{fig:inferences}). Thus we expect: 
-\begin{equation*}
-P_{10} = \rho_S \exp(-\Lambda t) + (1-\rho_S) \exp(-\lambda t).
-\end{equation*}
-Thus given counts of single cell clones we can infer the parameters $\Lambda$
-and $\rho_S$. Figure \ref{fig:single-cell} shows a comparison between the
-experimental counts and the theoretical predictions. It is clear that the data
-is consistent with a small amount of slowly cycling stem cells. Figure
-\ref{fig:single-cell-inference} shows the posterior distribution for $\rho_S$
-and $\Lambda$; the maximum likelihood values are at $\rho_S = 0.05$ and $\lambda
-= 0.05/\textrm{week}^{-1}$. These give $\Delta = \rho_S \Lambda / (1-\rho_S)
-\lambda) = 0.003$, if we can assume equal induction efficiencies. This is
-consistent with the upper bound derived from average clone size growth above.
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=4in]{single-cell-inference.png}
-	\caption{\label{fig:single-cell-inference}With
-	$\lambda=0.76/\textrm{week}^{-1}$ we can carry out Bayesian inference
-	for $\rho_S$ and $\Lambda$. The prior was chosen to be maximum entropy:
-	$p(\rho_S, \Lambda) \sim 1/\Lambda$. Longer time points are more
-	informative, but it becomes increasingly difficult to find any clones;
-	thus the posterior distribution is not brilliantly localised --- the
-	prior is still having a strong effect.}
-\end{figure}
-
-\section{Main text}
-
-<paragraphs in the main text go here>
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[height=4in]{oes-combined-prior.png}
-	\caption{\label{fig:inferences}The inference from short time suprabasal
-	data is in orange, showing $68\%$ and $95\%$ confidence regions. The
-	inference from long time basal data is show in blue. The combined data
-	produces the region ($95\%$) shown in green, with projections shown on
-	the axes planes. The mean lies at $\rho = 0.52$, $r = 0.19$, $\lambda =
-	0.77/\textrm{week}^{-1}$.}
-\end{figure}
-
-\begin{figure}[htb]
-	\centering
-	\includegraphics[width=4in]{single-cell-clones.png}
-	\caption{\label{fig:single-cell}The proportion of single cell clones
-	does not decrease exponentially, as expected. The error bars correspond
-	to \emph{theoretical} errors given the total clones counted at that time
-	point. The shaded regions correspond to $1\sigma$ ($68\%$) and $2\sigma$
-	($95\%$) intervals. The theoretical curves are obtained by using
-	$\lambda$ from the pure CP dynamics model (\ref{eq:ABC-model}), and
-	inferring $\rho_S$ and $\Lambda$ from the limited data available (see
-	section \ref{sec:single-cells}).}
-\end{figure}
+\section{ATRA, quantified}
 
 \end{document}
 
