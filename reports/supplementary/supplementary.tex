@@ -1,20 +1,21 @@
 \documentclass[10pt,UKenglish]{article}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage{fouriernc}
-\usepackage[latin9]{inputenc}
+%\usepackage{fouriernc}
+\usepackage[utf8]{inputenc}
 \usepackage[a4paper]{geometry}
 \geometry{verbose}
 \pagestyle{plain}
 \usepackage{babel}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{esint}
 \usepackage{setspace}
 \onehalfspacing
-\usepackage{siunitx}
+%\usepackage{siunitx}
 \usepackage{microtype}
-\usepackage{nicefrac}
-\usepackage{subfigure}
+%\usepackage{nicefrac}
+%\usepackage{subfigure}
 \usepackage[unicode=true, pdfusetitle, bookmarks=true, bookmarksnumbered=false, bookmarksopen=false, breaklinks=false, pdfborder={0 0 1}, backref=false, colorlinks=false, pdfstartview=FitBH]{hyperref}
 \usepackage[margins,adjustmargins]{trackchanges}
 \addeditor{GZ}
@@ -52,22 +53,22 @@ homoeostasis.
 The central observation is that at late times the basal clone distribution
 \emph{scales}: the probability of finding a 2 cell clone at 1 month is twice
 that of finding a 4 cell clone at 2 months, which in turn is twice that for an 8
-cell clone at 4 months, and so on. \annote[GZ]{Klein et al. 2007}{should I avoid
-mentioning Clayton?} showed that this implies that \annote[GZ]{there is only one
-process which controls the eventual clone evolution}{I took this line out of
-Klein '07; is that a bad idea?}. This is the observation that suggests a simple
-description of the tissue maintainence.
+cell clone at 4 months, and so on. Klein et al. 2007 showed that this implies
+that \annote[GZ]{there is only one process which controls the eventual clone
+evolution}{I took this line out of Klein '07; is that a bad idea?}. This is the
+observation that suggests a simple description of the tissue maintainence.
 
-At this point, we must make assumptions to make progress. Clayton et al.
-introduced a model of committed progenitors (main text, Fig ??) which can
-explain the observations above. A key feature of this model is the existence of
-progenitor cells which divide, and adopt one of three fates: produce a pair of
-progenitors, produce a pair of differentiated cells, or produce one of each. It
-is important to emphasize that we are not stating in particular when this choice
-is made --- it may be independently in each daughter cell, or upon division
-itself, or even prior to division. Furthermore, we classify cells purely based
-on its \emph{fate}, rather than gene expression; progenitors are defined to be
-cells which will divide, and differentiated otherwise. 
+At this point, we must make assumptions to make progress. \annote[GZ]{Clayton et
+al.}{should I avoid mentioning Clayton?} introduced a model of committed
+progenitors (main text, Fig ??) which can explain the observations above. A key
+feature of this model is the existence of progenitor cells which divide, and
+adopt one of three fates: produce a pair of progenitors, produce a pair of
+differentiated cells, or produce one of each. It is important to emphasize that
+we are not stating in particular when this choice is made --- it may be
+independently in each daughter cell, or upon division itself, or even prior to
+division. Furthermore, we classify cells purely based on its \emph{fate}, rather
+than gene expression; progenitors are defined to be cells which will divide, and
+differentiated otherwise. 
 
 Here, we go further, and consider both the basal clone size distribution, and
 the joint basal and suprabasal distribution. We find that it becomes possible to
@@ -86,26 +87,31 @@ Finally, we demonstrate an application to quantify drug action in section ??.
 
 \section{Critical branching processes and scaling}
 
-The process in figure ?? (main text) is an example of a \emph{branching process}, a well-studied family of processes with many known mathematical results (A\&N). We summarise some relevant results here.
+The process in figure ?? (main text) is an example of a \emph{branching
+process}, a well-studied family of processes with many known mathematical
+results (Atherya and Ney). We summarise some relevant results here.
 
 Concretely, we consider the following continuous time process:
-\begin{align}
+\begin{align*}
 A &\overset{\lambda}{\longmapsto} \begin{cases}
 A+A & r \\
 A+B & 1-2r \\
 B+B & r\end{cases} & B &\overset{\gamma}{\longmapsto} C & C &\overset{\mu}{\longmapsto} \emptyset
-\label{eq:really-full-model}
-\end{align}
+\end{align*}
 We use the labels $A$, $B$ and $C$ to respectively represent progenitors,
 differentiated cells in the basal layer, and suprabasal cells which can still be
-tracked. Asymptotically, as $t \rightarrow \infty$, the average clone size
-(including zero-cell clones) will be constant, making this an example of a
-3-type \emph{critical} branching process. Notice that in addition, if we ignore
-suprabasal cells (C), we obtain another critical branching process describing
-only the basal dynamics.
+tracked. All processes are assumed to be Poisson, with rate rates $\lambda$, $\gamma$ and $\mu$; equivalently, we may say that individual cells have lifetimes distributed exponentially.
 
-In general, critical branching processes (under mild conditions easily fulfilled
-here) have some simple asymptotic properties:
+Asymptotically, as $t \rightarrow \infty$, the average clone size (including
+zero-cell clones) will be constant, making this an example of a 3-type
+\emph{critical} branching process. Notice that in addition, if we ignore
+suprabasal cells (C), we obtain another critical branching process (this time
+2-type) describing only the basal dynamics.
+
+In general, multi-type critical branching processes (under mild conditions
+easily fulfilled here) have some simple asymptotic properties\footnote{The
+notation $x \sim y$ means that in the limit under consideration, $x/y
+\rightarrow C$ for some finite constant $C$.}:
 \begin{itemize}
 	\item Almost surely the clone will become extinction: $\lim_{t
 	\rightarrow 0} p_0(t) \rightarrow 0$. Specifically, $1 - p_0(t) \sim
@@ -115,13 +121,99 @@ here) have some simple asymptotic properties:
 	\right\rangle \sim t$.
 	\item The clone size distribution, conditioned on survival, scaled by
 	the average surviving clone size, converges in distribution to an
-	exponential: $$P\left(\frac{n}{\left\langle n^\textrm{surv.}
-	\right\rangle} < s \middle| n > 0 \right) = 1 - e^{-s}.$$
+	exponential: $$\lim_{t \rightarrow \infty} P\left(\frac{n}{\left\langle
+	n^\textrm{surv.} \right\rangle} < s \middle| n > 0 \right) = 1 -
+	e^{-s}.$$ This is exactly the statement of scaling.
+	\item Asymptotically, the ratios of the types of cells in a clone almost
+	surely approaches the ratios of averages, which is given by a
+	consideration of detailed balance in equilibrium. For example, for our
+	process above, we must have $\lambda \left\langle n_A \right\rangle -
+	\gamma \left\langle n_B \right\rangle = 0$ and $\gamma \left\langle n_B
+	\right\rangle - \mu \left\langle n_C \right\rangle = 0$.
 \end{itemize}
 
-\section{Bayesian inference of parameters}
+From the point of view of inferring the exact kinects of tissue maintainence,
+this universal behaviour of all critical branching processes is unfortunate.
+Indeed, from the late time data, the only measurable parameters are the overall
+time scale $\tau$ of the growth in average surviving clone size (the slope of
+figure ??); and assuming that the cell types can be unambiguously identified,
+the ratios of the rate constants (via the equilibrium ratios of cell types). As
+such, we need to confront early time data, away from the asymptotic regime,
+where such differences can be manifest.
+
+%As a final piece of generality, we consider an age-dependent branching process;
+%that is, cell lifetimes are no longer exponential. It can be shown (Atherya and
+%Ney) that the asymptotic behaviour is intact, again subject to mild conditions
+%easily fulfilled in biologically relevant models. Klein et al. 2007 showed that
+%whilst in principle one could see significant deviations from the age-indepedent
+%process, it requires inducing cells at precisely the same point in their cell
+%cycle. In practise, the induction protocol is incapable of synchronising the
+%labelled cells to any great extent, and the resulting clone size distribution
+%does not differ noticeably from the age-independent process. For this reason, we
+%will work solely with the age-indepedent process, for computational
+%tractability.
+
+\section{Inference of parameters}
+
+Our model has 4 separate parameters: $r$, $\lambda$, $\gamma$ and $\mu$.
+Defining $\rho$ to be the proportion of progenitors in the basal layer, the
+homoeostasis requirement gives $$\lambda \rho = \gamma (1-\rho).$$ Similarly,
+homoeostasis gives a condition for the number of suprabasal cells per basal cell
+$m$: $$\gamma (1-\rho) = \mu m.$$ Notice that with these relationships, we can
+eliminate $\gamma$ and $\mu$ in favour of $\rho$ and $\mu$. In addition, these
+are related to clonal composition in the asymptotic limit by detailed balance
+arguments mentioned in section ??:
+\begin{align*}
+\rho &= \lim_{t \rightarrow \infty}\frac{\left\langle n_A \right\rangle}{\left\langle n_A + n_B\right\rangle} \\
+m &= \lim_{t \rightarrow \infty}\frac{\left\langle n_C \right\rangle}{\left\langle n_A +n_B\right\rangle}
+\end{align*}
+As such we can measure $m$ directly \annote[GZ]{(table ??)}{Phil hard work at
+counting results in a table!}, but since it is not possible to visually
+distinguish progenitors from differentiated cells in the basal layer, $\rho$ is
+not directly measureable.
+
+The remaining three parameters we infer directly from the observed clone size
+distributions, using Bayes' Theorem. \note[GZ]{finish this; mostly just waffle
+about the need to condition the data}
 
 \section{Computation of joint clone size distributions}
+
+In using Bayes' theorem we must repeatedly compute the likelihood of the
+observed data for different parameters with reasonable accuracy. Because the
+distribution we wish to calculate has small tails (exponentially decaying), it
+is expensive to sample with a Monte-Carlo simulation, which would need vast
+number of trials. At the same time, due to loss of cells, in a Markov treatment
+of the system the transition matrix does not decompose into any helpful block
+form, and so no truncation is safe. Instead, we proceed via a generating
+function.
+
+Let $p_{m,n,l}(t)$ be the probability of finding a clone with $n$ progenitors,
+$m$ differentiated basal cells, and $l$ suprabasal cells. At time $t=0$, the
+only non-zero element is $p_{1,0,0} = 1$. We define the generating function
+$$F(x,y,z,t) = \sum_{m,n,l} x^m y^n z^l p_{m,n,l}(t).$$ This generating function
+then proceeds to evolve according to a partial differential equation $$F_t =
+\lambda \left[r x^2 + (1-2r) x y + y^2 - x \right] F_x + \gamma \left(z - y
+\right) F_y + \mu \left(1-z \right) F_z,$$ where subscripts indicate
+differentiation with respect to that variable and initial conditions
+$F(x,y,z,0)=x$. Finally, noting that the equation is hyperbolic and of first
+order, we can use the method of characteristics to get a system of non-linear
+ordinary differential equation:
+\begin{align*}
+\dot x &= \lambda \left[r x^2 + (1-2r) x y + y^2 - x \right] \\
+\dot y &= \gamma \left(z - y \right) \\
+\dot z &= \mu \left(1-z \right)
+\end{align*}
+The solution to the generating function is then $F(x_0,y_0,z_0,t) = x$ with
+$x(0) = x_0$, $y(0) = y_0$ and $z(0) = z_0$. In practice, one can use a
+numerical integrator to find the solution to the above with great accuracy.
+
+To perform the inverse transform to find $p_{m,n,l}$, note that $F$ is a series which is monotonic and finite in $x$, $y$ and $z$ on unit intervals. Thus it must be holomorphic on the unit disc in each of those variables. This then suggests a method of inversion based on contour integrals:
+\begin{align*}
+p_{m,n,l}(t) = \left(\frac{1}{2\pi i}\right)^3 \oint_{\mathcal{C}^3} \frac{F(x,y,z,t)}{x^{m+1} y^{n+1} z^{l+1}} dx\,dy\,dz
+\end{align*}
+where the contour $\mathcal{C}^3$ is an oriented volume defined by $|x|=|y|=|z|=1$, where the intent is to circle the respective origins of the complex planes in a counter-clockwise sense. Discretising the integral for a computer fortuitously yields a three-dimensional discrete Fourier transform.
+
+To make contact with the data, we need to combine the counts for both types of basal cells. This can be done by defining $G(s,z) = F(s,s,z)$, which one may invert by a simpler 2-dimensional integral, with much reduced computational cost.
 
 \section{ATRA, quantified}
 
