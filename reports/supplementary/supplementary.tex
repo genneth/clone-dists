@@ -1,0 +1,129 @@
+\documentclass[10pt,UKenglish]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{fouriernc}
+\usepackage[latin9]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose}
+\pagestyle{plain}
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{siunitx}
+\usepackage{microtype}
+\usepackage{nicefrac}
+\usepackage{subfigure}
+\usepackage[unicode=true, pdfusetitle, bookmarks=true, bookmarksnumbered=false, bookmarksopen=false, breaklinks=false, pdfborder={0 0 1}, backref=false, colorlinks=false, pdfstartview=FitBH]{hyperref}
+\usepackage[margins,adjustmargins]{trackchanges}
+\addeditor{GZ}
+
+\begin{document}
+
+\title{Supplementary theory}
+\author{Gen Zhang}
+\date{}
+ 
+\maketitle
+
+\renewcommand{\thesection}{S-\Roman{section}}
+\numberwithin{equation}{subsection}
+
+The key feature of adult tissue is homeostasis in the absence of external
+factors such as wounding or infection; in epithelia like the oesophageal lining,
+this gives us two precise quantitative rules: the total number of cells in the
+basal layer must be conserved, and the total number of cells in the whole tissue
+must be conserved. This means that, for example, we must balance the loss of
+cells from the basal layer with the generation of new cells; failure to do so
+would lead to exponential growth (cancer) or loss (tissue failure). Although
+this delicate balance must be maintained, it may be kept only on average ---
+small fluctuations in cell number or density is not catastrophic.
+
+We see this conservation of basal cells through clonal labelling: it is observed
+that the average size of clones increase (main text, fig ??); at the same time,
+\annote[GZ]{the density of clones decrease}{do we have a graph for this? is it
+any good?}, such that the total number of labelled cells remains roughly
+constant. The interpretation is that occasionally all cells in a clone will
+detach from the basal layer, resulting in a zero-cell clone, from which it will
+never recover. Thus, the remaining clones must expand (on average) to maintain
+homoeostasis.
+
+The central observation is that at late times the basal clone distribution
+\emph{scales}: the probability of finding a 2 cell clone at 1 month is twice
+that of finding a 4 cell clone at 2 months, which in turn is twice that for an 8
+cell clone at 4 months, and so on. \annote[GZ]{Klein et al. 2007}{should I avoid
+mentioning Clayton?} showed that this implies that \annote[GZ]{there is only one
+process which controls the eventual clone evolution}{I took this line out of
+Klein '07; is that a bad idea?}. This is the observation that suggests a simple
+description of the tissue maintainence.
+
+At this point, we must make assumptions to make progress. Clayton et al.
+introduced a model of committed progenitors (main text, Fig ??) which can
+explain the observations above. A key feature of this model is the existence of
+progenitor cells which divide, and adopt one of three fates: produce a pair of
+progenitors, produce a pair of differentiated cells, or produce one of each. It
+is important to emphasize that we are not stating in particular when this choice
+is made --- it may be independently in each daughter cell, or upon division
+itself, or even prior to division. Furthermore, we classify cells purely based
+on its \emph{fate}, rather than gene expression; progenitors are defined to be
+cells which will divide, and differentiated otherwise. 
+
+Here, we go further, and consider both the basal clone size distribution, and
+the joint basal and suprabasal distribution. We find that it becomes possible to
+infer, from data, the parameters of the model: the division rate of progenitors
+in the basal layer, the stratification rate of differentiated cells out of the
+basal layer, and the ratio of self-renewing divisions versus all divisions.
+Furthermore, this enriched data set allows us to reduce the total number of
+observations needed, and also to provide an independent validation that genetic
+markers are reliable indicators of fate. 
+
+Our methodology is based on Bayesian inference, the technical details of which
+are in section ??. The process by which numerical predictions of the joint clone
+size distributions are generated is explained in section ??; this is necessarily
+mathematical, but is not essential for understanding the overall strategy.
+Finally, we demonstrate an application to quantify drug action in section ??.
+
+\section{Critical branching processes and scaling}
+
+The process in figure ?? (main text) is an example of a \emph{branching process}, a well-studied family of processes with many known mathematical results (A\&N). We summarise some relevant results here.
+
+Concretely, we consider the following continuous time process:
+\begin{align}
+A &\overset{\lambda}{\longmapsto} \begin{cases}
+A+A & r \\
+A+B & 1-2r \\
+B+B & r\end{cases} & B &\overset{\gamma}{\longmapsto} C & C &\overset{\mu}{\longmapsto} \emptyset
+\label{eq:really-full-model}
+\end{align}
+We use the labels $A$, $B$ and $C$ to respectively represent progenitors,
+differentiated cells in the basal layer, and suprabasal cells which can still be
+tracked. Asymptotically, as $t \rightarrow \infty$, the average clone size
+(including zero-cell clones) will be constant, making this an example of a
+3-type \emph{critical} branching process. Notice that in addition, if we ignore
+suprabasal cells (C), we obtain another critical branching process describing
+only the basal dynamics.
+
+In general, critical branching processes (under mild conditions easily fulfilled
+here) have some simple asymptotic properties:
+\begin{itemize}
+	\item Almost surely the clone will become extinction: $\lim_{t
+	\rightarrow 0} p_0(t) \rightarrow 0$. Specifically, $1 - p_0(t) \sim
+	1/t$. 
+	\item At the same time, the average surviving clone size increases to
+	maintain the same overall average: $\left\langle n^\textrm{surv.}
+	\right\rangle \sim t$.
+	\item The clone size distribution, conditioned on survival, scaled by
+	the average surviving clone size, converges in distribution to an
+	exponential: $$P\left(\frac{n}{\left\langle n^\textrm{surv.}
+	\right\rangle} < s \middle| n > 0 \right) = 1 - e^{-s}.$$
+\end{itemize}
+
+\section{Bayesian inference of parameters}
+
+\section{Computation of joint clone size distributions}
+
+\section{ATRA, quantified}
+
+\end{document}
+
