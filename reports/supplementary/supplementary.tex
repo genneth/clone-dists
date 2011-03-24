@@ -86,6 +86,39 @@ Finally, we demonstrate an application to quantify drug action in section ??.
 
 \section{Critical branching processes and scaling}
 
+The process in figure ?? (main text) is an example of a \emph{branching process}, a well-studied family of processes with many known mathematical results (A\&N). We summarise some relevant results here.
+
+Concretely, we consider the following continuous time process:
+\begin{align}
+A &\overset{\lambda}{\longmapsto} \begin{cases}
+A+A & r \\
+A+B & 1-2r \\
+B+B & r\end{cases} & B &\overset{\gamma}{\longmapsto} C & C &\overset{\mu}{\longmapsto} \emptyset
+\label{eq:really-full-model}
+\end{align}
+We use the labels $A$, $B$ and $C$ to respectively represent progenitors,
+differentiated cells in the basal layer, and suprabasal cells which can still be
+tracked. Asymptotically, as $t \rightarrow \infty$, the average clone size
+(including zero-cell clones) will be constant, making this an example of a
+3-type \emph{critical} branching process. Notice that in addition, if we ignore
+suprabasal cells (C), we obtain another critical branching process describing
+only the basal dynamics.
+
+In general, critical branching processes (under mild conditions easily fulfilled
+here) have some simple asymptotic properties:
+\begin{itemize}
+	\item Almost surely the clone will become extinction: $\lim_{t
+	\rightarrow 0} p_0(t) \rightarrow 0$. Specifically, $1 - p_0(t) \sim
+	1/t$. 
+	\item At the same time, the average surviving clone size increases to
+	maintain the same overall average: $\left\langle n^\textrm{surv.}
+	\right\rangle \sim t$.
+	\item The clone size distribution, conditioned on survival, scaled by
+	the average surviving clone size, converges in distribution to an
+	exponential: $$P\left(\frac{n}{\left\langle n^\textrm{surv.}
+	\right\rangle} < s \middle| n > 0 \right) = 1 - e^{-s}.$$
+\end{itemize}
+
 \section{Bayesian inference of parameters}
 
 \section{Computation of joint clone size distributions}
