@@ -38,7 +38,7 @@ end
 
 X0 = x0;
 [~,X] = ode45(@deriv, times, X0, ...
-    odeset('RelTol', 1e-10, 'AbsTol', 1e-7));
+    odeset('RelTol', 1e-6, 'AbsTol', 1e-7));
 
 if numel(ts) == 1
     f = X(end,1);

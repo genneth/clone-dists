@@ -42,7 +42,7 @@ end
 
 X0 = x0;
 [~,X] = ode45(@deriv, times, X0, ...
-    odeset('RelTol', 1e-3, 'AbsTol', 1e-4));
+    odeset('RelTol', 1e-5, 'AbsTol', 1e-6));
 
 if numel(ts) == 1
     f = X(end);
