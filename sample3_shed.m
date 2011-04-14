@@ -47,7 +47,7 @@ for i = 1:nsamples
     lambda = feval(lambdafun);
     gamma = feval(gammafun);
     rho = gamma / (1 + gamma);
-    mu = rho / m;
+    mu = rho / m; % rho = mu m
 
     samples_r(i,:)      = r; 
     samples_gamma(i,:)  = gamma;
