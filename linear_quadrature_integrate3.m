@@ -1,4 +1,4 @@
-function result = linear_quadrature_integrate3(integrand, samples)
+function result = linear_quadrature_integrate3(integrand, samples, pf)
 
 % we assume that samples is a cell array, with structure:
 % samples{i,:} = {r, gamma, lambda, [log p2], [log p3]}
@@ -7,7 +7,7 @@ function result = linear_quadrature_integrate3(integrand, samples)
 coords = [[samples{:,1}]' [samples{:,2}]' [samples{:,3}]'];
 warning off MATLAB:delaunay3:DeprecatedFunction;
 tetras = delaunay3(coords(:,1), coords(:,2), coords(:,3));
-lps = cellfun(@(p2s, p3s)(sum(p2s) + sum(p3s)), {samples{:,4}}, {samples{:,5}});
+lps = cellfun(pf, samples(:,4), samples(:,5)) - cellfun(@(l) log(l(1)), samples(:,3));
 ps = exp(lps - max(lps)); % normalised to max(ps) == 1
 
 [ntetras, ~] = size(tetras);
