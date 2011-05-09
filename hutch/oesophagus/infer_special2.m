@@ -1,0 +1,28 @@
+function infer_special2
+
+oesophagus_data;
+
+% take out unreliable entries
+for i=1:numel(ts2)
+    basal{i}(1+1) = 0;
+end
+
+for i=1:numel(ts3)
+    normal{i}(0+1,:)   = 0;
+    normal{i}(1+1,0+1) = 0;
+end
+
+% cut down on the data to make testing faster
+% ts2 = ts2(4); basal = basal(4);
+% ts3 = ts3(1:2); normal = normal(1:2);
+
+samples = sample3_shed(...
+    @()(0.25), ...
+    @()(1), ...
+    @()(random('logn', 0, log(2))), ...
+    0.85, ...
+    ts2, basal, ts3, normal, 100);
+
+save special2.mat samples;
+
+end
