@@ -16,6 +16,8 @@ end
 % ts2 = ts2(4); basal = basal(4);
 % ts3 = ts3(1:2); normal = normal(1:2);
 
+stream = RandStream('mt19937ar','seed',sum(100*clock));
+RandStream.setDefaultStream(stream);
 sample3_shed(...
     @()(random('beta', 2, 2) / 2), ... % r
     @()(random('logn', log(1), log(2))), ... % gamma
