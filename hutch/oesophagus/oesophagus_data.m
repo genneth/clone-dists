@@ -387,6 +387,11 @@ normal{end+1} = [
     0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0
     ];
 
+% add fake data and then sort into order
+oesophagus_fake_data
+[ts3, reorder] = sort(ts3);
+normal = normal(reorder);
+
 % atRA, pretreat (drug then induce --- homoeostatic)
 atra_pretreat_ts = [4/7 11/7 3 6];
 atra_pretreat{1} = [
