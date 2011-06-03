@@ -16,8 +16,8 @@ maxM3 = 0;
 maxN3 = 0;
 for i = 1:numel(ts3)
     [rows,cols,~] = find(data3{i});
-    maxM3 = max(maxM3, max(rows) - 1)
-    maxN3 = max(maxN3, max(cols) - 1)
+    maxM3 = max(maxM3, max(rows) - 1);
+    maxN3 = max(maxN3, max(cols) - 1);
 end
 
 for i = 1:nsamples
