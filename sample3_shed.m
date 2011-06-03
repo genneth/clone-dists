@@ -21,6 +21,7 @@ for i = 1:numel(ts3)
 end
 
 for i = 1:nsamples
+    iter_start = tic;
     
     r = feval(rfun);
     lambda = feval(lambdafun);
@@ -48,6 +49,7 @@ for i = 1:nsamples
     partial = samples(1:i,:);
     save(output_file, 'partial');
     
+    fprintf('%d of %d, %f s\n', i, nsamples, toc(iter_start));
 end
 
 save(output_file, 'samples');

@@ -23,6 +23,7 @@ for i = 1:numel(ts2)
 end
 
 for i = 1:nsamples
+    iter_start = tic;
     
     r = feval(rfun);
     lambda  = zeros(nlambdas, 1);
@@ -71,7 +72,7 @@ for i = 1:nsamples
     end
     samples_p2(i,:,:) = samples_p2_;
     
-    fprintf('%d of %d\n', i, nsamples);
+    fprintf('%d of %d, %f s\n', i, nsamples, toc(iter_start));
 end
 
 samples = cell(nsamples*nlambdas, 5);

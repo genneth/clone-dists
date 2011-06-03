@@ -20,6 +20,6 @@ sample3_shed(...
     @()(random('logn', 0, log(2))), ... % lambda
     1.1, ... % suprabasal:basal ratio (m)
     atra_pretreat_ts, atra_pretreat, 100, ...
-    'samples.mat');
+    'atRA-homeo.mat');
 
 end
