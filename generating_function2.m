@@ -28,6 +28,8 @@ else
     times = ts;
 end
 
+[times,~,ind] = unique(times);
+
     function yt = y(t)
         yt = exp(-gamma * t) * (y0-1) + 1;
     end
@@ -40,12 +42,14 @@ X0 = x0;
 [~,X] = ode45(@deriv, times, X0, ...
     odeset('RelTol', 3e-14, 'AbsTol', 1e-14));
 
+X = X(ind);
+
 if numel(ts) == 1
-    f = X(end,1);
+    f = X(end);
 elseif ts(1) > 0
-    f = X(2:end,1);
+    f = X(2:end);
 else
-    f = X(:,1);
+    f = X;
 end
 
 end

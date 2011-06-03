@@ -1,4 +1,4 @@
-function infer_atra
+function atRA_homeo
 
 oesophagus_data;
 
@@ -19,7 +19,7 @@ sample3_shed(...
     @()(random('logn', log(1), log(2))), ... % gamma
     @()(random('logn', 0, log(2))), ... % lambda
     1.1, ... % suprabasal:basal ratio (m)
-    [], {}, atra_pretreat_ts, atra_pretreat, 100, ...
+    atra_pretreat_ts, atra_pretreat, 100, ...
     'samples.mat');
 
 end

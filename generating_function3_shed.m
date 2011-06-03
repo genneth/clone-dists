@@ -1,4 +1,4 @@
-function f = generating_function3_shedding(r, gamma, mu, ts, x0, y0, z0)
+function f = generating_function3_shed(r, gamma, mu, ts, x0, y0, z0)
 
 % solve \dot{f} = [r(x-y)^2 + x(y-1)] f_x + \gamma (z-y) f_y + \mu (1-z) f_z
 % by method of characteristics:
@@ -29,6 +29,8 @@ else
     times = ts;
 end
 
+[times,~,ind] = unique(times);
+
     function y = y(t)
         y = ( (z0-1)*gamma * exp(-mu*t) ...
            + ((y0-z0)*gamma + (1-y0)*mu) * exp(-gamma*t)) ...
@@ -43,6 +45,8 @@ end
 X0 = x0;
 [~,X] = ode45(@deriv, times, X0, ...
     odeset('RelTol', 3e-14, 'AbsTol', 1e-14));
+
+X = X(ind);
 
 if numel(ts) == 1
     f = X(end);

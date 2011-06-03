@@ -1,12 +1,8 @@
-function infer
+function normal % normal, suprabasals
 
 oesophagus_data;
 
 % take out unreliable entries
-for i=1:numel(ts2)
-    basal{i}(1+1) = 0;
-end
-
 for i=1:numel(ts3)
     normal{i}(0+1,:)   = 0;
     normal{i}(1+1,0+1) = 0;
@@ -22,8 +18,8 @@ sample3_shed(...
     @()(random('beta', 2, 2) / 2), ... % r
     @()(random('logn', log(1), log(2))), ... % gamma
     @()(random('logn', 0, log(2))), ... % lambda
-    0.85, ... % suprabasal:basal ratio (m)
-    ts2, basal, ts3, normal, 100, ...
-    'samples.mat');
+    0.82, ... % suprabasal:basal ratio (m)
+    ts3, normal, 1000, ...
+    'normal.mat');
 
 end
