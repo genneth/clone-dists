@@ -3,7 +3,7 @@ function basal
 oesophagus_data;
 
 % remove singles
-for i=1:numel(ts)
+for i=1:numel(ts2)
     basal{i}(1+1) = 0;
 end
 
