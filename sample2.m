@@ -84,7 +84,7 @@ for i = 1:nsamples
     partial = samples(1:(i*nlambdas), :);
     save(output_file, 'partial');
     
-    fprintf('%d of %d, this iteration: %.1fs, to go: %.1fh\n', i, nsamples, toc(iter_start), toc(start)/i*(nsamples-i));
+    fprintf('%d of %d, this iteration: %.1fs, to go: %.2fh\n', i, nsamples, toc(iter_start), (toc(start)/i*(nsamples-i))/3600);
 end
 
 save(output_file, 'samples');
