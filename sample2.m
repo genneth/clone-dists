@@ -22,6 +22,7 @@ for i = 1:numel(ts2)
     maxN2 = max(maxN2, numel(data2{i}) - 1);
 end
 
+start = tic;
 for i = 1:nsamples
     iter_start = tic;
     
@@ -72,7 +73,7 @@ for i = 1:nsamples
     end
     samples_p2(i,:,:) = samples_p2_;
     
-    fprintf('%d of %d, %f s\n', i, nsamples, toc(iter_start));
+    fprintf('%d of %d, this iteration: %.1fs, to go: %.1fh\n', i, nsamples, toc(iter_start), toc(start)/i*(nsamples-i));
 end
 
 samples = cell(nsamples*nlambdas, 5);

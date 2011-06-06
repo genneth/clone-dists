@@ -20,6 +20,7 @@ for i = 1:numel(ts3)
     maxN3 = max(maxN3, max(cols) - 1);
 end
 
+start = tic;
 for i = 1:nsamples
     iter_start = tic;
     
@@ -49,7 +50,7 @@ for i = 1:nsamples
     partial = samples(1:i,:);
     save(output_file, 'partial');
     
-    fprintf('%d of %d, %f s\n', i, nsamples, toc(iter_start));
+    fprintf('%d of %d, this iteration: %.1fs, to go: %.1fh\n', i, nsamples, toc(iter_start), toc(start)/i*(nsamples-i));
 end
 
 save(output_file, 'samples');
