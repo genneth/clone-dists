@@ -16,6 +16,7 @@ samples_r      = zeros(nsamples,nlambdas);
 samples_gamma  = zeros(nsamples,nlambdas);
 samples_lambda = zeros(nsamples,nlambdas);
 samples_p2     = zeros(nsamples,nlambdas,numel(ts2));
+samples        = cell(nsamples*nlambdas, 5);
 
 maxN2 = 0;
 for i = 1:numel(ts2)
@@ -73,11 +74,6 @@ for i = 1:nsamples
     end
     samples_p2(i,:,:) = samples_p2_;
     
-    fprintf('%d of %d, this iteration: %.1fs, to go: %.1fh\n', i, nsamples, toc(iter_start), toc(start)/i*(nsamples-i));
-end
-
-samples = cell(nsamples*nlambdas, 5);
-for i = 1:nsamples
     for j = 1:nlambdas
         samples{(i-1)*nlambdas+j,1} = samples_r(i,j);
         samples{(i-1)*nlambdas+j,2} = samples_gamma(i,j);
@@ -85,6 +81,10 @@ for i = 1:nsamples
         samples{(i-1)*nlambdas+j,4} = squeeze(samples_p2(i,j,:));
         samples{(i-1)*nlambdas+j,5} = 1; % placeholder for p3
     end
+    partial = samples(1:(i*nlambdas), :);
+    save(output_file, 'partial');
+    
+    fprintf('%d of %d, this iteration: %.1fs, to go: %.1fh\n', i, nsamples, toc(iter_start), toc(start)/i*(nsamples-i));
 end
 
 save(output_file, 'samples');

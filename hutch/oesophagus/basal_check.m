@@ -7,6 +7,7 @@ oesophagus_data;
 basal = {};
 for i=1:numel(ts3)
     basal{i} = normal{i}(0+1,:);
+    basal{i}(0+1) = 0; % remove extinct ones, because of fake data
     basal{i}(1+1) = 0; % remove singles
 end
 
@@ -17,6 +18,6 @@ sample2(...
     @()(random('logn', log(1), log(2))), ...
     @()(random('logn', 0, log(2))), ...
     ts3, basal, 100, 100, ...
-    'basal.mat');
+    'basal-check.mat');
 
 end
