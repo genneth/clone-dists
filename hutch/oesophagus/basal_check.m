@@ -6,7 +6,7 @@ oesophagus_data;
 
 basal = {};
 for i=1:numel(ts3)
-    basal{i} = normal{i}(0+1,:);
+    basal{i} = sum(normal{i},2);
     basal{i}(0+1) = 0; % remove extinct ones, because of fake data
     basal{i}(1+1) = 0; % remove singles
 end
