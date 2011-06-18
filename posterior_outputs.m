@@ -5,7 +5,7 @@ rf = @(r,g,l) r;
 rhof = @(r,g,l) g/(1+g);
 lf = @(r,g,l) log(l);
 tf = @(r,g,l) log(g/(1+g)/(r*l));
-gf = @(r,g,l) g;
+gf = @(r,g,l) log(g);
 sq = @(f) (@(r,g,l) f(r,g,l)^2);
 
 Z = linear_quadrature_integrate3(constf, samples, pf);
@@ -27,7 +27,7 @@ fprintf('r = %.3f ± %.3f\n', r1, sqrt(r2 - r1^2));
 fprintf('ρ = %.3f ± %.3f\n', rho1, sqrt(rho2 - rho1^2));
 fprintf('λ = %.2f / weeks + %.0f%% - %.0f%%\n', exp(ll1), (exp(sqrt(ll2 - ll1^2)) - 1)*100, (1 - exp(-sqrt(ll2 - ll1^2)))*100);
 fprintf('τ = %.2f weeks + %.0f%% - %.0f%%\n', exp(lt1), (exp(sqrt(lt2 - lt1^2)) - 1)*100, (1 - exp(-sqrt(lt2 - lt1^2)))*100);
-fprintf('γ = %.3f ± %.3f\n', g1, sqrt(g2-g1^2));
+fprintf('γ = %.3f + %.0f%% - %.0f%%\n', exp(g1), (exp(sqrt(g2-g1^2)) - 1)*100, (1-exp(-sqrt(g2-g1^2)))*100);
 fprintf('μ = %.3f ± %.3f\n', rho1/0.82, sqrt(rho2 - rho1^2) / 0.82);
 
 end

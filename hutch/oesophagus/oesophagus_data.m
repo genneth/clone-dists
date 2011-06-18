@@ -121,7 +121,7 @@ normal{end+1} = [
     0	0	0	0	0	0	0	0	0
     0	0	0	0	0	0	0	0	0
     ];
-databs{5}(16+1,7+1) = 1;
+normal{end}(16+1,7+1) = 1;
 
 ts3(end+1) = 30/7; % david atRA control
 normal{end+1} = [
