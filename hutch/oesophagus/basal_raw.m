@@ -60,6 +60,7 @@ p = [0.03 p(2) p(3)+p(1)-0.03 p(4)];
 set(gh, 'Position', p);
 
 % insets
+% average size
 ah = axes('OuterPosition', [0 0.7 0.45 0.3]);
 set(ah, 'NextPlot', 'add');
 set(ah, 'FontName', 'Helvetica', 'FontSize', 8);
@@ -75,12 +76,27 @@ plot(ah, ts, av, '+', 'MarkerSize', 2.0, 'Color', colours(1,:));
 for i = 1:numel(ts)
     plot(ah, [ts(i) ts(i)], av(i) - avdev(i)*[-1 1], '-', 'Color', colours(1,:));
 end
+ts = linspace(0, 60, 100);
+% theory = basal_average(0.1, 0.65 / (1-0.65), 1.87, ts);
+% save basal-average theory
 theory = [];
 load basal-average
-plot(ah, linspace(min(ts), max(ts), 100), theory, '-', 'Color', colours(2,:));
+plot(ah, ts, theory, '-', 'Color', colours(2,:));
 p = get(ah, 'Position');
 p = [0.03 p(2) p(3)+p(1)-0.03 p(4)];
 set(ah, 'Position', p);
+
+% clone density
+times = [3 6 12 26 52];
+densities = [
+    0.458515284	0.611353712	0.742358079
+    0.043668122	0.349344978	0.524017467
+    0.262008734	0.305676856	0.131004367
+    0.021834061	0.305676856	0.218340611
+    0.139737991	0.043668122	0.021834061
+    ];
+mds = mean(densities, 2);
+mdd = sqrt(var(densities, 1, 2) * 3 / 2);
 
 ah = axes('OuterPosition', [0.55 0.7 0.45 0.3]);
 set(ah, 'NextPlot', 'add');
@@ -91,11 +107,30 @@ set(ah, 'XTick', [4 12 26 52]);
 set(ah, 'XTickLabel', {'1m', '3m', '6m', '1y'});
 set(ah, 'YGrid', 'on', 'YMinorGrid', 'off');
 ylabel(ah, 'clone density', 'FontSize', 8, 'FontName', 'Helvetica', 'FontWeight', 'bold');
-set(ah, 'YLim', [0 25], 'YTick', [0 10 20]);
+set(ah, 'YLim', [0 0.8], 'YTick', [0 0.3 0.6]);
+plot(ah, times, mds, '+', 'MarkerSize', 2.0, 'Color', colours(1,:));
+for i = 1:numel(times)
+    plot(ah, [times(i) times(i)], mds(i) - mdd(i)*[-1 1], '-', 'Color', colours(1,:));
+end
+ts = linspace(0, 60, 100);
+extinction = generating_function2(0.10, 0.65/(1-0.65), 1.87*ts, 0, 0);
+plot(ah, ts, (1-extinction) * 0.8, '-', 'Color', colours(2,:));
 p = get(ah, 'Position');
 p = [0.58 p(2) p(3)+p(1)-0.58 p(4)];
 set(ah, 'Position', p);
 
+% labelled percentage
+labelling = [
+    1.4819869	1.671033479	2.176744875
+    0.191467921	1.470160116	1.871490954
+    1.505115864	1.344978166	0.741293002
+    0.175722204	2.170614441	2.793475469
+    3.28625207	0.894267398	0.432751092
+    ];
+ls = mean(labelling, 2);
+ld = sqrt(var(labelling, 1, 2) / 2);
+lm = mean(ls);
+lmd = sqrt(var(reshape(labelling, numel(labelling), 1)) / (numel(labelling) - 1));
 ah = axes('OuterPosition', [0.0 0.4 0.45 0.3]);
 set(ah, 'NextPlot', 'add');
 set(ah, 'FontName', 'Helvetica', 'FontSize', 8);
@@ -104,8 +139,18 @@ set(ah, 'XGrid', 'on', 'XMinorGrid', 'off');
 set(ah, 'XTick', [4 12 26 52]);
 set(ah, 'XTickLabel', {'1m', '3m', '6m', '1y'});
 set(ah, 'YAxisLocation', 'right', 'YGrid', 'on', 'YMinorGrid', 'off');
-ylabel(ah, 'labelling density', 'Rotation', -90, 'FontSize', 8, 'FontName', 'Helvetica', 'FontWeight', 'bold');
-set(ah, 'YLim', [0 25], 'YTick', [0 10 20]);
+ylabel(ah, '% labelled cells', 'Rotation', -90, 'FontSize', 8, 'FontName', 'Helvetica', 'FontWeight', 'bold');
+set(ah, 'YLim', [0 2.5], 'YTick', [0 1 2]);
+plot(ah, times, ls, '+', 'MarkerSize', 2.0, 'Color', colours(1,:));
+for i = 1:numel(times)
+    plot(ah, [times(i) times(i)], ls(i) - ld(i)*[-1 1], '-', 'Color', colours(1,:));
+end
+ts = linspace(0, 60, 100);
+lm = repmat(lm, size(ts));
+lmd = repmat(lmd, size(ts));
+plot(ah, ts, lm, '-', 'Color', colours(2,:));
+plot(ah, ts, lm+lmd, '-', 'Color', colours(2,:));
+plot(ah, ts, lm-lmd, '-', 'Color', colours(2,:));
 p = get(ah, 'Position');
 p = [0.03 p(2) p(3)+p(1)-0.03 p(4)];
 set(ah, 'Position', p);
