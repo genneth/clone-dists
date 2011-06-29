@@ -25,6 +25,7 @@ total = sum(sum(databs));
 % theory(0+1,:)   = 0;
 % theory(1+1,0+1) = 0;
 % save(output, 'theory');
+theory = [];
 load(output);
 
 % load the colours
@@ -36,6 +37,8 @@ set(fh, 'PaperUnits', 'inches');
 w = 3; h = 3;
 set(fh, 'PaperSize', [w h]);
 set(fh, 'PaperPosition', [0 0 w h]);
+
+lim = 30;
 
 margin_x = 0.1; margin_y = 0.1;
 for i=1:M
@@ -57,7 +60,7 @@ for i=1:M
         plot(ah, [0 0]', [total - binoinv(0.975, total, 1-theory(i+1,j+1))
             binoinv(0.975, total, theory(i+1,j+1))], ...
             '-', 'LineWidth', 1.0, 'Color', colours(2,:));
-        set(ah, 'YLim', [0 50]);
+        set(ah, 'YLim', [0 lim]);
         set(ah, 'XAxisLocation', 'Top');
         set(ah, 'XTickLabel', {}, 'YTickLabel', {});
         set(ah, 'XTick', [], 'YTick', []);
@@ -71,10 +74,10 @@ for i=1:M
             % 2nd axis just to get scale on the right
             ah2 = subplot('Position', get(ah, 'Position'));
             set(ah2, 'YAxisLocation', 'Right');
-            set(ah2, 'YTick', [0 25 50]);
+            set(ah2, 'YTick', [0 lim/2 lim]);
             set(ah2, 'YGrid', 'on', 'YMinorGrid', 'off');
             if j==N
-                set(ah2, 'YTickLabel', {0 25 50});
+                set(ah2, 'YTickLabel', {0 lim/2 lim});
             else
                 set(ah2, 'YTickLabel', {});
             end

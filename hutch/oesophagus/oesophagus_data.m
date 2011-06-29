@@ -516,7 +516,6 @@ atra_pretreat{end+1} = [
 
 atra_pretreat_ts(end+1) = 3;
 atra_pretreat{end+1} = [
-    0	1	2	3	4	5	6	7	8
     0	4	4	8	2	1	0	0	0
     2	0	6	4	1	0	2	0	0
     2	5	5	5	0	0	0	0	1
