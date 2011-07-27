@@ -1,11 +1,13 @@
-function [t1, t2] = posterior_output_tau(samples, pf)
+function [t, dt] = posterior_output_tau(samples, pf)
 
-constf = @(r,g,l) 1;
-tf = @(r,g,l) log(g/(1+g)/(r*l));
-sq = @(f) (@(r,g,l) f(r,g,l)^2);
+constf = @(r,g,l) ones(size(r));
+tf = @(r,g,l) log(g./(1+g)./(r.*l));
+sq = @(f) (@(r,g,l) f(r,g,l).^2);
 
-Z = linear_quadrature_integrate3(constf, samples, pf);
-t1 = linear_quadrature_integrate3(tf, samples, pf) / Z;
-t2 = linear_quadrature_integrate3(sq(tf), samples, pf) / Z;
+rs = linear_quadrature_integrate3_multiple({constf, tf, sq(tf)}, samples, pf);
+Z = rs(1);
+t = rs(2) / Z;
+t2 = rs(3) / Z;
+dt = sqrt(t2-t*t);
 
 end
