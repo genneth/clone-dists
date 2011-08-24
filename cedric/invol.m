@@ -1,87 +1,102 @@
 function invol
 
-times = [3.5/7 1 2 4 8 12]; % weeks
+times = [3.5/7 1 2 4 8 12 24]; % weeks
 data = {
     sparse([
-        0	0;
-        32	14;
-        5	2
+        0	0
+        52	27
+        7	2
     ]), ...
     sparse([
-        0	0	0;
-        9	4	2;
-        2	1	1;
-        0	2	0;
-        1	0	0
+        0	0	0	0
+        20	11	6	2
+        4	3	1	1
+        0	2	0	0
+        1	0	0	0
     ]), ...
     sparse([
-        0	0	0	0	0	0	0;
-        9	7	8	2	0	4	2;
-        10	4	4	0	0	0	0
+        0	0	0	0	0	0	0
+        10	7	9	3	2	4	2
+        11	6	4	0	0	0	0
+        0	1	0	0	0	0	0
     ]), ...
     sparse([
-        0	0	0	0	0	0	0	0	0	0;
-        4	11	1	4	3	5	0	0	0	1;
-        10	1	1	1	2	1	0	0	0	0;
-        0	1	2	1	1	1	0	1	0	0;
-        1	0	1	0	0	2	0	0	0	0;
-        0	1	0	0	0	0	0	0	0	0;
-        0	1	1	0	0	0	0	0	0	0
+        0	0	0	0	0	0	0	0	0	0
+        5	16	3	12	5	6	0	0	0	1
+        14	2	7	2	3	1	0	2	0	0
+        3	3	4	2	1	1	0	1	1	0
+        1	1	1	0	0	2	0	0	0	0
+        0	1	0	0	1	0	0	1	0	0
+        0	1	2	0	0	1	0	0	0	0
+        0	0	1	0	0	0	0	0	0	0
+        0	0	0	0	0	0	0	0	1	0
     ]), ...
     sparse([
-        0	0	0	0	0	0	0	0	0	0	0	0;
-        1	3	2	1	3	1	0	0	0	1	0	0;
-        0	1	0	2	1	0	0	1	0	2	1	0;
-        0	0	1	1	1	1	1	0	1	0	0	0;
-        1	0	1	0	0	0	0	0	1	0	0	0;
-        1	0	0	0	0	1	0	0	0	0	0	0;
-        0	1	1	0	0	0	0	0	0	0	0	0;
-        0	0	0	0	0	0	0	0	0	0	0	1;
+        0	0	0	0	0	0	0	0	0	0	0	0
+        1	3	2	1	3	1	0	0	0	1	0	0
+        0	1	0	2	1	0	0	1	0	2	1	0
+        0	0	1	1	1	1	1	0	1	0	0	0
+        1	0	1	0	0	0	0	0	1	0	0	0
+        1	0	0	0	0	1	0	0	0	0	0	0
+        0	1	1	0	0	0	0	0	0	0	0	0
+        0	0	0	0	0	0	0	0	0	0	0	1
         0	0	0	0	0	0	0	1	0	0	0	0
     ]), ...
     sparse([
-        0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0;
-        1	3	2	1	3	1	0	0	0	1	0	0	0	0	0	0	0	0;
-        0	1	0	2	1	0	0	1	0	2	1	0	0	0	0	0	0	0;
-        0	0	1	1	1	2	1	0	1	0	0	0	0	0	0	0	0	0;
-        1	0	1	3	1	1	0	0	1	0	0	0	0	0	0	0	0	0;
-        1	0	3	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0;
-        0	1	2	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0;
-        0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0;
-        0	0	0	1	1	0	0	1	0	0	0	0	0	0	0	0	0	0;
-        0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0;
-        0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0;
-        0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0;
         0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+        0	8	2	6	4	0	0	0	2	0	0	0	0	0	0	0	0	0
+        0	0	4	5	2	0	1	2	0	0	0	0	1	1	0	0	0	2
+        0	0	2	4	2	0	2	4	0	0	0	0	0	0	0	0	0	0
+        0	2	2	4	0	0	2	0	0	2	0	0	0	0	0	0	0	0
+        0	0	0	4	0	0	0	0	0	2	0	0	0	0	0	0	0	0
+        0	2	0	0	1	0	2	0	4	0	1	0	0	0	0	0	0	0
+        0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+        2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+        0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0
+        0	0	0	0	0	0	0	0	0	2	1	0	0	0	0	0	0	0
+        0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+        0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	0	0	0
+    ]), ...
+    sparse([
+        0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+        0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+        0	0	1	0	0	1	0	0	0	0	0	0	0	0	0	0	0
+        0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	1
+        0	0	1	0	1	1	1	0	0	0	0	0	0	0	0	0	0
+        0	0	1	0	0	0	1	0	0	0	0	0	0	0	0	0	0
+        0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0
     ])};
 
-% if we're doing inference...
-if 0
+if 1
+    % if we're doing inference...
     % remove single cells from consideration --- don't know if we're inducing
     % post-mitotic cells
     for i = 1:numel(times)
         data{i}(1+1,0+1) = 0;
     end
 
-    samples = sample3_no_shed(...
-        @()(random('beta', 1, 3) / 2), ...
-        @()(random('logn', log(2), log(1.8))), ...
-        @()(random('logn', 0, log(2))), ...
-        [], {}, times, data, 1000, 30);
+    stream = RandStream('mt19937ar','seed',sum(100*clock));
+    RandStream.setDefaultStream(stream);
+    sample3_shed(...
+        @()(random('beta', 1.1, 8.9) / 2), ... % r
+        @()(random('logn', log(3), log(1.8))), ... % gamma
+        @()(random('logn', 0, log(2))), ... % lambda
+        5/4, ... % suprabasal:basal ratio (m)
+        times, data, 1000, ...
+        'invol_samples.mat');
 
-    save invol_samples.mat samples
 else
     % if we're doing fitting tests...
 
     % parameters
-    r = 0.1; gamma = 2; mu = 1/3; lambda = 1;
+    r = 0.4; gamma = 3; mu = (3/4)/(5/4); lambda = 1; delta = -1/13;
 
     % prepare the theoretical predictions
     max_size = max(cell2mat(...
        cellfun(@(d)(size(d)'), ...
            data, 'UniformOutput', false))');
-    theory_raw = clone_dist_bs_shed(r, gamma, mu, lambda*times, max_size(1), max_size(2));
-    basal_raw = clone_dist_b(r, gamma, lambda*times, max_size(1));
+    theory_raw = inverse_z_transform2(@(x,y) generating_function3_shed_unbalance(r, delta, gamma, mu, lambda*times, x, x, y), max_size(1), max_size(2), 1e-4, 1e-4);
+    basal_raw = inverse_z_transform(@(x) generating_function2_unbalance(r, delta, gamma, lambda*times, x, x), max_size(1), 1e-7, 1e-7);
     extinction_prob = basal_raw(0+1, :);
 
     theory = theory_raw; theory(0+1,:,:) = 0;
@@ -90,16 +105,20 @@ else
         theory(:,:,i) = theory(:,:,i) / (1 - extinction_prob(i));
         basal(:,i) = basal(:,i) / (1 - extinction_prob(i));
     end
+    
+    save('invol', 'theory', 'basal');
+%     theory = []; basal = [];
+%     load('invol');
                 
     % first up, our home-grown "how many experiments" test
-    f = fopen('invol-theory-comparison.txt', 'w');
-    fclose(f);
-    for i = 1:numel(times)
-        [m,n] = size(data{i});
-        chances = binocompare(data{i}, theory(1:m,1:n,i));
-        dlmwrite('invol-theory-comparison.txt', 1 ./ chances, '-append', ...
-            'delimiter', '\t', 'roffset', 2);
-    end
+%     f = fopen('invol-theory-comparison.txt', 'w');
+%     fclose(f);
+%     for i = 1:numel(times)
+%         [m,n] = size(data{i});
+%         chances = binocompare(data{i}, theory(1:m,1:n,i));
+%         dlmwrite('invol-theory-comparison.txt', 1 ./ chances, '-append', ...
+%             'delimiter', '\t', 'roffset', 2);
+%     end
     
     % Ben's battery: clone size distributions for basal, suprabasal and
     % total; in both linear and log scale, and both pdf and cdf. Here we
